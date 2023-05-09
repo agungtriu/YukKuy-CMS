@@ -138,7 +138,7 @@ class OrderController {
         req.body;
 
       const accountId = +req.accountData.id;
-      const uniquePrice = totalPrice;
+      const uniquePrice = +totalPrice + Math.floor(Math.random() * 100);
 
       const resultOrder = await order.create({
         totalPackage,
