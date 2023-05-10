@@ -232,7 +232,6 @@ class ProductController {
       );
       
       const images = req.files;
-      console.log(images)
       if (result[0] === 1) {
         const imagesBefore = await imageProduct.findAll({
           where: { productId: id },
