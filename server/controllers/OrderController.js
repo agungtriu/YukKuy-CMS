@@ -4,6 +4,7 @@ const product = models.product;
 const statusOrder = models.statusOrder;
 const order = models.order;
 const account = models.account;
+const verificationPayment = models.verificationPayment;
 
 class OrderController {
   static async getOrdersCMS(req, res) {
@@ -13,12 +14,12 @@ class OrderController {
       const products = await product.findAll({
         where: { accountId },
       });
-      
+
       var orders = [];
       for (const product of products) {
         const result = await order.findAll({
           where: { productId: product.id },
-          include: [statusOrder],
+          include: [statusOrder, verificationPayment],
         });
         orders.push(...result);
       }
@@ -41,11 +42,11 @@ class OrderController {
       const products = await product.findAll({
         where: { accountId },
       });
-      
+
       var recapSuccess = [];
       for (const product of products) {
         var orders = await order.findAll({
-          where: { productId: product.id},
+          where: { productId: product.id },
           include: [statusOrder],
         });
         if (orders !== null) {
@@ -53,8 +54,12 @@ class OrderController {
             (order) => order.statusOrder.status === "success"
           );
         }
-        if (orders.length>0 && product.dataValues.isLive === 1) { 
-          recapSuccess.push({...product.dataValues, count: orders.length, data: orders} );
+        if (orders.length > 0 && product.dataValues.isLive === 1) {
+          recapSuccess.push({
+            ...product.dataValues,
+            count: orders.length,
+            data: orders,
+          });
         }
       }
       res.status(200).json({
