@@ -53,7 +53,7 @@ module.exports = {
       },
       isLive: {
         allowNull: false,
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.INTEGER,
       },
       accountId: {
         allowNull: false,

@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       product.belongsTo(models.account);
       product.belongsTo(models.guide);
       product.hasMany(models.order);
-      product.hasMany(models.imageproduct);
+      product.hasMany(models.imageProduct);
       product.hasMany(models.visitProduct);
     }
   }
@@ -30,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       dateStart: {
         type: DataTypes.DATE,
         validate: {
+          isDate: {
+            message: "Invalid date",
+          },
           notEmpty: {
             message: "dateStart can not be empty.",
           },
@@ -38,6 +41,9 @@ module.exports = (sequelize, DataTypes) => {
       dateEnd: {
         type: DataTypes.DATE,
         validate: {
+          isDate: {
+            message: "Invalid date",
+          },
           notEmpty: {
             message: "dateEnd can not be empty.",
           },
@@ -93,7 +99,14 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      isLive: DataTypes.BOOLEAN,
+      isLive: {
+        type: DataTypes.INTEGER,
+        validate: {
+          notEmpty: {
+            message: "isLive can not be empty.",
+          },
+        },
+      },
       accountId: {
         type: DataTypes.INTEGER,
         validate: {
@@ -112,6 +125,11 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      hooks: {
+        beforeCreate: function (product, option) {
+          product.isLive = 1;
+        },
+      },
       sequelize,
       modelName: "product",
     }
