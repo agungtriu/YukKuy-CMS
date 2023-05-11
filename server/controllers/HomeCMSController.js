@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const models = require("../models");
 const product = models.product;
 const order = models.order;
@@ -8,8 +9,11 @@ const imageProduct = models.imageProduct;
 class HomeCMSController {
   static async getHomeCMS(req, res) {
     try {
+      const startDate = new Date(
+        req.query.startDate || Date.now() - 7 * 24 * 60 * 60 * 1000
+      );
+      const endDate = new Date(req.query.endDate || Date.now());
       const accountId = +req.accountData.id;
-
       const products = await product.findAll({
         where: { accountId },
         include: [imageProduct],
@@ -31,18 +35,27 @@ class HomeCMSController {
       }
 
       const visitAccounts = await visitAccount.findAll({
-        where: { accountId },
+        where: {
+          accountId,
+          createdAt: { [Op.between]: [startDate, endDate] },
+        },
       });
 
       const visitProducts = await visitProduct.findAll({
-        where: { accountId },
+        where: {
+          accountId,
+          createdAt: { [Op.between]: [startDate, endDate] },
+        },
       });
 
       var detailVisitProducts = [];
 
       for (const product of products) {
         const result = await visitProduct.findAll({
-          where: { productId: product.id },
+          where: {
+            productId: product.id,
+            createdAt: { [Op.between]: [startDate, endDate] },
+          },
         });
         if (result.length > 0) {
           detailVisitProducts.push({
