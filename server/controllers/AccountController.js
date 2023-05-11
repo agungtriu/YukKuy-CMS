@@ -155,7 +155,7 @@ class AccountController {
 
       const result = await account.findOne({
         where: {
-          role: "seller",
+          role: "customer",
           [Op.or]: [{ username: key }, { email: key }],
         },
         include: [profile],
