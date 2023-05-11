@@ -15,11 +15,13 @@ class ProductController {
         results = await product.findAll({
           where: { isLive: 1 },
           include: [imageProduct],
+          order: [["updatedAt", "DESC"]],
         });
       } else {
         results = await product.findAll({
           where: { isLive: 1, city },
           include: [imageProduct],
+          order: [["updatedAt", "DESC"]],
         });
       }
       res.status(200).json({
@@ -41,6 +43,7 @@ class ProductController {
       const result = await product.findAll({
         where: { accountId },
         include: [imageProduct],
+        order: [["updatedAt", "DESC"]],
       });
       res.status(200).json({
         status: true,
@@ -130,6 +133,7 @@ class ProductController {
           ],
         },
         include: [imageProduct],
+        order: [["updatedAt", "DESC"]],
       });
 
       console.log(key);

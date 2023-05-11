@@ -31,6 +31,10 @@ class OrderController {
           });
           results.push(...result);
         }
+
+        results.sort(
+          (a, b) => b.statusOrder.updatedAt - a.statusOrder.updatedAt
+        );
       } else {
         if (status === "success") {
           results = await product.findAll({
@@ -43,6 +47,7 @@ class OrderController {
                 include: [{ model: statusOrder, where: { status } }],
               },
             ],
+            order: [["updatedAt", "DESC"]],
           });
         } else {
           const products = await product.findAll({
@@ -72,6 +77,9 @@ class OrderController {
               results.push(...result);
             }
           }
+          results.sort(
+            (a, b) => b.statusOrder.updatedAt - a.statusOrder.updatedAt
+          );
         }
       }
       res.status(200).json({
@@ -96,11 +104,13 @@ class OrderController {
         results = await order.findAll({
           where: { accountId },
           include: [statusOrder],
+          order: [[statusOrder, "updatedAt", "DESC"]],
         });
       } else {
         results = await order.findAll({
           where: { accountId },
           include: [{ model: statusOrder, where: { status } }],
+          order: [[statusOrder, "updatedAt", "DESC"]],
         });
       }
       res.status(200).json({

@@ -51,7 +51,7 @@ class HomeCMSController {
           });
         }
       }
-
+      detailVisitProducts.sort((a, b) => b.countVisit - a.countVisit);
       res.status(200).json({
         status: true,
         countProduct: products.length,
