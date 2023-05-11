@@ -9,16 +9,25 @@ const visitProduct = models.visitProduct;
 class ProductController {
   static async getProductsMobile(req, res) {
     try {
+      const page = +req.query.page || 1;
+      const limit = +req.query.limit || 5;
+      const skipIndex = (page - 1) * limit;
+
       const city = req.query.city;
       var results = [];
       if (city === undefined) {
         results = await product.findAll({
+          limit,
+          offset: skipIndex,
           where: { isLive: 1 },
           include: [imageProduct],
           order: [["updatedAt", "DESC"]],
         });
+        console.log("results");
       } else {
         results = await product.findAll({
+          limit,
+          offset: skipIndex,
           where: { isLive: 1, city },
           include: [imageProduct],
           order: [["updatedAt", "DESC"]],
@@ -26,6 +35,7 @@ class ProductController {
       }
       res.status(200).json({
         status: true,
+        page: page,
         count: results.length,
         data: results,
       });
@@ -120,10 +130,16 @@ class ProductController {
     }
   }
 
-  static async searchProductsbyKey(req, res) {
+  static async searchProductsByKey(req, res) {
     try {
+      const page = +req.query.page || 1;
+      const limit = +req.query.limit || 5;
+      const skipIndex = (page - 1) * limit;
+
       const key = req.query.key;
       const result = await product.findAll({
+        limit,
+        offset: skipIndex,
         where: {
           isLive: 1,
           [Op.or]: [
@@ -136,9 +152,9 @@ class ProductController {
         order: [["updatedAt", "DESC"]],
       });
 
-      console.log(key);
       res.status(200).json({
         status: true,
+        page: page,
         count: result.length,
         data: result,
       });

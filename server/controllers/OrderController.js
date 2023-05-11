@@ -97,17 +97,25 @@ class OrderController {
 
   static async getOrdersMobile(req, res) {
     try {
+      const page = +req.query.page || 1;
+      const limit = +req.query.limit || 10;
+      const skipIndex = (page - 1) * limit;
+
       const accountId = +req.accountData.id;
       const status = req.query.status;
       var results = [];
       if (status === undefined) {
         results = await order.findAll({
+          limit,
+          offset: skipIndex,
           where: { accountId },
           include: [statusOrder],
           order: [[statusOrder, "updatedAt", "DESC"]],
         });
       } else {
         results = await order.findAll({
+          limit,
+          offset: skipIndex,
           where: { accountId },
           include: [{ model: statusOrder, where: { status } }],
           order: [[statusOrder, "updatedAt", "DESC"]],
@@ -115,6 +123,7 @@ class OrderController {
       }
       res.status(200).json({
         status: true,
+        page: page,
         count: results.length,
         data: results,
       });
