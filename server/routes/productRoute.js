@@ -7,6 +7,7 @@ productRoutes.get("/cms/detail/:id", ProductController.getProductCMS);
 productRoutes.get("/city", ProductController.getCity);
 productRoutes.get("/mobile", ProductController.getProductsMobile);
 productRoutes.get("/mobile/detail/:id", ProductController.getProductMobile);
+productRoutes.get("/search", ProductController.searchProductsbyKey);
 productRoutes.post(
   "/add",
   auth,

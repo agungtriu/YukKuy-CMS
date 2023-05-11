@@ -10,62 +10,74 @@ class OrderController {
   static async getOrdersCMS(req, res) {
     try {
       const accountId = +req.accountData.id;
-
-      const products = await product.findAll({
-        where: { accountId },
-      });
-
-      var orders = [];
-      for (const product of products) {
-        const result = await order.findAll({
-          where: { productId: product.id },
-          include: [statusOrder, verificationPayment],
+      const status = req.query.status;
+      var results = [];
+      if (status === undefined) {
+        const products = await product.findAll({
+          where: { accountId },
         });
-        orders.push(...result);
-      }
-      res.status(200).json({
-        status: true,
-        count: orders.length,
-        data: orders,
-      });
-    } catch (error) {
-      res.status(500).json({
-        status: false,
-        error: error,
-      });
-    }
-  }
-  static async getOrdersSuccess(req, res) {
-    try {
-      const accountId = +req.accountData.id;
 
-      const products = await product.findAll({
-        where: { accountId },
-      });
-
-      var recapSuccess = [];
-      for (const product of products) {
-        var orders = await order.findAll({
-          where: { productId: product.id },
-          include: [statusOrder],
-        });
-        if (orders !== null) {
-          orders = orders.filter(
-            (order) => order.statusOrder.status === "success"
-          );
-        }
-        if (orders.length > 0 && product.dataValues.isLive === 1) {
-          recapSuccess.push({
-            ...product.dataValues,
-            count: orders.length,
-            data: orders,
+        for (const product of products) {
+          const result = await order.findAll({
+            where: { productId: product.id },
+            include: [
+              { model: statusOrder },
+              {
+                model: verificationPayment,
+                limit: 1,
+                order: [["createdAt", "DESC"]],
+              },
+            ],
           });
+          results.push(...result);
+        }
+      } else {
+        if (status === "success") {
+          results = await product.findAll({
+            where: {
+              accountId,
+            },
+            include: [
+              {
+                model: order,
+                include: [{ model: statusOrder, where: { status } }],
+              },
+            ],
+          });
+        } else {
+          const products = await product.findAll({
+            where: { accountId },
+          });
+          if (status === "verification") {
+            for (const product of products) {
+              const result = await order.findAll({
+                where: { productId: product.id },
+                include: [
+                  { model: statusOrder, where: { status } },
+                  {
+                    model: verificationPayment,
+                    limit: 1,
+                    order: [["createdAt", "DESC"]],
+                  },
+                ],
+              });
+              results.push(...result);
+            }
+          } else {
+            for (const product of products) {
+              const result = await order.findAll({
+                where: { productId: product.id },
+                include: [{ model: statusOrder, where: { status } }],
+              });
+              results.push(...result);
+            }
+          }
         }
       }
       res.status(200).json({
         status: true,
-        count: recapSuccess.length,
-        data: recapSuccess,
+        count: results.length,
+        data: results,
       });
     } catch (error) {
       res.status(500).json({
@@ -74,17 +86,27 @@ class OrderController {
       });
     }
   }
+
   static async getOrdersMobile(req, res) {
     try {
       const accountId = +req.accountData.id;
-      const result = await order.findAll({
-        where: { accountId },
-        include: [statusOrder],
-      });
+      const status = req.query.status;
+      var results = [];
+      if (status === undefined) {
+        results = await order.findAll({
+          where: { accountId },
+          include: [statusOrder],
+        });
+      } else {
+        results = await order.findAll({
+          where: { accountId },
+          include: [{ model: statusOrder, where: { status } }],
+        });
+      }
       res.status(200).json({
         status: true,
-        count: result.length,
-        data: result,
+        count: results.length,
+        data: results,
       });
     } catch (error) {
       res.status(500).json({
@@ -93,6 +115,7 @@ class OrderController {
       });
     }
   }
+
   static async getOrder(req, res) {
     try {
       const id = +req.params.id;

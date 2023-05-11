@@ -10,7 +10,6 @@ const visitAccount = models.visitAccount;
 const product = models.product;
 class AccountController {
   static async registerCMS(req, res) {
-    const role = "seller";
     try {
       const { username, name, email, password, confirmPassword } = req.body;
       if (password === confirmPassword) {
@@ -21,7 +20,7 @@ class AccountController {
             name,
             email,
             password: encryptPwd(password),
-            role,
+            role: "seller",
           });
 
           if (result !== null) {
@@ -59,7 +58,6 @@ class AccountController {
   }
 
   static async registerMobile(req, res) {
-    const role = "customer";
     try {
       const { username, name, email, password, confirmPassword } = req.body;
       if (password === confirmPassword) {
@@ -70,7 +68,7 @@ class AccountController {
             name,
             email,
             password: encryptPwd(password),
-            role,
+            role: "customer",
           });
 
           if (result !== null) {
@@ -108,16 +106,16 @@ class AccountController {
   }
 
   static async loginCMS(req, res) {
-    const role = "seller";
     try {
       const { key, password } = req.body;
       const result = await account.findOne({
         where: {
+          role: "seller",
           [Op.or]: [{ username: key }, { email: key }],
         },
         include: [profile],
       });
-      if (result !== null && result.role === role) {
+      if (result !== null) {
         if (decryptPwd(password, result.password)) {
           const access_token = tokenGenerator(result);
           res.status(202).json({
@@ -152,17 +150,17 @@ class AccountController {
   }
 
   static async loginMobile(req, res) {
-    const role = "customer";
     try {
       const { key, password } = req.body;
 
       const result = await account.findOne({
         where: {
+          role: "seller",
           [Op.or]: [{ username: key }, { email: key }],
         },
         include: [profile],
       });
-      if (result !== null && result.role === role) {
+      if (result !== null) {
         if (decryptPwd(password, result.password)) {
           const access_token = tokenGenerator(result);
           res.status(202).json({
