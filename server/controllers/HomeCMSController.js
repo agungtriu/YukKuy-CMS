@@ -26,7 +26,7 @@ class HomeCMSController {
 
       if (orders !== null) {
         orders = orders.filter(
-          (order) => order.statusOrder.status === "payment"
+          (order) => order.statusOrder.status === "verification"
         );
       }
 
@@ -38,16 +38,19 @@ class HomeCMSController {
         where: { accountId },
       });
 
-      var detailVisitProducts = products;
+      var detailVisitProducts = [];
 
-      detailVisitProducts = await Promise.all(
-        detailVisitProducts.map(async (product) => {
-          const result = await visitProduct.findAll({
-            where: { productId: product.id },
+      for (const product of products) {
+        const result = await visitProduct.findAll({
+          where: { productId: product.id },
+        });
+        if (result.length > 0) {
+          detailVisitProducts.push({
+            ...product.dataValues,
+            countVisit: result.length,
           });
-          return { ...product.dataValues, countVisit: result.length };
-        })
-      );
+        }
+      }
 
       res.status(200).json({
         status: true,
