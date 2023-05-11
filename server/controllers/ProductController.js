@@ -10,7 +10,7 @@ class ProductController {
   static async getProductsMobile(req, res) {
     try {
       const page = +req.query.page || 1;
-      const limit = +req.query.limit || 5;
+      const limit = +req.query.limit || 10;
       const skipIndex = (page - 1) * limit;
 
       const city = req.query.city;
@@ -133,7 +133,7 @@ class ProductController {
   static async searchProductsByKey(req, res) {
     try {
       const page = +req.query.page || 1;
-      const limit = +req.query.limit || 5;
+      const limit = +req.query.limit || 10;
       const skipIndex = (page - 1) * limit;
 
       const key = req.query.key;
