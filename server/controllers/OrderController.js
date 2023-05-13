@@ -126,8 +126,6 @@ class OrderController {
         const _product = await product.findOne({where: {id: order.productId}})
         results.push({...order.dataValues, product: _product})
       }
-      
-      console.log(results)
 
       res.status(200).json({
         status: true,
@@ -204,7 +202,6 @@ class OrderController {
         productId,
         accountId,
       });
-      console.log(resultOrder);
       if (resultOrder !== null) {
         await statusOrder.create({
           orderId: resultOrder.id,
