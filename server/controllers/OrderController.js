@@ -103,9 +103,9 @@ class OrderController {
 
       const accountId = +req.accountData.id;
       const status = req.query.status;
-      var results = [];
+      var orders = [];
       if (status === undefined) {
-        results = await order.findAll({
+        orders = await order.findAll({
           limit,
           offset: skipIndex,
           where: { accountId },
@@ -113,7 +113,7 @@ class OrderController {
           order: [[statusOrder, "updatedAt", "DESC"]],
         });
       } else {
-        results = await order.findAll({
+        orders = await order.findAll({
           limit,
           offset: skipIndex,
           where: { accountId },
@@ -121,6 +121,14 @@ class OrderController {
           order: [[statusOrder, "updatedAt", "DESC"]],
         });
       }
+      var results = []
+      for (const order of orders) {
+        const _product = await product.findOne({where: {id: order.productId}})
+        results.push({...order.dataValues, product: _product})
+      }
+      
+      console.log(results)
+
       res.status(200).json({
         status: true,
         page: page,
@@ -196,7 +204,7 @@ class OrderController {
         productId,
         accountId,
       });
-
+      console.log(resultOrder);
       if (resultOrder !== null) {
         await statusOrder.create({
           orderId: resultOrder.id,
@@ -206,6 +214,7 @@ class OrderController {
         res.status(201).json({
           status: true,
           message: "order has been made",
+          data: resultOrder,
         });
       } else {
         res.status(400).json({
