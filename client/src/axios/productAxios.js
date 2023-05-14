@@ -13,7 +13,7 @@ const getProducts = async (cb) => {
             headers: {
                 access_token: localStorage.access_token
             }
-        }) 
+        })
         cb(results.data)
 
     } catch (err) {
@@ -30,20 +30,21 @@ const getProducts = async (cb) => {
 }
 
 const addProduct = async (form, cb) => {
+    const headers = {
+        "Content-Type": "multipart/form-data",
+        access_token: localStorage.access_token
+    }
     try {
         let results = await axios({
             method: "POST",
-            url: URL + "add",
+            url: URL + "/add",
             data: form,
-            headers: {
-                "Content-Type": "multipart/form-data",
-                access_token: localStorage.access_token
-            }
+            headers: headers
         });
         cb(true)
         Swal.fire("Add Tutorial", results.data.message, "success");
     } catch (err) {
-        // if (err.response.status === 500) {
+        // if (err.response.status=== 500) {
         //     Swal.fire(
         //         "Error!",
         //         err.response.data.error.errors[0].original.validatorArgs[0].message,
@@ -104,5 +105,5 @@ const editProduct = async (productId, form, cb) => {
 }
 
 export {
-    getProducts,getDetailProduct,addProduct,editProduct
+    getProducts, getDetailProduct, addProduct, editProduct
 }

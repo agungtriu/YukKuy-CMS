@@ -1,12 +1,30 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import BootstrapDate from '../../helpers/BootstrapDate';
 import { Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom'
 
 const EditProduct = () => {
     const [previewImage, setPreviewImage] = useState('');
+    const [form, setForm] = useState({
+        imageProducts: [],
+        name: "",
+        dateStart: "",
+        dateEnd: "",
+        price: 0,
+        province: "",
+        city: "",
+        addressDetail: "",
+        description: "",
+        addressMeetingPoint: "",
+        guideId: 0
+    })
+
+    const [file, setFile] = useState(null);
+    const params = useParams();
+    const navigation = useNavigate();
     //Preview
     const handleImageUpload = (event) => {
-        const file = event.target.files[0]; 
+        const file = event.target.files[0];
         const reader = new FileReader();
 
         reader.onload = function (event) {
