@@ -12,6 +12,7 @@ const Product = () => {
   useEffect(() => {
     getProducts((result) => {
       setProducts(result.data);
+      setStatus(Array(result.data.length).fill({ isLive: 1 }));
     });
   }, []);
 
