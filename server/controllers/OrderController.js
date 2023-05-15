@@ -121,10 +121,12 @@ class OrderController {
           order: [[statusOrder, "updatedAt", "DESC"]],
         });
       }
-      var results = []
+      var results = [];
       for (const order of orders) {
-        const _product = await product.findOne({where: {id: order.productId}})
-        results.push({...order.dataValues, product: _product})
+        const _product = await product.findOne({
+          where: { id: order.productId },
+        });
+        results.push({ ...order.dataValues, product: _product });
       }
 
       res.status(200).json({
@@ -208,10 +210,12 @@ class OrderController {
           status: "payment",
         });
 
+        const _product = await product.findOne({ where: { id: productId } });
+
         res.status(201).json({
           status: true,
           message: "order has been made",
-          data: resultOrder,
+          data: { ...resultOrder.dataValues, sellerId: _product.accountId },
         });
       } else {
         res.status(400).json({
