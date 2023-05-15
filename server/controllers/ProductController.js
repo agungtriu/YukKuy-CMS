@@ -19,7 +19,7 @@ class ProductController {
         results = await product.findAll({
           limit,
           offset: skipIndex,
-          where: { isLive: 1 },
+          where: { isLive: 1, isDelete: 0 },
           include: [imageProduct],
           order: [["updatedAt", "DESC"]],
         });
@@ -27,7 +27,7 @@ class ProductController {
         results = await product.findAll({
           limit,
           offset: skipIndex,
-          where: { isLive: 1, city },
+          where: { isLive: 1, isDelete: 0, city },
           include: [imageProduct],
           order: [["updatedAt", "DESC"]],
         });
@@ -50,7 +50,7 @@ class ProductController {
     try {
       const accountId = +req.accountData.id;
       const result = await product.findAll({
-        where: { accountId },
+        where: { accountId, isDelete: 0 },
         include: [imageProduct],
         order: [["updatedAt", "DESC"]],
       });
@@ -71,7 +71,7 @@ class ProductController {
     try {
       const id = req.params.id;
       const result = await product.findOne({
-        where: { id },
+        where: { id, isDelete: 0 },
         include: [imageProduct],
       });
       if (result !== null) {
@@ -97,7 +97,7 @@ class ProductController {
     try {
       const id = req.params.id;
       const result = await product.findOne({
-        where: { id },
+        where: { id, isLive: 1, isDelete: 0 },
         include: [imageProduct],
       });
 
@@ -141,6 +141,7 @@ class ProductController {
         offset: skipIndex,
         where: {
           isLive: 1,
+          isDelete: 0,
           [Op.or]: [
             { name: { [Op.iLike]: `%${key}%` } },
             { province: { [Op.iLike]: `%${key}%` } },
@@ -168,6 +169,7 @@ class ProductController {
   static async getCity(req, res) {
     try {
       const city = await product.findAll({
+        where: { isLive: 1, isDelete: 0 },
         attributes: ["city"],
         group: ["city"],
       });
@@ -374,6 +376,37 @@ class ProductController {
         res.status(400).json({
           status: false,
           message: "hide product unsuccessful",
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        status: false,
+        error: error,
+      });
+    }
+  }
+
+  static async deleteProduct(req, res) {
+    try {
+      const id = +req.params.id;
+      const { isDelete } = req.body;
+
+      const result = await product.update(
+        {
+          isDelete,
+        },
+        { where: { id } }
+      );
+
+      if (result[0] === 1) {
+        res.status(201).json({
+          status: true,
+          message: "product has been delete",
+        });
+      } else {
+        res.status(400).json({
+          status: false,
+          message: "delete product unsuccessful",
         });
       }
     } catch (error) {
