@@ -371,6 +371,7 @@ class ProductController {
           status: true,
           message:
             isLive == 1 ? "product has been live" : "product has been hidden",
+          data: result,
         });
       } else {
         res.status(400).json({
