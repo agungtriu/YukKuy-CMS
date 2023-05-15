@@ -367,12 +367,14 @@ class ProductController {
       );
 
       if (result[0] === 1) {
-        const data = await product.findOne({where: {id}})
+        const data = await product.findOne({ where: { id } });
 
         res.status(201).json({
           status: true,
           message:
-            data.isLive == 1 ? "product has been live" : "product has been hidden",
+            data.isLive == 1
+              ? "product has been live"
+              : "product has been hidden",
           data: data,
         });
       } else {
@@ -392,11 +394,9 @@ class ProductController {
   static async deleteProduct(req, res) {
     try {
       const id = +req.params.id;
-      const { isDelete } = req.body;
-
       const result = await product.update(
         {
-          isDelete,
+          isDelete: 1,
         },
         { where: { id } }
       );
