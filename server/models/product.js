@@ -107,6 +107,14 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      isDelete: {
+        type: DataTypes.INTEGER,
+        validate: {
+          notEmpty: {
+            message: "isDelete can not be empty.",
+          },
+        },
+      },
       accountId: {
         type: DataTypes.INTEGER,
         validate: {
@@ -128,6 +136,7 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         beforeCreate: function (product, option) {
           product.isLive = 1;
+          product.isDelete = 0;
         },
       },
       sequelize,

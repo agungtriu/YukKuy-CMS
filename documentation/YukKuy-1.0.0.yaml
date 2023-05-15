@@ -838,6 +838,26 @@ paths:
           description: Successful response
           content:
             application/json: {}
+  /products/delete/{productId}:
+    get:
+      tags:
+        - Product
+      summary: Show Product
+      parameters:
+        - name: productId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
   /orders/verifications/add:
     post:
       tags:
@@ -932,14 +952,6 @@ paths:
           in: query
           schema:
             type: string
-        - name: page
-          in: query
-          schema:
-            type: integer
-        - name: limit
-          in: query
-          schema:
-            type: integer
       responses:
         '200':
           description: Successful response
