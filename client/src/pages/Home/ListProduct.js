@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const ListProduct = () => {
   return (
@@ -6,7 +6,7 @@ const ListProduct = () => {
       <div>ListProduct</div>
       <table class="table">
         <thead>
-          <tr> 
+          <tr>
             <th scope="col">#</th>
             <th scope="col">Product</th>
             <th scope="col">Price</th>
@@ -34,7 +34,7 @@ const ListProduct = () => {
         </tbody>
       </table>
     </>
-  )
-}
+  );
+};
 
-export default ListProduct
+export default ListProduct;
