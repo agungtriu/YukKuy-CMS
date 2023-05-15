@@ -367,11 +367,13 @@ class ProductController {
       );
 
       if (result[0] === 1) {
+        const data = await product.findOne({where: {id}})
+
         res.status(201).json({
           status: true,
           message:
-            isLive == 1 ? "product has been live" : "product has been hidden",
-          data: result,
+            data.isLive == 1 ? "product has been live" : "product has been hidden",
+          data: data,
         });
       } else {
         res.status(400).json({
