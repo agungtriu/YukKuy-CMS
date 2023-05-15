@@ -4,7 +4,6 @@ const verificationRoutes = require("./verificationRoute");
 const orderRoutes = require("express").Router();
 
 orderRoutes.get("/cms", auth, OrderController.getOrdersCMS);
-orderRoutes.get("/cms/success", auth, OrderController.getOrdersSuccess);
 orderRoutes.get("/mobile", auth, OrderController.getOrdersMobile);
 orderRoutes.get("/:id", OrderController.getOrder);
 orderRoutes.post("/add", auth, OrderController.addOrder);

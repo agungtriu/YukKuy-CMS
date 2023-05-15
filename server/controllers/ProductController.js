@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const deleteBulkFile = require("../helpers/deleteBulkFile");
 const deleteFile = require("../helpers/deleteFile");
 const models = require("../models");
@@ -8,14 +9,35 @@ const visitProduct = models.visitProduct;
 class ProductController {
   static async getProductsMobile(req, res) {
     try {
-      const result = await product.findAll({
-        where: { isLive: 1 },
-        include: [imageProduct],
-      });
+      const page = +req.query.page || 1;
+      const limit = +req.query.limit || 10;
+      const skipIndex = (page - 1) * limit;
+
+      const city = req.query.city;
+      var results = [];
+      if (city === undefined) {
+        results = await product.findAll({
+          limit,
+          offset: skipIndex,
+          where: { isLive: 1 },
+          include: [imageProduct],
+          order: [["updatedAt", "DESC"]],
+        });
+        console.log("results");
+      } else {
+        results = await product.findAll({
+          limit,
+          offset: skipIndex,
+          where: { isLive: 1, city },
+          include: [imageProduct],
+          order: [["updatedAt", "DESC"]],
+        });
+      }
       res.status(200).json({
         status: true,
-        count: result.length,
-        data: result,
+        page: page,
+        count: results.length,
+        data: results,
       });
     } catch (error) {
       res.status(500).json({
@@ -31,6 +53,7 @@ class ProductController {
       const result = await product.findAll({
         where: { accountId },
         include: [imageProduct],
+        order: [["updatedAt", "DESC"]],
       });
       res.status(200).json({
         status: true,
@@ -107,6 +130,42 @@ class ProductController {
     }
   }
 
+  static async searchProductsByKey(req, res) {
+    try {
+      const page = +req.query.page || 1;
+      const limit = +req.query.limit || 10;
+      const skipIndex = (page - 1) * limit;
+
+      const key = req.query.key;
+      const result = await product.findAll({
+        limit,
+        offset: skipIndex,
+        where: {
+          isLive: 1,
+          [Op.or]: [
+            { name: { [Op.iLike]: `%${key}%` } },
+            { province: { [Op.iLike]: `%${key}%` } },
+            { city: { [Op.iLike]: `%${key}%` } },
+          ],
+        },
+        include: [imageProduct],
+        order: [["updatedAt", "DESC"]],
+      });
+
+      res.status(200).json({
+        status: true,
+        page: page,
+        count: result.length,
+        data: result,
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: false,
+        error: error,
+      });
+    }
+  }
+
   static async getCity(req, res) {
     try {
       const city = await product.findAll({
@@ -166,7 +225,7 @@ class ProductController {
 
       if (result !== null) {
         const images = req.files;
-        for (const image of images) {          
+        for (const image of images) {
           await imageProduct.create({
             src: image.filename,
             productId: result.dataValues.id,
@@ -230,7 +289,7 @@ class ProductController {
         },
         { where: { id } }
       );
-      
+
       const images = req.files;
       if (result[0] === 1) {
         const imagesBefore = await imageProduct.findAll({
@@ -240,7 +299,7 @@ class ProductController {
           deleteBulkFile(imagesBefore);
           await imageProduct.destroy({ where: { productId: id } });
         }
-        for (const image of images) {          
+        for (const image of images) {
           await imageProduct.create({
             src: image.filename,
             productId: id,
@@ -252,9 +311,9 @@ class ProductController {
           message: "update product successful",
         });
       } else {
-        images.forEach(image => {
-          deleteFile(image.filename)
-        })
+        images.forEach((image) => {
+          deleteFile(image.filename);
+        });
 
         res.status(400).json({
           status: false,
