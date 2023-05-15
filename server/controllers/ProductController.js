@@ -23,7 +23,6 @@ class ProductController {
           include: [imageProduct],
           order: [["updatedAt", "DESC"]],
         });
-        console.log("results");
       } else {
         results = await product.findAll({
           limit,
@@ -187,67 +186,92 @@ class ProductController {
   }
 
   static async addProduct(req, res) {
+    var resultProduct = {};
+    var resultImages = [];
     try {
-      const {
-        name,
-        dateStart,
-        dateEnd,
-        price,
-        province,
-        city,
-        addressDetail,
-        longitude,
-        latitude,
-        description,
-        addressMeetingPoint,
-        guideId,
-      } = req.body;
-      const accountId = +req.accountData.id;
+      const images = req.files;
+      if (images.length > 0) {
+        const {
+          name,
+          dateStart,
+          dateEnd,
+          price,
+          province,
+          city,
+          addressDetail,
+          longitude,
+          latitude,
+          description,
+          addressMeetingPoint,
+          guideId,
+        } = req.body;
+        const accountId = +req.accountData.id;
 
-      const _dateStart = new Date(dateStart);
-      const _dateEnd = new Date(dateEnd);
+        const _dateStart = new Date(dateStart);
+        const _dateEnd = new Date(dateEnd);
 
-      const result = await product.create({
-        name,
-        dateStart: _dateStart,
-        dateEnd: _dateEnd,
-        price,
-        province,
-        city,
-        addressDetail,
-        longitude,
-        latitude,
-        description,
-        addressMeetingPoint,
-        accountId,
-        guideId,
-      });
+        resultProduct = await product.create({
+          name,
+          dateStart: _dateStart,
+          dateEnd: _dateEnd,
+          price,
+          province,
+          city,
+          addressDetail,
+          longitude,
+          latitude,
+          description,
+          addressMeetingPoint,
+          accountId,
+          guideId,
+        });
 
-      if (result !== null) {
-        const images = req.files;
-        for (const image of images) {
-          await imageProduct.create({
-            src: image.filename,
-            productId: result.dataValues.id,
+        if (resultProduct !== null) {
+          for (const image of images) {
+            const resultImage = await imageProduct.create({
+              src: image.filename,
+              productId: resultProduct.dataValues.id,
+            });
+            resultImages.push(resultImage.dataValues);
+          }
+
+          res.status(201).json({
+            status: true,
+            message: `${resultProduct.name} has been added!`,
+            data: resultProduct,
+          });
+        } else {
+          res.status(400).json({
+            status: false,
+            message: "product failed to add!",
           });
         }
-
-        res.status(201).json({
-          status: true,
-          message: `${result.name} has been added!`,
-          data: result,
-        });
       } else {
         res.status(400).json({
           status: false,
-          message: "product failed to add!",
+          message: "images cannot be null",
         });
       }
     } catch (error) {
-      res.status(500).json({
-        status: false,
-        error: error,
-      });
+      try {
+        await product.destroy({
+          where: { id: resultProduct.id },
+        });
+        for (const image of resultImages) {
+          const deleteImage = await imageProduct.destroy({
+            where: { id: image.id },
+          });
+          if (deleteImage === 1) {
+            deleteFile(image.src);
+          }
+        }
+      } catch (error) {
+      } finally {
+        res.status(500).json({
+          status: false,
+          error: error,
+        });
+      }
     }
   }
 
