@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 const config = require("../config/config");
 const baseUrl = config.baseUrl;
 
-const URL = baseUrl + "/products"
+const URL = baseUrl + "/products/"
 
 const getProducts = async (cb) => {
     try {
@@ -44,16 +44,16 @@ const addProduct = async (form, cb) => {
         cb(true)
         Swal.fire("Add Tutorial", results.data.message, "success");
     } catch (err) {
-        // if (err.response.status=== 500) {
-        //     Swal.fire(
-        //         "Error!",
-        //         err.response.data.error.errors[0].original.validatorArgs[0].message,
-        //         "error"
-        //     );
-        // } else {
-        //     Swal.fire("Error!", err.response.data.message, "error");
-        // }
-        console.log(err)
+        if (err.response.status=== 500) {
+            Swal.fire(
+                "Error!",
+                err.response.data.error.errors[0].original.validatorArgs[0].message,
+                "error"
+            );
+        } else {
+            Swal.fire("Error!", err.response.message, "error");
+        }
+        
     }
 
 }
@@ -62,7 +62,7 @@ const getDetailProduct = async (productId, cb) => {
     try {
         let results = await axios({
             method: "GET",
-            url: URL + productId,
+            url: URL + "cms/" + "detail/" + productId,
         })
         cb(results.data)
     } catch (err) {
@@ -82,7 +82,7 @@ const editProduct = async (productId, form, cb) => {
     try {
         let results = await axios({
             method: "PUT",
-            url: URL + "edit/" + productId,
+            url: URL + "edit" + productId,
             data: form,
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -104,6 +104,32 @@ const editProduct = async (productId, form, cb) => {
     }
 }
 
+const getShow = async (productId, form, cb) => {
+    try {
+        let results = await axios({
+            method: "PUT",
+            url: URL + "show/" + productId,
+            data: form,
+            headers: {
+                access_token: localStorage.access_token,
+            }
+        })
+        cb(true)
+        Swal.fire("status has been changed", results.data.message, "success");
+    } catch (err) {
+        // if (err.response.status === 500) {
+        //     Swal.fire(
+        //         "Error!",
+        //         err.response.data.error.errors[0].original.validatorArgs[0].message,
+        //         "error"
+        //     );
+        // } else {
+        //     Swal.fire("Error!", err.response.data.message, "error");
+        // }
+        console.log(err)
+    }
+}
+
 export {
-    getProducts, getDetailProduct, addProduct, editProduct
+    getProducts, getDetailProduct, addProduct, editProduct, getShow
 }

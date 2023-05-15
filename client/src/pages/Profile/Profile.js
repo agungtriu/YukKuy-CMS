@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faKey, faPen, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faKey, faPen, faUser, faImage } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom';
 const Profile = () => {
   return ( 
@@ -23,7 +23,7 @@ const Profile = () => {
                     <div className="input-group flex-nowrap">
                       <Link
                         className="btn btn-outline-dark"
-                        to="/users/edit/profile"
+                        to="edit/profile"
                       >
                         <FontAwesomeIcon
                           icon={faPen}
@@ -36,7 +36,7 @@ const Profile = () => {
                     <div className="input-group flex-nowrap">
                       <Link
                         className="btn btn-outline-dark"
-                        to="/users/edit/password"
+                        to="edit/password"
                       >
                         <FontAwesomeIcon icon={faKey} />
                       </Link>
@@ -46,10 +46,23 @@ const Profile = () => {
                     <div className="input-group flex-nowrap">
                       <Link
                         className="btn btn-outline-dark"
-                        to="/users/edit/avatar"
+                        to="edit/avatar"
                       >
                         <FontAwesomeIcon
                           icon={faUser}
+                          style={{ color: "#ba1c1c" }}
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="col">
+                    <div className="input-group flex-nowrap">
+                      <Link
+                        className="btn btn-outline-dark"
+                        to="edit/banner"
+                      >
+                        <FontAwesomeIcon
+                          icon={faImage}
                           style={{ color: "#ba1c1c" }}
                         />
                       </Link>

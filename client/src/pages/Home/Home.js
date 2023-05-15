@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import ListProduct from './ListProduct'
 import { getHomeData } from '../../axios/homeAxios'
 
 const Home = () => {
@@ -12,11 +10,10 @@ const Home = () => {
     }
 
     useEffect(() => {
-      getHomeData((result) => {
-        setDashboard(result) 
-      })
+        getHomeData((result) => {
+            setDashboard(result)
+        })
     }, [])
-    // console.log(dashboard)
     return (
         <>
             <div className="row row-cols-4">
@@ -55,7 +52,34 @@ const Home = () => {
             </div>
             {
                 clicked === true ? (
-                    <ListProduct></ListProduct>
+                    <>
+                        <div className='my-2'>ListProduct</div>
+                        <>
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Seen</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="table-group-divider">
+                                    {
+                                        dashboard.dataVisitProduct.map((item, index) =>
+                                            <tr key={index}>
+                                                <th scope="row">{index + 1}</th>
+                                                <td>{item.name}</td>
+                                                <td>{item.price}</td>
+                                                <td>{item.countVisit}</td>
+                                            </tr>
+                                        )
+                                    }
+                                </tbody>
+                            </table>
+                        </>
+
+                    </>
                 ) : null
             }
         </>

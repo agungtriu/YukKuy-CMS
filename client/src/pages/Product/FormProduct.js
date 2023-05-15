@@ -26,7 +26,7 @@ const FormProduct = () => {
   const submitHandler = () => {
     if (file !== null) {
       const formData = new FormData();
-      formData.append("imageProducts", file)
+      formData.append("images", file)
       formData.append("name", form.name)
       formData.append("dateStart", form.dateStart)
       formData.append("dateEnd", form.dateEnd)
@@ -72,7 +72,7 @@ const FormProduct = () => {
               <input type='file' className='form-control' id='formFile' 
               onChange={(e) => {
                 setFile(e.target.files[0]);
-                setForm({ ...form, images: e.target.files[0].name});
+                setForm({ ...form, imageProducts: e.target.files[0].name});
                 handleImageUpload(e)
               }} />
             </div>

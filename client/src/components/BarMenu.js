@@ -29,7 +29,7 @@ const BarMenu = (props) => {
                         </form>
                         <div className="dropdown">
                             <a className="link-dark dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" href='/'>
-                                <img className='rounded-circle avatar-mini' src={`${imageUrl}${loginStatus.data.image}`} alt=''></img>
+                                <img className='rounded-circle avatar-mini' src={`${imageUrl}${loginStatus.data.avatar}`} alt=''></img>
                             </a>
                             <ul className="dropdown-menu">
                                 <li><Link className="dropdown-item" to={'/profile'}>My Profile</Link></li>

@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
-import BootstrapDate from '../../helpers/BootstrapDate';
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom'
+import { getDetailProduct, editProduct } from '../../axios/productAxios';
+import Swal from 'sweetalert2';
+import { Form } from 'react-bootstrap';
+import { formatDate } from '../../helpers/TimeFormat';
 
 const EditProduct = () => {
     const [previewImage, setPreviewImage] = useState('');
@@ -22,6 +25,54 @@ const EditProduct = () => {
     const [file, setFile] = useState(null);
     const params = useParams();
     const navigation = useNavigate();
+
+    const getParams = () => {
+        const id = params.productId
+        getDetailProduct(id, (result) => {
+            setForm({
+                id: result.data.id,
+                imageProducts: result.data.imageProducts.map(item => item.src),
+                name: result.data.name,
+                dateStart: result.data.dateStart,
+                dateEnd: result.data.dateEnd,
+                price: result.data.price,
+                province: result.data.province,
+                city: result.data.city,
+                addressDetail: result.data.addressDetail,
+                description: result.data.description,
+                addressMeetingPoint: result.data.addressMeetingPoint,
+                guideId: result.data.guideId
+            })
+        })
+    }
+   useEffect(() => {
+    getParams();
+   }, [])
+    
+    const submitHandler = () => {
+        if (file !== null) {
+            const formData = new FormData();
+            formData.append("images", file)
+            formData.append("name", form.name)
+            formData.append("dateStart", form.dateStart)
+            formData.append("dateEnd", form.dateEnd)
+            formData.append("price", form.price)
+            formData.append("province", form.province)
+            formData.append("city", form.city)
+            formData.append("addressDetail", form.addressDetail)
+            formData.append("description", form.description)
+            formData.append("addressMeetingPoint", form.addressMeetingPoint)
+            formData.append("guideId", form.guideId)
+
+            editProduct(form.id, formData, (status) => {
+                if (status) {
+                    navigation('/products')
+                }
+            });
+        } else {
+            Swal.fire("Edit Product", "file cannot be empty", "error");
+        }
+    }
     //Preview
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -33,30 +84,68 @@ const EditProduct = () => {
 
         reader.readAsDataURL(file);
     }
+    console.log(form)
 
     return (
         <>
-            < div>
-                <h2>Edit Product</h2>
+            <div>
+                <h2>Form Product</h2>
                 <form className='card shadow-lg'>
                     <div className='container px-5'>
-                        <img src={previewImage} className='rounded mx-auto d-block' alt='Preview Image' style={{ maxWidth: "300px" }} />
+                        <img src={previewImage} className='rounded mx-auto d-block' alt='Preview' style={{ maxWidth: "300px" }}></img>
                         <div className='mb-3'>
-                            <label htmlFor='formFile' className='form-label'>Product Images</label>
-                            <input type='file' className='form-control' id='formFile' onChange={handleImageUpload} />
+                            <label htmlFor='formFile' className='form-label'>Product Images: {form.imageProducts}</label>
+                            <input type='file' className='form-control' id='formFile'
+                                onChange={(e) => {
+                                    setFile(e.target.files[0]);
+                                    setForm({ ...form, imageProducts: e.target.files[0].name });
+                                    handleImageUpload(e)
+                                }} />
                         </div>
                         <div className="mb-3">
                             <label htmlFor='formFile' className='form-label'>Name</label>
-                            <input className="form-control" type="text" aria-label="default input example" />
+                            <input
+                                value={form.name}
+                                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                                className="form-control"
+                                type="text"
+                                aria-label="default input example" />
                         </div>
                         <div className="mb-3">
-                            <BootstrapDate></BootstrapDate>
+                            <div className="row row-cols-2">
+                                <div className="col">
+                                    <Form.Group controlId="dob">
+                                        <Form.Label>Start Date</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            name="startDate"
+                                            placeholder="Date of Birth"
+                                            formTarget='dd-mm-yyyy'
+                                            value={formatDate(form.dateStart)}
+                                            onChange={(e) => setForm({ ...form, dateStart: e.target.value })} />
+                                    </Form.Group>
+                                </div>
+                                <div className="col">
+                                    <Form.Group controlId="dob">
+                                        <Form.Label>End Date</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            name="endDate"
+                                            placeholder="Date of Birth"
+                                            formTarget='dd-mm-yyyy'
+                                            value={formatDate(form.dateEnd)}
+                                            onChange={(e) => setForm({ ...form, dateEnd: e.target.value })} />
+                                    </Form.Group>
+                                </div>
+                            </div>
                         </div>
                         <div className='mb-3'>
                             <label htmlFor='formFile' className='form-label'>Price</label>
                             <div className='input-group'>
                                 <span className='input-group-text'>IDR</span>
                                 <input
+                                    value={form.price}
+                                    onChange={(e) => setForm({ ...form, price: e.target.value })}
                                     type='number'
                                     className='form-control'
                                 />
@@ -65,38 +154,39 @@ const EditProduct = () => {
                         <div className='row row-cols-3'>
                             <div className="mb-3">
                                 <label htmlFor='formFile' className='form-label'>Province</label>
-                                <input className="form-control" type="text" aria-label="default input example" />
+                                <input value={form.province}
+                                    onChange={(e) => setForm({ ...form, province: e.target.value })}
+                                    className="form-control" type="text" aria-label="default input example" />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor='formFile' className='form-label'>City</label>
-                                <input className="form-control" type="text" aria-label="default input example" />
+                                <input value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="form-control" type="text" aria-label="default input example" />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor='formFile' className='form-label'>Address Detail</label>
-                                <textarea className="form-control" type="text" aria-label="default input example"></textarea>
+                                <textarea value={form.addressDetail} onChange={(e) => setForm({ ...form, addressDetail: e.target.value })} className="form-control" type="text" aria-label="default input example"></textarea>
                             </div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor='formFile' className='form-label'>Description</label>
-                            <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
                         <div className='row row-cols-2'>
                             <div className="mb-3">
                                 <label htmlFor='formFile' className='form-label'>Address Meeting Point</label>
-                                <input className="form-control" type="text" aria-label="default input example" />
+                                <input value={form.addressMeetingPoint} onChange={(e) => setForm({ ...form, addressMeetingPoint: e.target.value })} className="form-control" type="text" aria-label="default input example" />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor='formFile' className='form-label'>GuideId</label>
-                                <input className="form-control" type="text" aria-label="default input example" />
+                                <input value={form.guideId} onChange={(e) => setForm({ ...form, guideId: e.target.value })} className="form-control" type="text" aria-label="default input example" />
                             </div>
                         </div>
                         <div className="row row-cols-2 d-flex align-items-center justify-content-center mb-1">
-                            <Link className="btn btn-lg btn-primary" type="submit">Submit</Link>
+                            <Link className="btn btn-lg btn-primary" type="submit" onClick={() => submitHandler()}>Submit</Link>
                         </div>
-
                     </div>
                 </form>
-            </div >
+            </div>
         </>
     )
 }

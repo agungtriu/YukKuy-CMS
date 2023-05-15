@@ -13,11 +13,13 @@ import Register from "./Account/Register";
 import Profile from "./Profile/Profile";
 import EditAvatar from "./Profile/EditAvatar";
 import EditProfile from "./Profile/EditProfile";
+import EditPassword from "./Profile/EditPassword";
+import EditBanner from "./Profile/EditBanner";
  
 export {
     Home,
     Order,NewOrder,Rejected,Cancel,Sold,
     Product,ListProduct,FormProduct,EditProduct,
     Login, Register,
-    Profile,EditAvatar,EditProfile
+    Profile,EditAvatar,EditProfile,EditBanner,EditPassword
 }

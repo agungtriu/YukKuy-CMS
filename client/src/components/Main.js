@@ -1,6 +1,6 @@
 import React from 'react'
 import { Routes, Route } from "react-router-dom";
-import { Cancel, EditProduct, FormProduct, Home, NewOrder, Order, Product, Profile, Rejected, Sold} from '../pages';
+import { Cancel, EditAvatar, EditBanner, EditPassword, EditProduct, EditProfile, FormProduct, Home, NewOrder, Order, Product, Profile, Rejected, Sold} from '../pages';
 
 const Main = () => {
     
@@ -18,9 +18,15 @@ const Main = () => {
                 <Route path='/products' element={<Product></Product>}></Route>
                 <Route path='products'>
                     <Route path='add' element={<FormProduct></FormProduct>}></Route>
-                    <Route path='edit' element={<EditProduct></EditProduct>}></Route>
+                    <Route path='edit/:productId' element={<EditProduct></EditProduct>}></Route>
                 </Route>
                 <Route path='/profile' element={<Profile></Profile>}></Route>
+                <Route path='/profile'>
+                    <Route path='edit/profile' element={<EditProfile></EditProfile>}></Route>
+                    <Route path='edit/password' element={<EditPassword></EditPassword>}></Route>
+                    <Route path='edit/avatar' element={<EditAvatar></EditAvatar>}></Route>
+                    <Route path='edit/banner' element={<EditBanner></EditBanner>}></Route>
+                </Route>
             </Routes>
         </> 
     )
