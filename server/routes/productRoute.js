@@ -21,6 +21,6 @@ productRoutes.put(
   ProductController.editProduct
 );
 productRoutes.put("/show/:id", auth, ProductController.showProduct);
-productRoutes.put("/delete/:id", auth, ProductController.deleteProduct);
+productRoutes.get("/delete/:id", auth, ProductController.deleteProduct);
 
 module.exports = productRoutes;

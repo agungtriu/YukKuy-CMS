@@ -5,6 +5,8 @@ const statusOrder = models.statusOrder;
 const order = models.order;
 const account = models.account;
 const verificationPayment = models.verificationPayment;
+const imageProduct = models.imageProduct;
+const guide = models.guide;
 
 class OrderController {
   static async getOrdersCMS(req, res) {
@@ -15,6 +17,7 @@ class OrderController {
       if (status === undefined) {
         const products = await product.findAll({
           where: { accountId },
+          include: [imageProduct],
         });
 
         for (const product of products) {
@@ -29,9 +32,10 @@ class OrderController {
               },
             ],
           });
-          results.push(...result);
+          if (result.length > 0) {
+            results.push({ ...result[0].dataValues, product: product });
+          }
         }
-
         results.sort(
           (a, b) => b.statusOrder.updatedAt - a.statusOrder.updatedAt
         );
@@ -46,12 +50,14 @@ class OrderController {
                 model: order,
                 include: [{ model: statusOrder, where: { status } }],
               },
+              { model: imageProduct },
             ],
             order: [["updatedAt", "DESC"]],
           });
         } else {
           const products = await product.findAll({
             where: { accountId },
+            include: [imageProduct],
           });
           if (status === "verification") {
             for (const product of products) {
@@ -66,7 +72,9 @@ class OrderController {
                   },
                 ],
               });
-              results.push(...result);
+              if (result.length > 0) {
+                results.push({ ...result[0].dataValues, product: product });
+              }
             }
           } else {
             for (const product of products) {
@@ -74,7 +82,9 @@ class OrderController {
                 where: { productId: product.id },
                 include: [{ model: statusOrder, where: { status } }],
               });
-              results.push(...result);
+              if (result.length > 0) {
+                results.push({ ...result[0].dataValues, product: product });
+              }
             }
           }
           results.sort(
@@ -125,6 +135,7 @@ class OrderController {
       for (const order of orders) {
         const _product = await product.findOne({
           where: { id: order.productId },
+          include: [imageProduct],
         });
         results.push({ ...order.dataValues, product: _product });
       }
@@ -160,11 +171,16 @@ class OrderController {
           const resultSeller = await account.findOne({
             where: { id: resultProduct.accountId },
           });
+
+          const resultGuide = await guide.findOne({
+            where: { id: resultProduct.guideId },
+          });
           res.status(200).json({
             status: true,
             data: {
-              ...resultOrder,
+              ...resultOrder.dataValues,
               product: resultProduct,
+              guide: resultGuide,
               seller: resultSeller,
             },
           });
