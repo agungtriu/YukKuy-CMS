@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
+:root{
+    font-size: 15px;
+}
+body {
+    font-family: 'Roboto', 'sans-serif';
+    background-color: #F5F5F5;
+
+
+}
+ 
+.avatar-mini {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+
+  .card-img-top { 
+    object-fit: cover; 
+    object-position: center; 
+  }
