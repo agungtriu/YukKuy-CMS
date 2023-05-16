@@ -33,7 +33,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <Link className="p-2 text-decoration-none" to={'orders/new'}>
+        <Link className="p-2 text-decoration-none" to={"orders/new"}>
           <div
             className="card text-white"
             style={{

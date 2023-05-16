@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const EditPassword = () => {
-  return (
-    <div>EditPassword</div>
-  )
-}
+  return <div>EditPassword</div>;
+};
 
-export default EditPassword
+export default EditPassword;

@@ -6,7 +6,6 @@ import Cancel from "./Order/Cancel";
 import Sold from "./Order/Sold";
 import Product from "./Product/Product";
 import FormProduct from "./Product/FormProduct";
-import ListProduct from "./Home/ListProduct";
 import EditProduct from "./Product/EditProduct";
 import Login from "./Account/Login";
 import Register from "./Account/Register";
@@ -19,7 +18,7 @@ import EditBanner from "./Profile/EditBanner";
 export {
     Home,
     Order,NewOrder,Rejected,Cancel,Sold,
-    Product,ListProduct,FormProduct,EditProduct,
+    Product,FormProduct,EditProduct,
     Login, Register,
     Profile,EditAvatar,EditProfile,EditBanner,EditPassword
 }

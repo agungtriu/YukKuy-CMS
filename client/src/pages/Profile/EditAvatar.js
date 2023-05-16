@@ -10,8 +10,8 @@ const EditAvatar = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [avatar, setAvatar] = useState();
   const [file, setFile] = useState(null);
-  const [user, setUser] = useState({avatar: ""});
-  const [isExist, setIsExist] = useState(false)
+  const [user, setUser] = useState({ avatar: "" });
+  const [isExist, setIsExist] = useState(false);
   const getAccount = () => {
     const username = localStorage.username;
     getAccountByUsername(username, (result) => {
@@ -27,7 +27,7 @@ const EditAvatar = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-    setIsExist(true)
+    setIsExist(true);
 
     reader.onload = (e) => {
       setPreviewImage(e.target.result);
@@ -111,7 +111,7 @@ const EditAvatar = () => {
                 onChange={(e) => {
                   setFile(e.target.files[0]);
                   setAvatar(e.target.files[0].name);
-                  handleImageUpload(e)
+                  handleImageUpload(e);
                 }}
               ></input>
             </div>

@@ -91,7 +91,7 @@ const editProfile = async (form, cb) => {
       },
     });
     cb(true);
-    localStorage.setItem("username", form.username)
+    localStorage.setItem("username", form.username);
     Swal.fire("Edit Profile", results.data.message, "success");
   } catch (err) {
     if (err.response.status === 500) {
@@ -121,16 +121,15 @@ const editAvatar = async (image, cb) => {
     localStorage.setItem("image", results.data.data.image);
     Swal.fire("Edit Avatar", results.data.message, "success");
   } catch (err) {
-    // if (err.response.status === 500) {
-    //   Swal.fire(
-    //     "Error!",
-    //     err.response.data.error.errors[0].original.validatorArgs[0].message,
-    //     "error"
-    //   );
-    // } else {
-    //   Swal.fire("Error!", err.response.data.message, "error");
-    // }
-    console.log(err)
+    if (err.response.status === 500) {
+      Swal.fire(
+        "Error!",
+        err.response.data.error.errors[0].original.validatorArgs[0].message,
+        "error"
+      );
+    } else {
+      Swal.fire("Error!", err.response.data.message, "error");
+    }
   }
 };
 const editPassword = async (data, cb) => {
@@ -165,5 +164,5 @@ export {
   getAccountByUsername,
   editProfile,
   editAvatar,
-  editPassword
+  editPassword,
 };

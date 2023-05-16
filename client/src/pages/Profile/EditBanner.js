@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const EditBanner = () => {
-  return (
-    <div>EditBanner</div>
-  )
-}
+  return <div>EditBanner</div>;
+};
 
-export default EditBanner
+export default EditBanner;

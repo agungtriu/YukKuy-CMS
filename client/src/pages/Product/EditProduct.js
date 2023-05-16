@@ -5,7 +5,7 @@ import { getDetailProduct, editProduct } from "../../axios/productAxios";
 import Swal from "sweetalert2";
 import { Form } from "react-bootstrap";
 import { formatDate } from "../../helpers/TimeFormat";
-import Select from 'react-select'
+import Select from "react-select";
 import { imageUrl } from "../../config/config";
 
 const EditProduct = () => {
@@ -21,10 +21,11 @@ const EditProduct = () => {
     addressDetail: "",
     description: "",
     addressMeetingPoint: "",
-    guideId: '',
+    guideId: "",
   });
 
   const [file, setFile] = useState(null);
+  const [isExist, setIsExist] = useState(false);
   const params = useParams();
   const navigation = useNavigate();
 
@@ -50,6 +51,7 @@ const EditProduct = () => {
   useEffect(() => {
     getParams();
   }, []);
+  console.log(form);
 
   const submitHandler = () => {
     if (file !== null) {

@@ -7,15 +7,14 @@ import { formatTime } from "../../helpers/TimeFormat";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
-  const [clicked, setClicked] = useState(1);
   const [status, setStatus] = useState({
-    isLive: 0,
+    isLive: "",
   });
 
   useEffect(() => {
     getProducts((result) => {
       setProducts(result.data);
-      setClicked(result)
+      setStatus(result.data.map((item) => item.isLive));
     });
   }, []);
 
@@ -25,13 +24,10 @@ const Product = () => {
     setStatus(form);
     getShow(id, form, (result) => {
       if (result) {
-        // setClicked(newIsLive);
         window.location.reload();
       }
     });
   };
-  console.log(status);
-  console.log(clicked);
   return (
     <>
       <h5>Product</h5>
