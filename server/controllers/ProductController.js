@@ -4,6 +4,7 @@ const deleteFile = require("../helpers/deleteFile");
 const models = require("../models");
 const product = models.product;
 const account = models.account;
+const profile = models.profile;
 const imageProduct = models.imageProduct;
 const visitProduct = models.visitProduct;
 class ProductController {
@@ -52,7 +53,6 @@ class ProductController {
       const result = await product.findAll({
         where: { accountId, isDelete: 0 },
         include: [imageProduct],
-        order: [["updatedAt", "DESC"]],
       });
       res.status(200).json({
         status: true,
@@ -104,6 +104,7 @@ class ProductController {
       if (result !== null) {
         const seller = await account.findOne({
           where: { id: result.accountId },
+          include: [profile],
         });
 
         await visitProduct.create({
