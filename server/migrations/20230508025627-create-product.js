@@ -55,6 +55,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
+      isDelete: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       accountId: {
         allowNull: false,
         type: Sequelize.INTEGER,

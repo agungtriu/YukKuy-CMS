@@ -1,0 +1,1058 @@
+openapi: 3.0.0
+info:
+  title: YukKuy
+  version: 1.0.0
+servers:
+  - url: https://yukkuy.fly.dev/
+tags:
+  - name: Home
+  - name: Account
+  - name: Bank
+  - name: Guide
+  - name: SocialAccount
+  - name: Product
+  - name: Order
+  - name: Order > Verification
+paths:
+  /cms:
+    get:
+      tags:
+        - Home
+      summary: HomeCMS
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          schema:
+            type: string
+          example: '2023-05-10'
+        - name: endDate
+          in: query
+          schema:
+            type: string
+          example: '2023-05-12'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/{username}:
+    get:
+      tags:
+        - Account
+      summary: AccountByUsername
+      parameters:
+        - name: username
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/seller/{username}:
+    get:
+      tags:
+        - Account
+      summary: SelllerByUsername
+      parameters:
+        - name: username
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/edit/password:
+    put:
+      tags:
+        - Account
+      summary: Edit Password
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+                confirmPassword:
+                  type: string
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/edit/profile:
+    put:
+      tags:
+        - Account
+      summary: Edit Profile
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                username:
+                  type: string
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                address:
+                  type: string
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/edit/avatar:
+    put:
+      tags:
+        - Account
+      summary: Edit Avatar
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/edit/banner:
+    put:
+      tags:
+        - Account
+      summary: Edit Banner
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                banner:
+                  type: string
+                  format: binary
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/cms/login:
+    post:
+      tags:
+        - Account
+      summary: LoginCMS
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                key:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/mobile/login:
+    post:
+      tags:
+        - Account
+      summary: LoginMobile
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                key:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/mobile/register/:
+    post:
+      tags:
+        - Account
+      summary: RegisterMobile
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                username:
+                  type: string
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                confirmPassword:
+                  type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/cms/register/:
+    post:
+      tags:
+        - Account
+      summary: RegisterCMS
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                username:
+                  type: string
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                confirmPassword:
+                  type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/banks/{accountId}:
+    get:
+      tags:
+        - Bank
+      summary: BankByAccountId
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/banks/detail/{bankId}:
+    get:
+      tags:
+        - Bank
+      summary: Detail Bank
+      parameters:
+        - name: bankId
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/banks/delete/{bankId}:
+    get:
+      tags:
+        - Bank
+      summary: Delete Bank
+      parameters:
+        - name: bankId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/banks/add:
+    post:
+      tags:
+        - Bank
+      summary: Add Bank
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                nameBank:
+                  type: string
+                name:
+                  type: string
+                number:
+                  type: integer
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/banks/edit/{bankId}:
+    put:
+      tags:
+        - Bank
+      summary: Edit Bank
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                nameBank:
+                  type: string
+                name:
+                  type: string
+                number:
+                  type: integer
+      
+      parameters:
+        - name: bankId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /guides/:
+    get:
+      tags:
+        - Guide
+      summary: GuideByAccountId
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /guides/{guideId}:
+    get:
+      tags:
+        - Guide
+      summary: Detail Guide
+      parameters:
+        - name: guideId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /guides/delete/{guideId}:
+    get:
+      tags:
+        - Guide
+      summary: Delete Guide
+      parameters:
+        - name: guideId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /guides/add:
+    post:
+      tags:
+        - Guide
+      summary: Add Guide
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                name:
+                  type: string
+                phone:
+                  type: integer
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /guides/edit/{guideId}:
+    put:
+      tags:
+        - Guide
+      summary: Edit Guide
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                name:
+                  type: string
+                phone:
+                  type: integer
+      
+      parameters:
+        - name: guideId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/socialAccounts/{accountId}:
+    get:
+      tags:
+        - SocialAccount
+      summary: SocialAccountsByAccountId
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/socialAccounts/detail/{socialAccountId}:
+    get:
+      tags:
+        - SocialAccount
+      summary: Detail SocialAccount
+      parameters:
+        - name: socialAccountId
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/socialAccounts/delete/{socialAccountId}:
+    get:
+      tags:
+        - SocialAccount
+      summary: Delete SocialAccount
+      parameters:
+        - name: socialAccountId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/socialAccounts/add:
+    post:
+      tags:
+        - SocialAccount
+      summary: Add SocialAccount
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                platform:
+                  type: string
+                link:
+                  type: string
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/socialAccounts/edit/{socialAccountId}:
+    put:
+      tags:
+        - SocialAccount
+      summary: Edit SocialAccount
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                platform:
+                  type: string
+                  example: adasd
+                link:
+                  type: string
+                  example: adasfa
+      parameters:
+        - name: socialAccountId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/cms:
+    get:
+      tags:
+        - Product
+      summary: Products CMS
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/cms/detail/{productId}:
+    get:
+      tags:
+        - Product
+      summary: Detail Product CMS
+      parameters:
+        - name: productId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/city:
+    get:
+      tags:
+        - Product
+      summary: City
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/mobile:
+    get:
+      tags:
+        - Product
+      summary: Products Mobile
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+        - name: city
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/mobile/detail/{productId}:
+    get:
+      tags:
+        - Product
+      summary: Detail Product Mobile
+      parameters:
+        - name: productId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/search:
+    get:
+      tags:
+        - Product
+      summary: Search Products
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+        - name: key
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/add:
+    post:
+      tags:
+        - Product
+      summary: Add Product
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                images:
+                  type: string
+                  format: binary
+                name:
+                  type: string
+                dateStart:
+                  type: string
+                  example: '2023-05-05'
+                dateEnd:
+                  type: string
+                  example: '2023-05-15'
+                price:
+                  type: integer
+                province:
+                  type: string
+                city:
+                  type: string
+                addressDetail:
+                  type: string
+                description:
+                  type: string
+                addressMeetingPoint:
+                  type: string
+                guideId:
+                  type: integer
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/edit/{productId}:
+    put:
+      tags:
+        - Product
+      summary: Edit Product
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                images:
+                  type: string
+                  format: binary
+                name:
+                  type: string
+                dateStart:
+                  type: string
+                  example: '2023-05-05'
+                dateEnd:
+                  type: string
+                  example: '2023-05-15'
+                price:
+                  type: integer
+                province:
+                  type: string
+                city:
+                  type: string
+                addressDetail:
+                  type: string
+                description:
+                  type: string
+                addressMeetingPoint:
+                  type: string
+                guideId:
+                  type: integer
+      parameters:
+        - name: productId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/show/{productId}:
+    put:
+      tags:
+        - Product
+      summary: Show Product
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                isLive:
+                  type: integer
+                  example: '1 or 0'
+      parameters:
+        - name: productId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/delete/{productId}:
+    get:
+      tags:
+        - Product
+      summary: Show Product
+      parameters:
+        - name: productId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/verifications/add:
+    post:
+      tags:
+        - Order > Verification
+      summary: Add Verification
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                imageReceipt:
+                  type: string
+                  format: binary
+                bankId:
+                  type: integer
+                orderId:
+                  type: integer
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/verifications/reject/{orderId}:
+    put:
+      tags:
+        - Order > Verification
+      summary: Reject Verification
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                reason:
+                  type: string
+      parameters:
+        - name: orderId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/verifications/accept/{orderId}:
+    put:
+      tags:
+        - Order > Verification
+      summary: Accept Verification
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties: {}
+      parameters:
+        - name: orderId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/mobile:
+    get:
+      tags:
+        - Order
+      summary: Orders Mobile
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/cms:
+    get:
+      tags:
+        - Order
+      summary: Orders CMS
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/{orderId}:
+    get:
+      tags:
+        - Order
+      summary: Order Detail
+      parameters:
+        - name: orderId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/add:
+    post:
+      tags:
+        - Order
+      summary: Add Order
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                totalPackage:
+                  type: integer
+                totalPrice:
+                  type: integer
+                name:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                productId:
+                  type: integer
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/cancel/{orderId}:
+    put:
+      tags:
+        - Order
+      summary: Cancel Order
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                reason:
+                  type: string
+                  example: pengen aja
+      parameters:
+        - name: orderId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}

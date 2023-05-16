@@ -10,62 +10,82 @@ class OrderController {
   static async getOrdersCMS(req, res) {
     try {
       const accountId = +req.accountData.id;
-
-      const products = await product.findAll({
-        where: { accountId },
-      });
-
-      var orders = [];
-      for (const product of products) {
-        const result = await order.findAll({
-          where: { productId: product.id },
-          include: [statusOrder, verificationPayment],
+      const status = req.query.status;
+      var results = [];
+      if (status === undefined) {
+        const products = await product.findAll({
+          where: { accountId },
         });
-        orders.push(...result);
-      }
-      res.status(200).json({
-        status: true,
-        count: orders.length,
-        data: orders,
-      });
-    } catch (error) {
-      res.status(500).json({
-        status: false,
-        error: error,
-      });
-    }
-  }
-  static async getOrdersSuccess(req, res) {
-    try {
-      const accountId = +req.accountData.id;
 
-      const products = await product.findAll({
-        where: { accountId },
-      });
+        for (const product of products) {
+          const result = await order.findAll({
+            where: { productId: product.id },
+            include: [
+              { model: statusOrder },
+              {
+                model: verificationPayment,
+                limit: 1,
+                order: [["createdAt", "DESC"]],
+              },
+            ],
+          });
+          results.push(...result);
+        }
 
-      var recapSuccess = [];
-      for (const product of products) {
-        var orders = await order.findAll({
-          where: { productId: product.id },
-          include: [statusOrder],
-        });
-        if (orders !== null) {
-          orders = orders.filter(
-            (order) => order.statusOrder.status === "success"
+        results.sort(
+          (a, b) => b.statusOrder.updatedAt - a.statusOrder.updatedAt
+        );
+      } else {
+        if (status === "success") {
+          results = await product.findAll({
+            where: {
+              accountId,
+            },
+            include: [
+              {
+                model: order,
+                include: [{ model: statusOrder, where: { status } }],
+              },
+            ],
+            order: [["updatedAt", "DESC"]],
+          });
+        } else {
+          const products = await product.findAll({
+            where: { accountId },
+          });
+          if (status === "verification") {
+            for (const product of products) {
+              const result = await order.findAll({
+                where: { productId: product.id },
+                include: [
+                  { model: statusOrder, where: { status } },
+                  {
+                    model: verificationPayment,
+                    limit: 1,
+                    order: [["createdAt", "DESC"]],
+                  },
+                ],
+              });
+              results.push(...result);
+            }
+          } else {
+            for (const product of products) {
+              const result = await order.findAll({
+                where: { productId: product.id },
+                include: [{ model: statusOrder, where: { status } }],
+              });
+              results.push(...result);
+            }
+          }
+          results.sort(
+            (a, b) => b.statusOrder.updatedAt - a.statusOrder.updatedAt
           );
         }
-        if (orders.length > 0 && product.dataValues.isLive === 1) {
-          recapSuccess.push({
-            ...product.dataValues,
-            count: orders.length,
-            data: orders,
-          });
-        }
       }
       res.status(200).json({
         status: true,
-        count: recapSuccess.length,
-        data: recapSuccess,
+        count: results.length,
+        data: results,
       });
     } catch (error) {
       res.status(500).json({
@@ -74,17 +94,46 @@ class OrderController {
       });
     }
   }
+
   static async getOrdersMobile(req, res) {
     try {
+      const page = +req.query.page || 1;
+      const limit = +req.query.limit || 10;
+      const skipIndex = (page - 1) * limit;
+
       const accountId = +req.accountData.id;
-      const result = await order.findAll({
-        where: { accountId },
-        include: [statusOrder],
-      });
+      const status = req.query.status;
+      var orders = [];
+      if (status === undefined) {
+        orders = await order.findAll({
+          limit,
+          offset: skipIndex,
+          where: { accountId },
+          include: [statusOrder],
+          order: [[statusOrder, "updatedAt", "DESC"]],
+        });
+      } else {
+        orders = await order.findAll({
+          limit,
+          offset: skipIndex,
+          where: { accountId },
+          include: [{ model: statusOrder, where: { status } }],
+          order: [[statusOrder, "updatedAt", "DESC"]],
+        });
+      }
+      var results = [];
+      for (const order of orders) {
+        const _product = await product.findOne({
+          where: { id: order.productId },
+        });
+        results.push({ ...order.dataValues, product: _product });
+      }
+
       res.status(200).json({
         status: true,
-        count: result.length,
-        data: result,
+        page: page,
+        count: results.length,
+        data: results,
       });
     } catch (error) {
       res.status(500).json({
@@ -93,6 +142,7 @@ class OrderController {
       });
     }
   }
+
   static async getOrder(req, res) {
     try {
       const id = +req.params.id;
@@ -154,16 +204,18 @@ class OrderController {
         productId,
         accountId,
       });
-
       if (resultOrder !== null) {
         await statusOrder.create({
           orderId: resultOrder.id,
           status: "payment",
         });
 
+        const _product = await product.findOne({ where: { id: productId } });
+
         res.status(201).json({
           status: true,
           message: "order has been made",
+          data: { ...resultOrder.dataValues, sellerId: _product.accountId },
         });
       } else {
         res.status(400).json({
