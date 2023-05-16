@@ -5,6 +5,7 @@ import { getDetailProduct, editProduct } from "../../axios/productAxios";
 import Swal from "sweetalert2";
 import { Form } from "react-bootstrap";
 import { formatDate } from "../../helpers/TimeFormat";
+import Select from 'react-select'
 import { imageUrl } from "../../config/config";
 
 const EditProduct = () => {
@@ -20,7 +21,7 @@ const EditProduct = () => {
     addressDetail: "",
     description: "",
     addressMeetingPoint: "",
-    guideId: 0,
+    guideId: '',
   });
 
   const [file, setFile] = useState(null);
@@ -78,7 +79,7 @@ const EditProduct = () => {
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
-    reader.onload = function (event) {
+    reader.onload = (event) => {
       setPreviewImage(event.target.result);
     };
 

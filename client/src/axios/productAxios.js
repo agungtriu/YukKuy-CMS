@@ -114,18 +114,20 @@ const getShow = async (productId, form, cb) => {
                 access_token: localStorage.access_token,
             }
         })
-        cb(results.status)
+        cb(results.data)
+        
         Swal.fire("status has been changed", results.data.message, "success");
     } catch (err) {
-        if (err.response.status === 500) {
-            Swal.fire(
-                "Error!",
-                err.response.data.error.errors[0].original.validatorArgs[0].message,
-                "error"
-            );
-        } else {
-            Swal.fire("Error!", err.response.data.message, "error");
-        }
+        // if (err.response.status === 500) {
+        //     Swal.fire(
+        //         "Error!",
+        //         err.response.data.error.errors[0].original.validatorArgs[0].message,
+        //         "error"
+        //     );
+        // } else {
+        //     Swal.fire("Error!", err.response.data.message, "error");
+        // }
+        console.log(err)
     }
 }
 
