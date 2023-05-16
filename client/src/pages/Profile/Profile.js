@@ -127,7 +127,7 @@ const Profile = () => {
                   <div className="row row-cols-2">
                     <div className="col my-3">
                       <label>Name</label>
-                      <div class="form-control">
+                      <div className="form-control">
                         {user.name !== null && user.name !== "" ? (
                           <h5>{user.username}</h5>
                         ) : (
@@ -138,7 +138,7 @@ const Profile = () => {
 
                     <div className="col my-3">
                       <label>Phone</label>
-                      <div class="form-control">
+                      <div className="form-control">
                         {user.phone !== null && user.phone !== "" ? (
                           <h5 className="input-group flex-nowrap">
                             {user.phone}

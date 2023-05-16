@@ -13,6 +13,7 @@ const BarMenu = (props) => {
         loginCbHandler({ status: false, data: {} });
         Swal.fire("Logout", "logout successful", "success");
     };
+    console.log(loginStatus)
     return ( 
         <>
             <nav className="navbar navbar-expand-lg bg-body-tertiary my-3 shadow-sm" style={{ bcolor: 'Highlight' }} >

@@ -15,16 +15,18 @@ const Product = () => {
   useEffect(() => {
     getProducts((result) => {
       setProducts(result.data);
+      setClicked(result)
     });
   }, []);
 
-  const handleClick = (id) => {
-    const newIsLive = clicked === 1 ? 0 : 1;
+  const handleClick = (id, isLive) => {
+    const newIsLive = isLive === 1 ? 0 : 1;
     const form = { isLive: newIsLive };
     setStatus(form);
     getShow(id, form, (result) => {
       if (result) {
-        setClicked(newIsLive);
+        // setClicked(newIsLive);
+        window.location.reload();
       }
     });
   };
@@ -77,7 +79,7 @@ const Product = () => {
                   </button>
                   <button
                     className="btn btn-sm btn-light mx-2 my-5"
-                    onClick={() => handleClick(item.id)}
+                    onClick={() => handleClick(item.id, item.isLive)}
                   >
                     {item.isLive === 1 ? "Hide" : "Show"}
                   </button>

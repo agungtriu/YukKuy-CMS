@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getHomeData } from "../../axios/homeAxios";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [clicked, setClicked] = useState(false);
@@ -32,7 +33,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="p-2">
+        <Link className="p-2 text-decoration-none" to={'orders/new'}>
           <div
             className="card text-white"
             style={{
@@ -42,11 +43,11 @@ const Home = () => {
             }}
           >
             <div className="card-body">
-              <h6 className="text-left">New Product</h6>
+              <h6 className="text-left">New Order</h6>
               <h4 className="text-center my-4">{dashboard.countNewOrder}</h4>
             </div>
           </div>
-        </div>
+        </Link>
         <div className="p-2">
           <div
             className="card  text-white"
@@ -64,7 +65,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="p-2 text-white" onClick={handleClick}>
+        <Link className="p-2 text-decoration-none" onClick={handleClick}>
           {clicked ? true : false}
           <div
             className="card  text-white"
@@ -81,7 +82,7 @@ const Home = () => {
               </h4>
             </div>
           </div>
-        </div>
+        </Link>
       </div>
       {clicked === true ? (
         <>
@@ -92,7 +93,6 @@ const Home = () => {
                 <tr>
                   <th scope="col">No</th>
                   <th scope="col">Product</th>
-                  <th scope="col">Price</th>
                   <th scope="col">Seen</th>
                 </tr>
               </thead>
@@ -101,7 +101,6 @@ const Home = () => {
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{item.name}</td>
-                    <td>{item.price}</td>
                     <td>{item.countVisit}</td>
                   </tr>
                 ))}

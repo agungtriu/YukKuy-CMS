@@ -1,46 +1,61 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faKey, faUser, faImage } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import { getAccountByUsername } from "../../axios/accountAxios";
+import { Link, useNavigate } from "react-router-dom";
+import { editAvatar, getAccountByUsername } from "../../axios/accountAxios";
 import { imageUrl } from "../../config/config";
+import Swal from "sweetalert2";
 
 const EditAvatar = () => {
-  const [user, setUser] = useState({
-    username: "",
-    name: "",
-    email: "",
-    password: "",
-    role: "",
-    address: "",
-    phone: "",
-    avatar: "",
-    bannerImage: "",
-  });
+  const [previewImage, setPreviewImage] = useState("");
+  const [avatar, setAvatar] = useState();
+  const [file, setFile] = useState(null);
+  const [user, setUser] = useState({avatar: ""});
+  const [isExist, setIsExist] = useState(false)
   const getAccount = () => {
     const username = localStorage.username;
     getAccountByUsername(username, (result) => {
       setUser({
-        username: result.username,
-        name: result.name,
-        email: result.email,
-        role: result.role,
-        address: result.profile.address,
-        phone: result.profile.phone,
         avatar: `${imageUrl}${result.profile.avatar}`,
-        bannerImage: `${imageUrl}${result.profile.bannerImage}`,
       });
     });
   };
   useEffect(() => {
     getAccount();
+    setAvatar(localStorage.image);
   }, []);
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    setIsExist(true)
+
+    reader.onload = (e) => {
+      setPreviewImage(e.target.result);
+    };
+
+    reader.readAsDataURL(file);
+  };
+  const navigation = useNavigate();
+  const submitHandler = () => {
+    if (file !== null) {
+      const fromData = new FormData();
+      fromData.append("avatar", file);
+      editAvatar(fromData, (status, avatar) => {
+        if (status) {
+          setAvatar(avatar);
+          navigation("/profile");
+        }
+      });
+    } else {
+      Swal.fire("Edit Avatar", "file cannot be empty", "error");
+    }
+  };
   return (
     <>
       <div className="d-flex justify-content-center">
         <div className="card shadow border-0">
           <img
-            src={user.avatar}
+            src={isExist === false ? user.avatar : previewImage}
             className="rounded-circle ms-auto me-auto"
             style={{ width: "50%" }}
             alt="..."
@@ -85,17 +100,26 @@ const EditAvatar = () => {
                 </div>
               </div>
             </div>
-            <div class="mb-3">
-              <label for="formFile" class="form-label">
-                image:
+            <div className="mb-3">
+              <label htmlFor="formFile" className="form-label">
+                image: {avatar}
               </label>
-              <input class="form-control" type="file" id="formFile"></input>
+              <input
+                className="form-control"
+                type="file"
+                id="formFile"
+                onChange={(e) => {
+                  setFile(e.target.files[0]);
+                  setAvatar(e.target.files[0].name);
+                  handleImageUpload(e)
+                }}
+              ></input>
             </div>
-            <div class="d-flex justify-content-center">
+            <div className="d-flex justify-content-center">
               <Link
                 type="submit"
-                class="btn btn-primary mb-3"
-                // onClick={() => submitHandler()}
+                className="btn btn-primary mb-3"
+                onClick={() => submitHandler()}
               >
                 Confirm
               </Link>

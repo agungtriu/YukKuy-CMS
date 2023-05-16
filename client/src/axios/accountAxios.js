@@ -121,15 +121,16 @@ const editAvatar = async (image, cb) => {
     localStorage.setItem("image", results.data.data.image);
     Swal.fire("Edit Avatar", results.data.message, "success");
   } catch (err) {
-    if (err.response.status === 500) {
-      Swal.fire(
-        "Error!",
-        err.response.data.error.errors[0].original.validatorArgs[0].message,
-        "error"
-      );
-    } else {
-      Swal.fire("Error!", err.response.data.message, "error");
-    }
+    // if (err.response.status === 500) {
+    //   Swal.fire(
+    //     "Error!",
+    //     err.response.data.error.errors[0].original.validatorArgs[0].message,
+    //     "error"
+    //   );
+    // } else {
+    //   Swal.fire("Error!", err.response.data.message, "error");
+    // }
+    console.log(err)
   }
 };
 const editPassword = async (data, cb) => {

@@ -59,7 +59,7 @@ const FormProduct = () => {
 
     reader.readAsDataURL(file);
   }
-  // console.log(form)
+  console.log(form)
   return (
     <>
       <div>
