@@ -9,6 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import { getAccountByUsername } from "../../axios/accountAxios";
 import { imageUrl } from "../../config/config";
+import Guide from "../Guide/guide";
 const Profile = () => {
   const [user, setUser] = useState({
     username: "",
@@ -42,14 +43,14 @@ const Profile = () => {
 
   return (
     <>
-      <div>Profile</div>
       <div>
-        <div className="card">
+        <div className="card border-0 shadow">
           <div className="d-flex justify-content-center">
             <img
               src={user.bannerImage}
-              className="card-img-top"
-              style={{ width: "75%", height: "250px" }}
+              className="card-img-top rounded-start"
+              style={{ width: "90%", height: "250px" }}
+              alt=""
             ></img>
           </div>
         </div>
@@ -113,7 +114,7 @@ const Profile = () => {
                   <div className="position-absolute top-0 end-0">
                     <div className="input-group flex-nowrap">
                       <Link
-                        className="btn btn-outline-dark"
+                        className="btn btn-outline-dark border-0"
                         to="/profile/edit/profile"
                       >
                         <FontAwesomeIcon
@@ -129,13 +130,12 @@ const Profile = () => {
                       <label>Name</label>
                       <div className="form-control">
                         {user.name !== null && user.name !== "" ? (
-                          <h5>{user.username}</h5>
+                          <h5>{user.name}</h5>
                         ) : (
                           <h6>input Your name</h6>
                         )}
                       </div>
                     </div>
-
                     <div className="col my-3">
                       <label>Phone</label>
                       <div className="form-control">
@@ -177,6 +177,7 @@ const Profile = () => {
               </div>
             </div>
           </div>
+        <Guide></Guide>
         </div>
       </div>
     </>
