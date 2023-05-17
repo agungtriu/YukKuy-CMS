@@ -4,7 +4,7 @@ class GuideController {
   static async getGuideByAccountId(req, res) {
     try {
       const accountId = +req.accountData.id;
-      const result = await guide.findAll({ where: { accountId } });
+      const result = await guide.findAll({ where: { accountId }, order: [["createdAt", "ASC"]] });
       res.status(200).json({
         status: true,
         count: result.length,
