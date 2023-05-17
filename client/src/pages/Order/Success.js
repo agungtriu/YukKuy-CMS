@@ -53,6 +53,7 @@ const Success = () => {
     } else {
       setOrders(orders);
     }
+    setCurrentModalPage(1);
   };
   const indexOfLastOrder = currentModalPage * OrderPerPage;
   const indexOfFirstOrder = indexOfLastOrder - OrderPerPage;
