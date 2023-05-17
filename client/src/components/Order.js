@@ -27,19 +27,19 @@ const Order = (props) => {
     switch (data.status) {
       case "success":
         return (
-          <div class="btn btn-success disabled my-5">{data.status}</div>
+          <div className="btn btn-success disabled my-5">{data.status}</div>
         );
       case "payment":
         return (
-          <div class="btn btn-primary disabled my-5">{data.status}</div>
+          <div className="btn btn-primary disabled my-5">{data.status}</div>
         );
       case "reject":
         return (
-          <div class="btn btn-danger disabled my-5">{data.status}</div>
+          <div className="btn btn-danger disabled my-5">{data.status}</div>
         );
       case "cancel":
         return (
-          <div class="btn btn-dark disabled my-5">{data.status}</div>
+          <div className="btn btn-dark disabled my-5">{data.status}</div>
         );
       default:
         break;
@@ -57,10 +57,10 @@ const Order = (props) => {
           ></img>
           <div className="row">
             <div className="col-sm-8">
-              <h5 className="card-title">
+              <h4 className="card-title">
                 {order.product.name} #{order.id}
-              </h5>
-              <h6 className="card-text">by: {order.name}</h6>
+              </h4>
+              <h5 className="card-text">by: {order.name}</h5>
               <p className="card-text my-2">{readableDate(order.createdAt)}</p>
               <span className="my-5">Pax: {order.totalPackage}</span>
               <span className="mx-5">

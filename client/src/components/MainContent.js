@@ -14,7 +14,7 @@ import {
   Product,
   Profile,
   Rejected,
-  Sold,
+  Success,
 } from "../pages";
 
 const MainContent = () => {
@@ -25,7 +25,7 @@ const MainContent = () => {
         <Route path="orders" element={<Orders></Orders>}></Route>
         <Route path="orders">
           <Route path="new" element={<NewOrder></NewOrder>}></Route>
-          <Route path="sold" element={<Sold></Sold>}></Route>
+          <Route path="success" element={<Success></Success>}></Route>
           <Route path="reject" element={<Rejected></Rejected>}></Route>
           <Route path="cancel" element={<Cancel></Cancel>}></Route>
         </Route>

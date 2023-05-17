@@ -3,7 +3,7 @@ import Orders from "./Order/Orders";
 import NewOrder from "./Order/NewOrder";
 import Rejected from "./Order/Rejected";
 import Cancel from "./Order/Cancel";
-import Sold from "./Order/Sold";
+import Success from "./Order/Success";
 import Product from "./Product/Product";
 import FormProduct from "./Product/FormProduct";
 import EditProduct from "./Product/EditProduct";
@@ -18,7 +18,7 @@ import Guide from "./Guide/guide";
 
 export {
     Dashboard,
-    Orders,NewOrder,Rejected,Cancel,Sold,
+    Orders,NewOrder,Rejected,Cancel,Success,
     Product,FormProduct,EditProduct,
     Login, Register,
     Profile,EditAvatar,EditProfile,EditBanner,EditPassword,

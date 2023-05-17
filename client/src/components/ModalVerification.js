@@ -19,26 +19,26 @@ const ModalVerification = (props) => {
   return (
     <>
       <div
-        class="modal fade"
+        className="modal fade"
         id="verificationModal"
         tabindex="-1"
         aria-labelledby="verificationModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="verificationModalLabel">
+        <div className="modal-dialog modal-dialog-centered modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="verificationModalLabel">
                 Verification Order
               </h5>
               <button
                 type="button"
-                class="btn-close"
+                className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
               <img
                 className="rounded-3 float-start me-3"
                 src={imageUrl + order.verificationPayments[0].imageReceipt}
@@ -66,10 +66,10 @@ const ModalVerification = (props) => {
                 </table>
               </div>
             </div>
-            <div class="modal-footer">
+            <div className="modal-footer">
               <button
                 type="button"
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 data-bs-toggle="modal"
                 data-bs-target="#rejectModal"
                 data-bs-dismiss="modal"
@@ -78,7 +78,7 @@ const ModalVerification = (props) => {
               </button>
               <button
                 type="button"
-                class="btn btn-primary"
+                className="btn btn-primary"
                 data-bs-dismiss="modal"
                 onClick={() => {
                   acceptHandler(order.id);

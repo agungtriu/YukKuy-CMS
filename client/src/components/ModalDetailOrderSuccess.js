@@ -56,7 +56,9 @@ const ModalDetailOrderSuccess = (props) => {
               />
             </div>
             <div className="modal-body m-2">
-              <h6>Guide : {guide.name} ({guide.phone})</h6>
+              <h6>
+                Guide : {guide.name} ({guide.phone})
+              </h6>
               <table className="table table-hover">
                 <thead>
                   <tr className="table-active">
