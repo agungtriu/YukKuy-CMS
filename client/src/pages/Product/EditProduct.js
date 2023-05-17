@@ -51,7 +51,6 @@ const EditProduct = () => {
   useEffect(() => {
     getParams();
   }, []);
-  console.log(form);
 
   const submitHandler = () => {
     if (file !== null) {
@@ -68,6 +67,8 @@ const EditProduct = () => {
       formData.append("addressMeetingPoint", form.addressMeetingPoint);
       formData.append("guideId", form.guideId);
 
+     
+
       editProduct(form.id, formData, (status) => {
         if (status) {
           navigation("/products");
@@ -81,6 +82,7 @@ const EditProduct = () => {
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
+    setIsExist(true)
     reader.onload = (event) => {
       setPreviewImage(event.target.result);
     };
@@ -95,7 +97,7 @@ const EditProduct = () => {
         <form className="card shadow-lg">
           <div className="container px-5">
             <img
-              src={previewImage}
+              src={isExist ===false ?`${imageUrl}${form.imageProducts}` : previewImage }
               className="rounded mx-auto d-block"
               alt="Preview"
               style={{ maxWidth: "300px" }}

@@ -157,6 +157,33 @@ const editPassword = async (data, cb) => {
     }
   }
 };
+const editBanner = async (image, cb) => {
+  try {
+    let results = await axios({
+      method: "PUT",
+      url: URL + "edit/banner",
+      data: image,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        access_token: localStorage.access_token,
+      },
+    });
+    cb(true, results.data.data.image);
+    localStorage.setItem("image", results.data.data.image);
+    Swal.fire("Edit Banner", results.data.message, "success");
+  } catch (err) {
+    if (err.response.data === 500) {
+      Swal.fire(
+        "Error!",
+        err.response.data.error.errors[0].original.validatorArgs[0].message,
+        "error"
+      );
+    } else {
+      Swal.fire("Error!", err.response.data.message, "error");
+    }
+    console.log(err)
+  }
+};
 
 export {
   loginUser,
@@ -165,4 +192,5 @@ export {
   editProfile,
   editAvatar,
   editPassword,
+  editBanner
 };

@@ -8,14 +8,25 @@ body {
 
 
 }
- 
 .avatar-mini {
     width: 40px;
     height: 40px;
     object-fit: cover;
   }
 
-  .card-img-top { 
+.card-img-top { 
     object-fit: cover; 
     object-position: center; 
   }
+
+.card-body:hover {
+    background-color: #00000027;
+    cursor: pointer;
+  }
+  
+.card-body h6 {
+    color: #FFFFFF;
+  }
+  
+
+
