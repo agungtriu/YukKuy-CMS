@@ -1,6 +1,6 @@
 import BarMenu from "./BarMenu";
-import Main from "./Main";
-import Account from "./account";
-import Navbar from "./Navbar";
+import MainContent from "./MainContent";
+import Account from "./Account";
+import TabsOrder from "./TabsOrder";
 
-export { BarMenu, Main, Account, Navbar };
+export { BarMenu, MainContent, Account, TabsOrder };

@@ -13,4 +13,13 @@ const formatTime = (dateString) => {
   return `${day}-${month}-${year}`;
 };
 
-module.exports = { formatDate, formatTime };
+const readableDate = (dateString) => {
+  const date = new Date(dateString);
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return date.toLocaleDateString(undefined, options);
+};
+module.exports = { formatDate, formatTime, readableDate };

@@ -1,35 +1,121 @@
-import React from "react";
-import { images } from "../../images";
-import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
+import React, { useEffect, useState } from "react";
+import TabsOrder from "../../components/TabsOrder";
+import { getGuideById, getOrdersByStatus } from "../../axios/orderAxios";
+import { imageUrl } from "../../config/config";
+import { readableDate } from "../../helpers/TimeFormat";
+import DataEmpty from "../../components/DataEmpty";
+import ReactLoading from "react-loading";
+import ModalDetailOrderSuccess from "../../components/ModalDetailOrderSuccess";
 
 const Sold = () => {
+  const [products, setProducts] = useState([]);
+  const [guide, setGuide] = useState({});
+  const [done, setDone] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [ProductPerPage] = useState(5);
+  useEffect(() => {
+    getOrdersByStatus("success", (result) => {
+      setProducts(result.data);
+      setDone(true);
+    });
+  }, []);
+
+  const guideHanlder = (guideId) => {
+    getGuideById(guideId, (result) => {
+      setGuide(result);
+    });
+  };
+
+  const indexOfLastProduct = currentPage * ProductPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - ProductPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const paginate = (num) => {
+    setCurrentPage(num);
+  };
   return (
     <>
-      <Navbar></Navbar>
+      <TabsOrder></TabsOrder>
       <h5 className="my-3">Sold</h5>
-      <div class="card mb-2 border-0 shadow">
-        <div class="card-body">
-          <img
-            className="rounded-3 float-start me-3"
-            style={{ height: "110px", width: "230px" }}
-            src={images.komodo}
-            alt=""
-          ></img>
-          <div className="row">
-            <div className="col-sm-8">
-              <h5 class="card-title">Komodo Island</h5>
-              <h6 class="card-text">by: Ayo Tour</h6>
-              <p className="card-text my-2">Date : 12-May-2023 09.00AM</p>
-              <h7 className="my-5">Stock: 8</h7>
-              <span className="mx-5">Price: IDR. 8.000.000/pax</span>
-            </div>
-            <div className="col-sm-4">
-              <p className="position-absolute top-0 end-0 mx-1">Status</p>
-              <h5 className="btn btn-sm btn-light my-5">10</h5>
-            </div>
-          </div>
-        </div>
+      {!done ? (
+        <ReactLoading
+          className="position-absolute top-50 start-50 translate-middle"
+          type={"spin"}
+          color={"#000000"}
+          height={100}
+          width={100}
+        />
+      ) : currentProducts.length > 0 ? (
+        currentProducts.map((product) => {
+          return (
+            <>
+              <div
+                className="card mb-2 border-0 shadow"
+                key={product.id}
+                data-bs-toggle="modal"
+                data-bs-target="#detailSuccessModal"
+                onClick={() => guideHanlder(product.guideId)}
+              >
+                <div className="card-body">
+                  <img
+                    className="rounded-3 float-start me-3"
+                    style={{ height: "110px" }}
+                    src={imageUrl + product.imageProducts[0].src}
+                    alt={product.imageProducts[0].src}
+                  ></img>
+                  <div className="row">
+                    <div className="col-sm-8">
+                      <h5 className="card-title">
+                        {product.name} #{product.id}
+                      </h5>
+                      <p className="card-text my-2">
+                        {readableDate(product.dateStart)} -{" "}
+                        {readableDate(product.dateEnd)}
+                      </p>
+                    </div>
+                    <div className="col-sm-4">
+                      <h5 className="btn btn-success my-5">
+                        {product.orders.length}
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ModalDetailOrderSuccess
+                product={product}
+                guide={guide}
+              ></ModalDetailOrderSuccess>
+            </>
+          );
+        })
+      ) : (
+        <DataEmpty></DataEmpty>
+      )}
+      <div className=" d-flex justify-content-center my-2">
+        <nav aria-label="Page navigation example">
+          <ul className="pagination">
+            {Array.from(
+              { length: Math.ceil(products.length / ProductPerPage) },
+              (_, index) => {
+                const pageNumber = index + 1;
+                return (
+                  <>
+                    <li key={pageNumber} className="page-item">
+                      <button
+                        onClick={() => paginate(pageNumber)}
+                        className="page-link"
+                      >
+                        {pageNumber}
+                      </button>
+                    </li>
+                  </>
+                );
+              }
+            )}
+          </ul>
+        </nav>
       </div>
     </>
   );

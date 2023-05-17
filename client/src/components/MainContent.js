@@ -8,21 +8,21 @@ import {
   EditProduct,
   EditProfile,
   FormProduct,
-  Home,
+  Dashboard,
   NewOrder,
-  Order,
+  Orders,
   Product,
   Profile,
   Rejected,
   Sold,
 } from "../pages";
 
-const Main = () => {
+const MainContent = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home></Home>}></Route>
-        <Route path="orders" element={<Order></Order>}></Route>
+        <Route path="/" element={<Dashboard></Dashboard>}></Route>
+        <Route path="orders" element={<Orders></Orders>}></Route>
         <Route path="orders">
           <Route path="new" element={<NewOrder></NewOrder>}></Route>
           <Route path="sold" element={<Sold></Sold>}></Route>
@@ -55,4 +55,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default MainContent;

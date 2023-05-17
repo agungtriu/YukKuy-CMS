@@ -59,7 +59,7 @@ const getDetailProduct = async (productId, cb) => {
   try {
     let results = await axios({
       method: "GET",
-      url: URL + "cms/" + "detail/" + productId,
+      url: URL + "cms/detail/" + productId,
     });
     cb(results.data);
   } catch (err) {

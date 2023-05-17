@@ -1,5 +1,5 @@
-import Home from "./Home/Home";
-import Order from "./Order/Order";
+import Dashboard from "./Dashboard/Dashboard";
+import Orders from "./Order/Orders";
 import NewOrder from "./Order/NewOrder";
 import Rejected from "./Order/Rejected";
 import Cancel from "./Order/Cancel";
@@ -16,8 +16,8 @@ import EditPassword from "./Profile/EditPassword";
 import EditBanner from "./Profile/EditBanner";
  
 export {
-    Home,
-    Order,NewOrder,Rejected,Cancel,Sold,
+    Dashboard,
+    Orders,NewOrder,Rejected,Cancel,Sold,
     Product,FormProduct,EditProduct,
     Login, Register,
     Profile,EditAvatar,EditProfile,EditBanner,EditPassword
