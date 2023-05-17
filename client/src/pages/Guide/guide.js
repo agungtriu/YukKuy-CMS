@@ -70,7 +70,7 @@ const Guide = () => {
     deleteGuide(id, (status) => {
       if (status) {
         navigation("/profile");
-        window.location.reload()
+        window.location.reload();
       }
     });
   };
@@ -183,7 +183,12 @@ const Guide = () => {
                     Edit
                   </Link>
                 )}
-                <Link className="btn btn-sm btn-danger mx-1" onClick={() => deleteHandler(item.id)}>Delete</Link>
+                <Link
+                  className="btn btn-sm btn-danger mx-1"
+                  onClick={() => deleteHandler(item.id)}
+                >
+                  Delete
+                </Link>
               </td>
             </tr>
           ))}
