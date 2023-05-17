@@ -41,7 +41,7 @@ const Success = () => {
   };
 
   const [currentModalPage, setCurrentModalPage] = useState(1);
-  const [OrderPerPage] = useState(10);
+  const [OrderPerPage] = useState(1);
   const searchHandler = (key, orders) => {
     if (key.length > 0) {
       setOrders(
@@ -53,6 +53,8 @@ const Success = () => {
     } else {
       setOrders(orders);
     }
+
+    setCurrentModalPage(1);
   };
   const indexOfLastOrder = currentModalPage * OrderPerPage;
   const indexOfFirstOrder = indexOfLastOrder - OrderPerPage;
