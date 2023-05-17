@@ -21,7 +21,7 @@ class OrderController {
         });
 
         for (const product of products) {
-          const result = await order.findAll({
+          const orders = await order.findAll({
             where: { productId: product.id },
             include: [
               { model: statusOrder },
@@ -32,8 +32,10 @@ class OrderController {
               },
             ],
           });
-          if (result.length > 0) {
-            results.push({ ...result[0].dataValues, product: product });
+          if (orders.length > 0) {
+            orders.forEach((order) => {
+              results.push({ ...order.dataValues, product: product });
+            });
           }
         }
         results.sort(
@@ -61,7 +63,7 @@ class OrderController {
           });
           if (status === "verification") {
             for (const product of products) {
-              const result = await order.findAll({
+              const orders = await order.findAll({
                 where: { productId: product.id },
                 include: [
                   { model: statusOrder, where: { status } },
@@ -72,18 +74,22 @@ class OrderController {
                   },
                 ],
               });
-              if (result.length > 0) {
-                results.push({ ...result[0].dataValues, product: product });
+              if (orders.length > 0) {
+                orders.forEach((order) => {
+                  results.push({ ...order.dataValues, product: product });
+                });
               }
             }
           } else {
             for (const product of products) {
-              const result = await order.findAll({
+              const orders = await order.findAll({
                 where: { productId: product.id },
                 include: [{ model: statusOrder, where: { status } }],
               });
-              if (result.length > 0) {
-                results.push({ ...result[0].dataValues, product: product });
+              if (orders.length > 0) {
+                orders.forEach((order) => {
+                  results.push({ ...order.dataValues, product: product });
+                });
               }
             }
           }
