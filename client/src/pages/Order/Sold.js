@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import TabsOrder from "../../components/TabsOrder";
-import { getGuideById, getOrdersByStatus } from "../../axios/orderAxios";
+import { getOrdersByStatus } from "../../axios/orderAxios";
 import { imageUrl } from "../../config/config";
 import { readableDate } from "../../helpers/TimeFormat";
 import DataEmpty from "../../components/DataEmpty";
 import ReactLoading from "react-loading";
 import ModalDetailOrderSuccess from "../../components/ModalDetailOrderSuccess";
+import { getDetailGuide } from "../../axios/guideAxios";
 
 const Sold = () => {
   const [products, setProducts] = useState([]);
@@ -21,8 +22,8 @@ const Sold = () => {
   }, []);
 
   const guideHanlder = (guideId) => {
-    getGuideById(guideId, (result) => {
-      setGuide(result);
+    getDetailGuide(guideId, (result) => {
+      setGuide(result.data);
     });
   };
 

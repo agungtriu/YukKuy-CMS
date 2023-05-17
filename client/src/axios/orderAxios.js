@@ -71,29 +71,6 @@ const getBankById = async (bankId, cb) => {
   }
 };
 
-const getGuideById = async (guideId, cb) => {
-  try {
-    let results = await axios({
-      method: "GET",
-      url: baseUrl + "/guides/" + guideId,
-      headers: {
-        access_token: localStorage.access_token,
-      },
-    });
-    cb(results.data.data);
-  } catch (err) {
-    if (err.response.status === 500) {
-      Swal.fire(
-        "Error!",
-        err.response.data.error.errors[0].original.validatorArgs[0].message,
-        "error"
-      );
-    } else {
-      Swal.fire("Error!", err.response.data.message, "error");
-    }
-  }
-};
-
 const acceptVerificationOrder = async (id, cb) => {
   try {
     let results = await axios({
@@ -147,7 +124,6 @@ export {
   getOrders,
   getOrdersByStatus,
   getBankById,
-  getGuideById,
   acceptVerificationOrder,
   rejectVerificationOrder,
 };
