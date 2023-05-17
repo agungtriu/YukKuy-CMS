@@ -15,7 +15,7 @@ import EditProfile from "./Profile/EditProfile";
 import EditPassword from "./Profile/EditPassword";
 import EditBanner from "./Profile/EditBanner";
 import Guide from "./Guide/guide";
- 
+
 export {
     Home,
     Order,NewOrder,Rejected,Cancel,Sold,

@@ -89,7 +89,7 @@ const addGuide = async (form, cb) => {
       },
     });
     cb(true);
-    Swal.fire("Add Plants", result.data.message, "success");
+    Swal.fire("Add Guide", result.data.message, "success");
   } catch (err) {
     if (err.response.status === 500) {
       Swal.fire(
