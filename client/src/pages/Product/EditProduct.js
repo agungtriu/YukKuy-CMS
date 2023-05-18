@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDetailProduct, editProduct } from "../../axios/productAxios";
+import {
+  getDetailProduct,
+  editProduct,
+  getProvinces,
+  getCities,
+} from "../../axios/productAxios";
 import Swal from "sweetalert2";
 import { Form } from "react-bootstrap";
 import { formatDate } from "../../helpers/TimeFormat";
 import Select from "react-select";
 import { imageUrl } from "../../config/config";
+import { getDetailGuide, getGuide } from "../../axios/guideAxios";
+import TitleCaseFormatter from "../../helpers/TitleCaseFormatter";
+import CityFormatter from "../../helpers/CityFormatter";
 
 const EditProduct = () => {
   const [previewImage, setPreviewImage] = useState("");
+  const [selectedGuide, setSelectedGuide] = useState({});
   const [form, setForm] = useState({
     imageProducts: [],
     name: "",
@@ -46,11 +55,47 @@ const EditProduct = () => {
         addressMeetingPoint: result.data.addressMeetingPoint,
         guideId: result.data.guideId,
       });
+      getDetailGuide(result.data.guideId, (result) => {
+        setSelectedGuide(result.data);
+      });
     });
   };
+  const [provinces, setProvinces] = useState([]);
+  const [guides, setGuides] = useState([]);
   useEffect(() => {
     getParams();
+    getProvinces((result) => setProvinces(result));
+    getGuide((result) => setGuides(result));
   }, []);
+
+  let provinceOptions = [];
+  provinces?.forEach((province) => {
+    provinceOptions.push({
+      value: province.id,
+      label: TitleCaseFormatter(province.name),
+    });
+  });
+
+  const [cities, setCities] = useState([]);
+  const provinceChangeHandler = (id) => {
+    getCities(id, (result) => setCities(result));
+  };
+
+  let cityOptions = [];
+  cities?.forEach((city) => {
+    cityOptions.push({
+      value: city.id,
+      label: TitleCaseFormatter(city.name),
+    });
+  });
+
+  let guideOptions = [];
+  guides?.forEach((guide) => {
+    guideOptions.push({
+      value: guide.id,
+      label: TitleCaseFormatter(guide.name),
+    });
+  });
 
   const submitHandler = () => {
     if (file !== null) {
@@ -67,8 +112,6 @@ const EditProduct = () => {
       formData.append("addressMeetingPoint", form.addressMeetingPoint);
       formData.append("guideId", form.guideId);
 
-     
-
       editProduct(form.id, formData, (status) => {
         if (status) {
           navigation("/products");
@@ -82,7 +125,7 @@ const EditProduct = () => {
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
-    setIsExist(true)
+    setIsExist(true);
     reader.onload = (event) => {
       setPreviewImage(event.target.result);
     };
@@ -93,12 +136,16 @@ const EditProduct = () => {
   return (
     <>
       <div>
-        <h2>Form Product</h2>
+        <h2>Edit Product</h2>
         <form className="card shadow-lg">
           <div className="container px-5">
             <img
-              src={isExist ===false ?`${imageUrl}${form.imageProducts}` : previewImage }
-              className="rounded mx-auto d-block"
+              src={
+                isExist === false
+                  ? `${imageUrl}${form.imageProducts}`
+                  : previewImage
+              }
+              className="rounded mx-auto d-block m-3"
               alt="Preview"
               style={{ maxWidth: "300px" }}
             ></img>
@@ -182,26 +229,28 @@ const EditProduct = () => {
                 <label htmlFor="formFile" className="form-label">
                   Province
                 </label>
-                <input
-                  value={form.province}
-                  onChange={(e) =>
-                    setForm({ ...form, province: e.target.value })
-                  }
-                  className="form-control"
-                  type="text"
-                  aria-label="default input example"
+                <Select
+                  value={{ label: form.province }}
+                  options={provinceOptions}
+                  onChange={(e) => {
+                    provinceChangeHandler(e.value);
+                    setForm({ ...form, province: e.label });
+                  }}
                 />
               </div>
               <div className="mb-3">
                 <label htmlFor="formFile" className="form-label">
                   City
                 </label>
-                <input
-                  value={form.city}
-                  onChange={(e) => setForm({ ...form, city: e.target.value })}
-                  className="form-control"
-                  type="text"
-                  aria-label="default input example"
+                <Select
+                  value={{ label: form.city }}
+                  options={cityOptions}
+                  onChange={(e) => {
+                    setForm({
+                      ...form,
+                      city: CityFormatter(e.label),
+                    });
+                  }}
                 />
               </div>
               <div className="mb-3">
@@ -250,20 +299,21 @@ const EditProduct = () => {
               </div>
               <div className="mb-3">
                 <label htmlFor="formFile" className="form-label">
-                  GuideId
+                  Guide
                 </label>
-                <input
-                  value={form.guideId}
-                  onChange={(e) =>
-                    setForm({ ...form, guideId: e.target.value })
-                  }
-                  className="form-control"
-                  type="text"
-                  aria-label="default input example"
+                <Select
+                  value={{
+                    label: TitleCaseFormatter(selectedGuide.name),
+                    value: +selectedGuide.id,
+                  }}
+                  options={guideOptions}
+                  onChange={(e) => {
+                    setForm({ ...form, guideId: e.value });
+                  }}
                 />
               </div>
             </div>
-            <div className="row row-cols-2 d-flex align-items-center justify-content-center mb-1">
+            <div className="row row-cols-2 d-flex align-items-center justify-content-center m-5">
               <Link
                 className="btn btn-lg btn-primary"
                 type="submit"

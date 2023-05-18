@@ -79,7 +79,7 @@ const editProduct = async (productId, form, cb) => {
   try {
     let results = await axios({
       method: "PUT",
-      url: URL + "edit" + productId,
+      url: URL + "edit/" + productId,
       data: form,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -127,4 +127,86 @@ const getShow = async (productId, form, cb) => {
   }
 };
 
-export { getProducts, getDetailProduct, addProduct, editProduct, getShow };
+const deleteProduct = async (productId, cb) => {
+  try {
+    let results = await axios({
+      method: "GET",
+      url: URL + "delete/" + productId,
+      headers: {
+        access_token: localStorage.access_token,
+      },
+    });
+    cb(results.data);
+
+    Swal.fire("product has been deleted", results.data.message, "success");
+  } catch (err) {
+    if (err.response.status === 500) {
+      Swal.fire(
+        "Error!",
+        err.response.data.error.errors[0].original.validatorArgs[0].message,
+        "error"
+      );
+    } else {
+      Swal.fire("Error!", err.response.data.message, "error");
+    }
+  }
+};
+
+const getProvinces = async (cb) => {
+  try {
+    let results = await axios({
+      method: "GET",
+      url:
+        config.baseUrlBinderByte +
+        "/provinsi?api_key=" +
+        config.apiKeyBinderByte,
+    });
+    cb(results.data.value);
+  } catch (err) {
+    if (err.response.status === 500) {
+      Swal.fire(
+        "Error!",
+        err.response.data.error.errors[0].original.validatorArgs[0].message,
+        "error"
+      );
+    } else {
+      Swal.fire("Error!", err.response.data.message, "error");
+    }
+  }
+};
+
+const getCities = async (idProvince, cb) => {
+  try {
+    let results = await axios({
+      method: "GET",
+      url:
+        config.baseUrlBinderByte +
+        "/kabupaten?api_key=" +
+        config.apiKeyBinderByte +
+        "&id_provinsi=" +
+        idProvince,
+    });
+    cb(results.data.value);
+  } catch (err) {
+    if (err.response.status === 500) {
+      Swal.fire(
+        "Error!",
+        err.response.data.error.errors[0].original.validatorArgs[0].message,
+        "error"
+      );
+    } else {
+      Swal.fire("Error!", err.response.data.message, "error");
+    }
+  }
+};
+
+export {
+  getProducts,
+  getDetailProduct,
+  addProduct,
+  editProduct,
+  getShow,
+  deleteProduct,
+  getProvinces,
+  getCities,
+};
