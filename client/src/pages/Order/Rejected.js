@@ -1,39 +1,73 @@
-import React from "react";
-import { images } from "../../images";
-import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
+import React, { useEffect, useState } from "react";
+import TabsOrder from "../../components/TabsOrder";
+import { getOrdersByStatus } from "../../axios/orderAxios";
+import Order from "../../components/Order";
+import DataEmpty from "../../components/DataEmpty";
+import ReactLoading from "react-loading";
 
 const Rejected = () => {
+  const [orders, setOrders] = useState([]);
+  const [done, setDone] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [OrderPerPage] = useState(5);
+  useEffect(() => {
+    getOrdersByStatus("reject", (result) => {
+      setOrders(result.data);
+      setDone(true);
+    });
+  }, []);
+  const indexOfLastOrder = currentPage * OrderPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - OrderPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const paginate = (num) => {
+    setCurrentPage(num);
+  };
   return (
     <>
-      <Navbar></Navbar>
+      <TabsOrder></TabsOrder>
       <h5 className="my-3">Rejected</h5>
-      <div class="card mb-2 border-0 shadow">
-        <div class="card-body">
-          <img
-            className="rounded-3 float-start me-3"
-            style={{ height: "110px", width: "230px" }}
-            src={images.komodo}
-            alt=""
-          ></img>
-          <div className="row">
-            <div className="col-sm-8">
-              <h5 class="card-title">Komodo Island</h5>
-              <h6 class="card-text">by: Ayo Tour</h6>
-              <p className="card-text my-2">Date : 12-May-2023 09.00AM</p>
-              <h7 className="my-5">Stock: 8</h7>
-              <span className="mx-5">Price: IDR. 8.000.000/pax</span>
+      {!done ? (
+        <ReactLoading
+          className="position-absolute top-50 start-50 translate-middle"
+          type={"spin"}
+          color={"#000000"}
+          height={100}
+          width={100}
+        />
+      ) : currentOrders.length > 0 ? (
+        currentOrders.map((order) => {
+          return (
+            <div key={order.id}>
+              <Order order={order}></Order>
             </div>
-            <div className="col-sm-4">
-              <p className="position-absolute top-0 end-0 mx-1">Rejected</p>
-              <button className="btn btn-sm btn-light my-5">Receipt</button>
-              <button className="btn btn-sm btn-light my-5">
-                Verification
-              </button>
-              <button className="btn btn-sm btn-light my-5">Cancel</button>
-            </div>
-          </div>
-        </div>
+          );
+        })
+      ) : (
+        <DataEmpty></DataEmpty>
+      )}
+      <div className=" d-flex justify-content-center my-2">
+        <nav aria-label="Page navigation example">
+          <ul className="pagination">
+            {Array.from(
+              { length: Math.ceil(orders.length / OrderPerPage) },
+              (_, index) => {
+                const pageNumber = index + 1;
+                return (
+                  <>
+                    <li key={pageNumber} className="page-item">
+                      <button
+                        onClick={() => paginate(pageNumber)}
+                        className="page-link"
+                      >
+                        {pageNumber}
+                      </button>
+                    </li>
+                  </>
+                );
+              }
+            )}
+          </ul>
+        </nav>
       </div>
     </>
   );

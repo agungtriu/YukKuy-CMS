@@ -842,7 +842,7 @@ paths:
     get:
       tags:
         - Product
-      summary: Show Product
+      summary: Delete Product
       parameters:
         - name: productId
           in: path

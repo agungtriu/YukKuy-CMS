@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import Main from "./Main";
+import "bootstrap/dist/css/bootstrap.css";
+import MainContent from "./MainContent";
 import { Link } from "react-router-dom";
 
 const SideBar = () => {
@@ -73,7 +74,7 @@ const SideBar = () => {
             className="card col py-3 mx-4 shadow-lg"
             style={{ backgroundColor: "#F5F5F5", borderColor: "white" }}
           >
-            <Main></Main>
+            <MainContent></MainContent>
           </div>
         </div>
       </div>
