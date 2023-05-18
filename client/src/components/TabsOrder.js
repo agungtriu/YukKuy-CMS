@@ -1,34 +1,43 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const TabsOrder = () => {
+  const navigate = useNavigate();
+  const clickHandler = (link) => {
+    navigate(link);
+  };
   return (
-    <div className="d-flex justify-content-evenly">
-      <Link to={"/orders"}>
-        <div className="btn btn-primary">
-          <div className="my-4 mx-5">All Order</div>
-        </div>
-      </Link>
-      <Link to={"/orders/new"}>
-        <div className="btn btn-warning">
-          <div className="my-4 mx-5">New Order</div>
-        </div>
-      </Link>
-      <Link to={"/orders/success"}>
-        <div className="btn btn-success">
-          <div className="my-4 mx-5">Success</div>
-        </div>
-      </Link>
-      <Link to={"/orders/reject"}>
-        <div className="btn btn-danger">
-          <div className="my-4 mx-5">Rejected</div>
-        </div>
-      </Link>
-      <Link to={"/orders/cancel"}>
-        <div className="btn btn-dark">
-          <div className="my-4 mx-5">Cancel</div>
-        </div>
-      </Link>
+    <div className="row">
+      <div
+        className="col btn btn-lg btn-primary ms-2 p-4"
+        onClick={() => clickHandler("/orders")}
+      >
+        All Order
+      </div>
+      <div
+        className="col btn btn-lg btn-warning ms-2 p-4"
+        onClick={() => clickHandler("/orders/new")}
+      >
+        New Order
+      </div>
+      <div
+        className="col btn btn-lg btn-success ms-2 p-4"
+        onClick={() => clickHandler("/orders/success")}
+      >
+        Success
+      </div>
+      <div
+        className="col btn btn-lg btn-danger ms-2 p-4"
+        onClick={() => clickHandler("/orders/reject")}
+      >
+        Rejected
+      </div>
+      <div
+        className="col btn btn-lg btn-dark mx-2 p-4"
+        onClick={() => clickHandler("/orders/cancel")}
+      >
+        Cancel
+      </div>
     </div>
   );
 };

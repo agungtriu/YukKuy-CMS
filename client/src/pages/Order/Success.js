@@ -6,6 +6,7 @@ import { readableDate } from "../../helpers/TimeFormat";
 import DataEmpty from "../../components/DataEmpty";
 import ReactLoading from "react-loading";
 import { getDetailGuide } from "../../axios/guideAxios";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Success = () => {
   const [products, setProducts] = useState([]);
@@ -85,12 +86,12 @@ const Success = () => {
                 onClick={() => clickHanlder(product)}
               >
                 <div className="card-body">
-                  <img
+                  <LazyLoadImage
                     className="rounded-3 float-start me-3"
                     style={{ height: "110px" }}
                     src={imageUrl + product.imageProducts[0].src}
                     alt={product.imageProducts[0].src}
-                  ></img>
+                  ></LazyLoadImage>
                   <div className="row">
                     <div className="col-sm-8">
                       <h5 className="card-title">
@@ -170,7 +171,10 @@ const Success = () => {
             </div>
             <div className="modal-body m-2">
               <h6>
-                Guide : {guide.name} ({guide.phone})
+                Guide :{" "}
+                {guide.name !== undefined
+                  ? `${guide.name}(${guide.phone})`
+                  : "undefined"}
               </h6>
               <table className="table table-hover">
                 <thead>

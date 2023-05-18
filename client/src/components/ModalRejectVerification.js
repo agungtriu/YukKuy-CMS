@@ -21,7 +21,7 @@ const ModalRejectVerification = (props) => {
       <div
         className="modal fade"
         id="rejectModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="rejectModalLabel"
         aria-hidden="true"
       >

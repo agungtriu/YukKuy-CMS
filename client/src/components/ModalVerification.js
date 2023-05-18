@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { imageUrl } from "../config/config";
 import RupiahFormatter from "../helpers/RupiahFormatter";
 import ModalRejectVerification from "./ModalRejectVerification";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const ModalVerification = (props) => {
   const { order, bank } = props;
@@ -21,7 +22,7 @@ const ModalVerification = (props) => {
       <div
         className="modal fade"
         id="verificationModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="verificationModalLabel"
         aria-hidden="true"
       >
@@ -38,32 +39,35 @@ const ModalVerification = (props) => {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="modal-body">
-              <img
-                className="rounded-3 float-start me-3"
-                src={imageUrl + order.verificationPayments[0].imageReceipt}
-                alt={order.verificationPayments[0].imageReceipt}
-              ></img>
-              <div className="row">
-                <h5 className="card-title">{order.product.name}</h5>
-                <h6 className="card-text mt-4">
-                  {RupiahFormatter(+order.totalPrice)}
-                </h6>
-                <h6 className="card-text mt-4">Information payment</h6>
-                <table className="mx-3">
-                  <tr>
-                    <td>Bank</td>
-                    <td>: {bank.bank}</td>
-                  </tr>
-                  <tr>
-                    <td>Name</td>
-                    <td>: {bank.name}</td>
-                  </tr>
-                  <tr>
-                    <td>Number</td>
-                    <td>: {bank.number}</td>
-                  </tr>
-                </table>
+            <div className="modal-body row">
+              <LazyLoadImage
+                className="rounded-3 float-start me-3 col"
+                src={imageUrl + order.imageReceipt}
+                alt={order.imageReceipt}
+              ></LazyLoadImage>
+              <div className="col">
+                <div className=" row ">
+                  <h4 className="card-title">{order.productName}</h4>
+                  <h5 className="card-text mt-4">
+                    {RupiahFormatter(order.totalPrice)}
+                  </h5>
+                  <h5 className="card-text mt-4">Information payment</h5>
+                  <div className="row">
+                    <div className="col-8 col-sm-8 col-lg-3">Bank</div>
+                    <div className="col-1">:</div>
+                    <div className="col">{bank.bank}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-8 col-sm-8 col-lg-3">Name</div>
+                    <div className="col-1">:</div>
+                    <div className="col">{bank.name}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-8 col-sm-8 col-lg-3">Number</div>
+                    <div className="col-1">:</div>
+                    <div className="col">{bank.number}</div>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="modal-footer">
