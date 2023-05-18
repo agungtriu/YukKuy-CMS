@@ -4,7 +4,10 @@ class BankController {
   static async getBanksByAccountId(req, res) {
     try {
       const accountId = req.params.accountId;
-      const result = await bank.findAll({ where: { accountId } });
+      const result = await bank.findAll({
+        where: { accountId },
+        order: [["createdAt", "ASC"]],
+      });
       res.status(200).json({
         status: true,
         count: result.length,

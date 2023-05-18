@@ -15,7 +15,7 @@ class HomeCMSController {
       const endDate = new Date(req.query.endDate || Date.now());
       const accountId = +req.accountData.id;
       const products = await product.findAll({
-        where: { accountId },
+        where: { accountId, isDelete: 0 },
         include: [imageProduct],
       });
 

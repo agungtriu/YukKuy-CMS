@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getHomeData } from "../../axios/homeAxios";
 import { Link } from "react-router-dom";
 
-const Home = () => {
+const Dashboard = () => {
   const [clicked, setClicked] = useState(false);
   const [dashboard, setDashboard] = useState([]);
 
@@ -113,4 +113,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;
