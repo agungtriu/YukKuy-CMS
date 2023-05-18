@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getHomeData } from "../../axios/homeAxios";
 import { useNavigate } from "react-router-dom";
-import { DateRangePicker } from "react-date-range";
+import { DateRange } from "react-date-range";
 import { addDays, subDays } from "date-fns";
 import { formatDate, readableDate } from "../../helpers/TimeFormat";
 
@@ -80,7 +80,7 @@ const Dashboard = () => {
 
             <div ref={refOne}>
               {open && (
-                <DateRangePicker
+                <DateRange
                   onChange={(item) => {
                     changeHandler(item.selection);
                     setRange([item.selection]);
@@ -88,8 +88,6 @@ const Dashboard = () => {
                   editableDateInputs={true}
                   moveRangeOnFirstSelection={false}
                   ranges={range}
-                  months={2}
-                  direction="horizontal"
                   className="calendarElement"
                 />
               )}
