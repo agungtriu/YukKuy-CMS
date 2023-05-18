@@ -76,42 +76,52 @@ const Success = () => {
         />
       ) : currentProducts.length > 0 ? (
         currentProducts.map((product) => {
-          return (
-            <>
-              <div
-                className="card mb-2 border-0 shadow"
-                key={product.id}
-                data-bs-toggle="modal"
-                data-bs-target="#detailSuccessModal"
-                onClick={() => clickHanlder(product)}
-              >
-                <div className="card-body">
-                  <LazyLoadImage
-                    className="rounded-3 float-start me-3"
-                    style={{ height: "110px" }}
-                    src={imageUrl + product.imageProducts[0].src}
-                    alt={product.imageProducts[0].src}
-                  ></LazyLoadImage>
-                  <div className="row">
-                    <div className="col-sm-8">
-                      <h5 className="card-title">
-                        {product.name} #{product.id}
-                      </h5>
-                      <p className="card-text my-2">
-                        {readableDate(product.dateStart)} -{" "}
-                        {readableDate(product.dateEnd)}
-                      </p>
-                    </div>
-                    <div className="col-sm-4">
-                      <h5 className="btn btn-success my-5">
-                        {product.orders.length}
-                      </h5>
+          if (product.orders.length > 0) {
+            return (
+              <>
+                <div
+                  className="card mb-2 border-0 shadow"
+                  key={product.id}
+                  data-bs-toggle="modal"
+                  data-bs-target="#detailSuccessModal"
+                  onClick={() => clickHanlder(product)}
+                >
+                  <div
+                    className={
+                      +product.isLive === 0 || product.isDelete === 1
+                        ? "card-body bg-dark text-white rounded-3"
+                        : "card-body"
+                    }
+                  >
+                    <LazyLoadImage
+                      className="rounded-3 float-start me-3"
+                      style={{ height: "110px" }}
+                      src={imageUrl + product.imageProducts[0].src}
+                      alt={product.imageProducts[0].src}
+                    ></LazyLoadImage>
+                    <div className="row">
+                      <div className="col-sm-8">
+                        <h5 className="card-title">
+                          {product.name} #{product.id}
+                        </h5>
+                        <p className="card-text my-2">
+                          {readableDate(product.dateStart)} -{" "}
+                          {readableDate(product.dateEnd)}
+                        </p>
+                      </div>
+                      <div className="col-sm-4">
+                        <h5 className="btn btn-success my-5">
+                          {product.orders.length}
+                        </h5>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </>
-          );
+              </>
+            );
+          } else {
+            return null;
+          }
         })
       ) : (
         <DataEmpty></DataEmpty>
