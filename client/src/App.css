@@ -17,11 +17,6 @@ body {
   object-position: center;
 }
 
-.card-body:hover {
-  background-color: #00000027;
-  cursor: pointer;
-}
-
 .card-body h6 {
   color: #ffffff;
 }
@@ -43,15 +38,25 @@ body {
 .bg-hide {
   background-color: #00000027;
 }
+.btn-success {
+  background-color: #19a463 !important;
+  border-color: #19a463 !important;
+  color: white !important;
+}
+
+.link-success {
+  color: #19a463 !important;
+}
+
 .btn-outline-success:hover {
   background-color: #19a463 !important;
   border-color: #19a463 !important;
   color: white !important;
 }
 .btn-outline-success {
-  color: darkred !important;
   background-color: #ffffff !important;
   border-color: #ffffff !important;
+  color: darkred !important;
 }
 .active {
   background-color: #19a463 !important;
@@ -77,3 +82,4 @@ body {
   height: 50px;
   object-fit: cover;
 }
+

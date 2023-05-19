@@ -21,8 +21,8 @@ const Register = () => {
   return (
     <>
       <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-lg-5 col-md-7">
+        <div className="row justify-content-center mt-5">
+          <div className="col-lg-5 col-md-7  mt-5">
             <div className="card shadow-lg border-0 rounded-lg mt-5">
               <div className="card-header">
                 <h3 className="text-center font-weight-light my-4">Register</h3>
@@ -96,7 +96,7 @@ const Register = () => {
                   </div>
                   <div className="d-flex align-items-center justify-content-center mt-4 mb-0">
                     <Link
-                      className="btn btn-primary"
+                      className="btn btn-success"
                       type="submit"
                       onClick={() => submitHandler()}
                     >
@@ -106,7 +106,7 @@ const Register = () => {
                   <p className="text-center m-3">
                     Already have Account?
                     <Link
-                      className="link-primary text-decoration-none ms-2"
+                      className="link-success text-decoration-none ms-2"
                       to="/"
                     >
                       Login

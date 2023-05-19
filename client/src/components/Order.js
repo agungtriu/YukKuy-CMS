@@ -9,22 +9,22 @@ const Order = (props) => {
     switch (data.status) {
       case "verification":
         return (
-          <div className="btn btn-warning disable text-white my-5">{data.status}</div>
+          <div className="btn btn-warning text-white my-5">{data.status}</div>
         );
       case "success":
         return (
-          <div className="btn btn-success disable my-5">{data.status}</div>
+          <div className="btn btn-success disabled my-5">{data.status}</div>
         );
       case "payment":
         return (
-          <div className="btn btn-primary disable my-5">{data.status}</div>
+          <div className="btn btn-primary disabled my-5">{data.status}</div>
         );
       case "reject":
         return (
-          <div className="btn btn-danger disable my-5">{data.status}</div>
+          <div className="btn btn-danger disabled my-5">{data.status}</div>
         );
       case "cancel":
-        return <div className="btn btn-dark disable my-5">{data.status}</div>;
+        return <div className="btn btn-dark disabled my-5">{data.status}</div>;
       default:
         break;
     }
