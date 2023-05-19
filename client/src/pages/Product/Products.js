@@ -87,7 +87,7 @@ const Products = () => {
                   <h4 className="card-title">{item.name}</h4>
                   {+item.isLive === 0 ? (
                     <h6 className="position-absolute top-0 end-0 text-danger mx-3">
-                      Hide
+                      Hidden
                     </h6>
                   ) : null}
                   <p className="card-text">

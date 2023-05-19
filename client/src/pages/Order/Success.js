@@ -104,7 +104,7 @@ const Success = () => {
                         <h5 className="card-title">{product.name}</h5>
                         {+product.isLive === 0 ? (
                           <h6 className="position-absolute top-0 end-0 text-danger mx-3">
-                            Hide
+                            Hidden
                           </h6>
                         ) : null}
                         <p className="card-text my-2">
@@ -186,13 +186,13 @@ const Success = () => {
               <h6>
                 Guide :{" "}
                 {guide.name !== undefined
-                  ? `${guide.name}(${guide.phone})`
+                  ? `${guide.name} (${guide.phone})`
                   : "undefined"}
               </h6>
               <table className="table table-hover">
                 <thead>
                   <tr className="table-active">
-                    <th scope="col">Kode Order</th>
+                    <th scope="col">Order Id</th>
                     <th scope="col">Name</th>
                     <th scope="col">Phone</th>
                     <th scope="col">Email</th>
