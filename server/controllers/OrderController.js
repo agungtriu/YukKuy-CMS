@@ -56,6 +56,8 @@ class OrderController {
             ],
             order: [["updatedAt", "DESC"]],
           });
+
+          results = results.filter((product) => product.orders.length > 0);
         } else {
           const products = await product.findAll({
             where: { accountId },
