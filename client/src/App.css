@@ -39,3 +39,27 @@ body {
   border: 1px solid #ccc;
   z-index: 999;
 }
+
+
+.btn-primary {
+  background-color: #5E9DFA !important;
+  border-color: #5E9DFA !important;
+}
+
+.btn-warning {
+  background-color: #FCD35A !important;
+  border-color: #FCD35A !important;
+}
+
+.btn-success {
+  background-color: #66AD8C !important;
+  border-color: #66AD8C !important;
+}
+.btn-danger {
+  background-color: #E57882 !important;
+  border-color: #E57882 !important;
+}
+.btn-dark {
+  background-color: #6B6E70 !important;
+  border-color: #6B6E70 !important;
+}
