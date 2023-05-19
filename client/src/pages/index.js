@@ -15,6 +15,8 @@ import EditProfile from "./Profile/EditProfile";
 import EditPassword from "./Profile/EditPassword";
 import EditBanner from "./Profile/EditBanner";
 import Guide from "./Guide/guide";
+import Bank from "./Bank/Bank";
+import SocialMedia from "./SocialMedia/SocialMedia";
 
 export {
     Dashboard,
@@ -22,5 +24,7 @@ export {
     Products,FormProduct,EditProduct,
     Login, Register,
     Profile,EditAvatar,EditProfile,EditBanner,EditPassword,
-    Guide
+    Guide,
+    Bank,
+    SocialMedia
 }

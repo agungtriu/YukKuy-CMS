@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import { getAccountByUsername } from "../../axios/accountAxios";
 import { imageUrl } from "../../config/config";
 import Guide from "../Guide/guide";
+import Bank from "../Bank/Bank";
+import SocialMedia from "../SocialMedia/SocialMedia";
 const Profile = () => {
   const [user, setUser] = useState({
     username: "",
@@ -37,6 +39,7 @@ const Profile = () => {
       });
     });
   };
+
   useEffect(() => {
     getAccount();
   }, []);
@@ -104,6 +107,7 @@ const Profile = () => {
                       </div>
                     </div>
                   </div>
+                  <SocialMedia></SocialMedia>
                 </div>
               </div>
             </div>
@@ -131,9 +135,7 @@ const Profile = () => {
                       <div className="form-control">
                         {user.name !== null && user.name !== "" ? (
                           <h5>{user.name}</h5>
-                        ) : (
-                          <h6>input Your name</h6>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                     <div className="col my-3">
@@ -143,9 +145,7 @@ const Profile = () => {
                           <h5 className="input-group flex-nowrap">
                             {user.phone}
                           </h5>
-                        ) : (
-                          <h6>input Your phone</h6>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                     <div className="col my-3">
@@ -155,9 +155,7 @@ const Profile = () => {
                           <h5 className="input-group flex-nowrap">
                             {user.address}
                           </h5>
-                        ) : (
-                          <h6>input Your phone</h6>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                     <div className="col my-3">
@@ -167,17 +165,16 @@ const Profile = () => {
                           <h5 className="input-group flex-nowrap">
                             {user.email}
                           </h5>
-                        ) : (
-                          <h6>input Your phone</h6>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <Bank></Bank>
             </div>
           </div>
-        <Guide></Guide>
+          <Guide></Guide>
         </div>
       </div>
     </>
