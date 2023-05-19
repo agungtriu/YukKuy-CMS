@@ -76,7 +76,7 @@ const Success = () => {
         />
       ) : currentProducts.length > 0 ? (
         currentProducts.map((product) => {
-          if (product.orders.length > 0 && product.isDelete === 0) {
+          if (product.isDelete === 0) {
             return (
               <>
                 <div
