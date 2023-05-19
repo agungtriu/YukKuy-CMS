@@ -95,15 +95,18 @@ const Success = () => {
                   >
                     <LazyLoadImage
                       className="rounded-3 float-start me-3"
-                      style={{ height: "110px" }}
+                      style={{ height: "150px" }}
                       src={imageUrl + product.imageProducts[0].src}
                       alt={product.imageProducts[0].src}
                     ></LazyLoadImage>
-                    <div className="row">
+                    <div className="row position-relative">
                       <div className="col-sm-8">
-                        <h5 className="card-title">
-                          {product.name} #{product.id}
-                        </h5>
+                        <h5 className="card-title">{product.name}</h5>
+                        {+product.isLive === 0 ? (
+                          <h6 className="position-absolute top-0 end-0 text-danger mx-3">
+                            Hide
+                          </h6>
+                        ) : null}
                         <p className="card-text my-2">
                           {readableDate(product.dateStart)} -{" "}
                           {readableDate(product.dateEnd)}

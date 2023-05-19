@@ -103,7 +103,7 @@ const Dashboard = () => {
       </div>
       <div className="row">
         <div
-          className="col btn btn-lg btn-primary ms-3 p-4"
+          className="col btn btn-lg active text-white ms-3 p-4"
           onClick={() => clickHandler("/products")}
         >
           <h6 className="text-start">All Product</h6>
@@ -122,7 +122,7 @@ const Dashboard = () => {
           </h4>
         </div>
         <div
-          className="col btn btn-lg btn-warning ms-3 p-4 text-white"
+          className="col btn btn-lg active text-white ms-3 p-4"
           onClick={() => clickHandler("/orders/new")}
         >
           <h6 className="text-start">New Order</h6>
@@ -141,7 +141,7 @@ const Dashboard = () => {
           </h4>
         </div>
         <div
-          className="col btn btn-lg btn-info ms-3 p-4 text-white"
+          className="col btn btn-lg active text-white  ms-3 p-4 text-white"
           onClick={() => handleClick(true)}
         >
           <div className="row">
@@ -162,7 +162,7 @@ const Dashboard = () => {
           </h4>
         </div>
         <div
-          className="col btn btn-lg btn-success mx-3 p-4"
+          className="col btn btn-lg active text-white mx-3 p-4"
           onClick={() => handleClick(clicked)}
         >
           <div className="row">

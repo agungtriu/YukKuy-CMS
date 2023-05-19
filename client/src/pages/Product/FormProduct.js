@@ -271,7 +271,7 @@ const FormProduct = () => {
             </div>
             <div className="row row-cols-2 d-flex align-items-center justify-content-center m-5">
               <Link
-                className="btn btn-lg btn-primary"
+                className="btn btn-lg active text-white"
                 type="submit"
                 onClick={() => submitHandler()}
               >

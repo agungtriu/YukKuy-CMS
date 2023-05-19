@@ -147,12 +147,12 @@ const EditProduct = () => {
               }
               className="rounded mx-auto d-block m-3"
               alt="Preview"
-              style={{ maxWidth: "300px" }}
+              style={{ height: "300px" }}
             ></img>
             <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
+              {/* <label htmlFor="formFile" className="form-label">
                 Product Images: {form.imageProducts}
-              </label>
+              </label> */}
               <input
                 type="file"
                 className="form-control"
@@ -315,7 +315,7 @@ const EditProduct = () => {
             </div>
             <div className="row row-cols-2 d-flex align-items-center justify-content-center m-5">
               <Link
-                className="btn btn-lg btn-primary"
+                className="btn btn-lg active text-white"
                 type="submit"
                 onClick={() => submitHandler()}
               >

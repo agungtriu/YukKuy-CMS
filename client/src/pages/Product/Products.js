@@ -54,7 +54,7 @@ const Products = () => {
     <>
       <h5 className="m-3">Product</h5>
       <Link
-        className=" card position-absolute top-0 end-0 m-3 btn btn-outline-secondary text-black text-decoration-none"
+        className=" card position-absolute top-0 end-0 m-3 btn btn-outline-success text-decoration-none"
         to={"/products/add"}
       >
         Add Product
@@ -72,9 +72,7 @@ const Products = () => {
           <div className="card m-3 border-0 shadow" key={index}>
             <div
               className={
-                +item.isLive === 0
-                  ? "card-body bg-hide rounded-3"
-                  : "card-body"
+                +item.isLive === 0 ? "card-body bg-hide rounded-3" : "card-body"
               }
             >
               <img
@@ -84,10 +82,14 @@ const Products = () => {
                 alt={item.imageProducts[0].src}
                 key={imageUrl + item.imageProducts[0].src}
               ></img>
-              <div className="row">
+              <div className="row position-relative">
                 <div className="col-sm-8">
                   <h4 className="card-title">{item.name}</h4>
-                  <h5 className="card-text">#{item.id}</h5>
+                  {+item.isLive === 0 ? (
+                    <h6 className="position-absolute top-0 end-0 text-danger mx-3">
+                      Hide
+                    </h6>
+                  ) : null}
                   <p className="card-text">
                     <span>{readableDate(item.dateStart)}</span> -{" "}
                     <span>{readableDate(item.dateEnd)}</span>

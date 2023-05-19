@@ -3,7 +3,7 @@
   font-size: 15px;
 }
 body {
-  font-family: "Roboto", "sans-serif";
+  font-family: "Roboto", "sans-serif" !important;
   background-color: #f5f5f5;
 }
 .avatar-mini {
@@ -43,25 +43,37 @@ body {
 .bg-hide {
   background-color: #00000027;
 }
-.btn-primary {
-  background-color: #5E9DFA !important;
-  border-color: #5E9DFA !important;
+.btn-outline-success:hover {
+  background-color: #19a463 !important;
+  border-color: #19a463 !important;
+  color: white !important;
+}
+.btn-outline-success {
+  color: darkred !important;
+  background-color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+.active {
+  background-color: #19a463 !important;
+  border-color: #19a463 !important;
 }
 
-.btn-warning {
-  background-color: #FCD35A !important;
-  border-color: #FCD35A !important;
+.dropdown:hover > .dropdown-menu {
+  display: block;
 }
 
-.btn-success {
-  background-color: #66AD8C !important;
-  border-color: #66AD8C !important;
+.dropdown > .dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+  pointer-events: none;
 }
-.btn-danger {
-  background-color: #E57882 !important;
-  border-color: #E57882 !important;
+
+.dropdown-menu-right {
+  right: 0 !important;
+  left: auto !important;
 }
-.btn-dark {
-  background-color: #6B6E70 !important;
-  border-color: #6B6E70 !important;
+
+.avatar-mini {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
 }
