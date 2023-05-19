@@ -76,7 +76,7 @@ const Success = () => {
         />
       ) : currentProducts.length > 0 ? (
         currentProducts.map((product) => {
-          if (product.orders.length > 0) {
+          if (product.orders.length > 0 && product.isDelete === 0) {
             return (
               <>
                 <div
@@ -88,7 +88,7 @@ const Success = () => {
                 >
                   <div
                     className={
-                      +product.isLive === 0 || product.isDelete === 1
+                      +product.isLive === 0
                         ? "card-body bg-hide rounded-3"
                         : "card-body"
                     }
