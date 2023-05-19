@@ -6,7 +6,7 @@ const baseUrl = config.baseUrl;
 const URL = baseUrl + "/accounts/";
 
 const loginUser = async (user, cb) => {
-  if (user.username === "") {
+  if (user.key === "") {
     Swal.fire("Login", "Username can not be empty.", "error");
   } else if (user.password === "") {
     Swal.fire("Login", "Password can not be empty.", "error");
@@ -33,31 +33,41 @@ const loginUser = async (user, cb) => {
       } else {
         Swal.fire("Error!", err.response.data.message, "error");
       }
-      console.log(err);
     }
   }
 };
 
 const registerUser = async (user, cb) => {
   try {
-    let users = await axios({
-      method: "POST",
-      url: URL + "cms/register",
-      data: user,
-    });
-    Swal.fire("Register", users.data.message, "success");
-    cb(true);
+    if (user.username === "") {
+      Swal.fire("Login", "Username can not be empty.", "error");
+    } else if (user.name === "") {
+      Swal.fire("Login", "Name can not be empty.", "error");
+    } else if (user.email === "") {
+      Swal.fire("Login", "Email can not be empty.", "error");
+    } else if (user.password === "") {
+      Swal.fire("Login", "Password can not be empty.", "error");
+    } else if (user.confirmPassword === "") {
+      Swal.fire("Login", "Confirm Password can not be empty.", "error");
+    } else {
+      let users = await axios({
+        method: "POST",
+        url: URL + "cms/register",
+        data: user,
+      });
+      Swal.fire("Register", users.data.message, "success");
+      cb(true);
+    }
   } catch (err) {
     if (err.response.status === 500) {
       Swal.fire(
         "Error!",
-        err.response.data.err.errors[0].original.validatorArgs[0].message,
+        err.response.data.error.errors[0].original.validatorArgs[0].message,
         "error"
       );
     } else {
       Swal.fire("Error!", err.response.data.message, "error");
     }
-    cb(false);
   }
 };
 const getAccountByUsername = async (username, cb) => {
@@ -145,7 +155,6 @@ const editPassword = async (data, cb) => {
     cb(true);
     Swal.fire("Edit Password", results.data.message, "success");
   } catch (error) {
-    console.log(error);
     if (error.response.status === 500) {
       Swal.fire(
         "Error!",
@@ -181,7 +190,6 @@ const editBanner = async (image, cb) => {
     } else {
       Swal.fire("Error!", err.response.data.message, "error");
     }
-    console.log(err)
   }
 };
 
@@ -192,5 +200,5 @@ export {
   editProfile,
   editAvatar,
   editPassword,
-  editBanner
+  editBanner,
 };
