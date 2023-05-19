@@ -27,7 +27,7 @@ const loginUser = async (user, cb) => {
       if (err.response.status === 500) {
         Swal.fire(
           "Error!",
-          err.response.data.err.errors[0].original.validatorArgs[0].message,
+          err.response.data.error.errors[0].original.validatorArgs[0].message,
           "error"
         );
       } else {
