@@ -73,7 +73,7 @@ const Products = () => {
             <div
               className={
                 +item.isLive === 0
-                  ? "card-body bg-dark text-white rounded-3"
+                  ? "card-body bg-hide rounded-3"
                   : "card-body"
               }
             >

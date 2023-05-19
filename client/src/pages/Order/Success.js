@@ -89,7 +89,7 @@ const Success = () => {
                   <div
                     className={
                       +product.isLive === 0 || product.isDelete === 1
-                        ? "card-body bg-dark text-white rounded-3"
+                        ? "card-body bg-hide rounded-3"
                         : "card-body"
                     }
                   >

@@ -40,7 +40,9 @@ body {
   z-index: 999;
 }
 
-
+.bg-hide {
+  background-color: #00000027;
+}
 .btn-primary {
   background-color: #5E9DFA !important;
   border-color: #5E9DFA !important;
