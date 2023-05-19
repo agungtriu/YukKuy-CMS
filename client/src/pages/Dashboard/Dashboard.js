@@ -95,6 +95,7 @@ const Dashboard = () => {
                   moveRangeOnFirstSelection={false}
                   ranges={range}
                   className="calendarElement"
+                  rangeColors={["#19A463"]}
                 />
               )}
             </div>
