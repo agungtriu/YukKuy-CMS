@@ -41,7 +41,7 @@ const addProduct = async (form, cb) => {
       headers: headers,
     });
     cb(true);
-    Swal.fire("Add Tutorial", results.data.message, "success");
+    Swal.fire("Add Product", results.data.message, "success");
   } catch (err) {
     if (err.response.status === 500) {
       Swal.fire(
@@ -87,7 +87,7 @@ const editProduct = async (productId, form, cb) => {
       },
     });
     cb(true);
-    Swal.fire("Add Tutorial", results.data.message, "success");
+    Swal.fire("Edit Product", results.data.message, "success");
   } catch (err) {
     if (err.response.status === 500) {
       Swal.fire(

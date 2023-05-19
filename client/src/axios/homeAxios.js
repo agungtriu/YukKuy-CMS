@@ -28,9 +28,4 @@ const getHomeData = async (startDate, endDate, cb) => {
   }
 };
 
-const getHomeFilter = async (start, end) => {
-  try {
-  } catch (err) {}
-};
-
-export { getHomeData, getHomeFilter };
+export { getHomeData };
