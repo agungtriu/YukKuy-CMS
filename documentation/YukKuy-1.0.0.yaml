@@ -763,7 +763,54 @@ paths:
     put:
       tags:
         - Product
-      summary: Edit Product
+      summary: Edit Product Without Image
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                name:
+                  type: string
+                dateStart:
+                  type: string
+                  example: '2023-05-05'
+                dateEnd:
+                  type: string
+                  example: '2023-05-15'
+                price:
+                  type: integer
+                province:
+                  type: string
+                city:
+                  type: string
+                addressDetail:
+                  type: string
+                description:
+                  type: string
+                addressMeetingPoint:
+                  type: string
+                guideId:
+                  type: integer
+      parameters:
+        - name: productId
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/edit/image/{productId}:
+    put:
+      tags:
+        - Product
+      summary: Edit Product with image
       requestBody:
         content:
           multipart/form-data:
@@ -814,7 +861,7 @@ paths:
     put:
       tags:
         - Product
-      summary: Show Product
+      summary: Hide Product
       requestBody:
         content:
           application/x-www-form-urlencoded:
