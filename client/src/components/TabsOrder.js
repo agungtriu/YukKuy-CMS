@@ -1,43 +1,49 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.css";
 
 const TabsOrder = () => {
-  const navigate = useNavigate();
-  const clickHandler = (link) => {
-    navigate(link);
+  const [activeItem, setActiveItem] = useState();
+  const location = useLocation();
+
+  useEffect(() => {
+    setActiveItem(location.pathname);
+  }, [location.pathname]);
+
+  const getItemClassName = (item) => {
+    if (activeItem === item) {
+      return "col btn btn-lg ms-2 p-4 active text-white";
+    } else {
+      return "col btn btn-lg btn-outline-success ms-2 p-4";
+    }
   };
+
   return (
     <div className="row">
-      <div
-        className="col btn btn-lg btn-primary ms-2 p-4"
-        onClick={() => clickHandler("/orders")}
-      >
+      <Link className={getItemClassName("/orders")} to={"/orders"}>
         All Order
-      </div>
-      <div
-        className="col btn btn-lg btn-warning ms-2 p-4"
-        onClick={() => clickHandler("/orders/new")}
-      >
+      </Link>
+      <Link className={getItemClassName("/orders/new")} to={"/orders/new"}>
         New Order
-      </div>
-      <div
-        className="col btn btn-lg btn-success ms-2 p-4"
-        onClick={() => clickHandler("/orders/success")}
+      </Link>
+      <Link
+        className={getItemClassName("/orders/success")}
+        to={"/orders/success"}
       >
         Success
-      </div>
-      <div
-        className="col btn btn-lg btn-danger ms-2 p-4"
-        onClick={() => clickHandler("/orders/reject")}
+      </Link>
+      <Link
+        className={getItemClassName("/orders/reject")}
+        to={"/orders/reject"}
       >
         Rejected
-      </div>
-      <div
-        className="col btn btn-lg btn-dark mx-2 p-4"
-        onClick={() => clickHandler("/orders/cancel")}
+      </Link>
+      <Link
+        className={getItemClassName("/orders/cancel")}
+        to={"/orders/cancel"}
       >
         Cancel
-      </div>
+      </Link>
     </div>
   );
 };

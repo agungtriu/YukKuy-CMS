@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDetailProduct, editProduct } from "../../axios/productAxios";
+import {
+  getDetailProduct,
+  editProduct,
+  getProvinces,
+  getCities,
+  editProductWithImage,
+} from "../../axios/productAxios";
 import Swal from "sweetalert2";
 import { Form } from "react-bootstrap";
 import { formatDate } from "../../helpers/TimeFormat";
 import Select from "react-select";
 import { imageUrl } from "../../config/config";
+import { getDetailGuide, getGuide } from "../../axios/guideAxios";
+import TitleCaseFormatter from "../../helpers/TitleCaseFormatter";
+import CityFormatter from "../../helpers/CityFormatter";
 
 const EditProduct = () => {
   const [previewImage, setPreviewImage] = useState("");
+  const [selectedGuide, setSelectedGuide] = useState({});
+  const [productId, setProductId] = useState(0);
   const [form, setForm] = useState({
     imageProducts: [],
     name: "",
@@ -32,8 +43,8 @@ const EditProduct = () => {
   const getParams = () => {
     const id = params.productId;
     getDetailProduct(id, (result) => {
+      setProductId(result.data.id);
       setForm({
-        id: result.data.id,
         imageProducts: result.data.imageProducts.map((item) => item.src),
         name: result.data.name,
         dateStart: result.data.dateStart,
@@ -46,43 +57,103 @@ const EditProduct = () => {
         addressMeetingPoint: result.data.addressMeetingPoint,
         guideId: result.data.guideId,
       });
+      getDetailGuide(result.data.guideId, (result) => {
+        setSelectedGuide(result.data);
+      });
     });
   };
+  const [provinces, setProvinces] = useState([]);
+  const [guides, setGuides] = useState([]);
   useEffect(() => {
     getParams();
+    getProvinces((result) => setProvinces(result));
+    getGuide((result) => setGuides(result));
   }, []);
 
+  let provinceOptions = [];
+  provinces?.forEach((province) => {
+    provinceOptions.push({
+      value: province.id,
+      label: TitleCaseFormatter(province.name),
+    });
+  });
+
+  const [cities, setCities] = useState([]);
+  const provinceChangeHandler = (id) => {
+    getCities(id, (result) => setCities(result));
+  };
+
+  let cityOptions = [];
+  cities?.forEach((city) => {
+    cityOptions.push({
+      value: city.id,
+      label: TitleCaseFormatter(city.name),
+    });
+  });
+
+  let guideOptions = [];
+  guides?.forEach((guide) => {
+    guideOptions.push({
+      value: guide.id,
+      label: TitleCaseFormatter(guide.name),
+    });
+  });
+
   const submitHandler = () => {
-    if (file !== null) {
-      const formData = new FormData();
-      formData.append("images", file);
-      formData.append("name", form.name);
-      formData.append("dateStart", form.dateStart);
-      formData.append("dateEnd", form.dateEnd);
-      formData.append("price", form.price);
-      formData.append("province", form.province);
-      formData.append("city", form.city);
-      formData.append("addressDetail", form.addressDetail);
-      formData.append("description", form.description);
-      formData.append("addressMeetingPoint", form.addressMeetingPoint);
-      formData.append("guideId", form.guideId);
-
-     
-
-      editProduct(form.id, formData, (status) => {
-        if (status) {
-          navigation("/products");
-        }
-      });
+    if (form.name === "") {
+      Swal.fire("Add Products", "Name cannot be empty", "error");
+    } else if (form.dateStart === "") {
+      Swal.fire("Add Products", "Start Date cannot be empty", "error");
+    } else if (form.dateEnd === "") {
+      Swal.fire("Add Products", "End Date cannot be empty", "error");
+    } else if (form.price === 0) {
+      Swal.fire("Add Products", "Price cannot be 0", "error");
+    } else if (form.province === "") {
+      Swal.fire("Add Products", "Province cannot be empty", "error");
+    } else if (form.city === "") {
+      Swal.fire("Add Products", "City cannot be empty", "error");
+    } else if (form.addressDetail === "") {
+      Swal.fire("Add Products", "Address cannot be empty", "error");
+    } else if (form.description === "") {
+      Swal.fire("Add Products", "Description cannot be empty", "error");
+    } else if (form.addressMeetingPoint === "") {
+      Swal.fire("Add Products", "Meeting Point cannot be empty", "error");
+    } else if (form.guideId === 0) {
+      Swal.fire("Add Products", "Guide cannot be empty", "error");
     } else {
-      Swal.fire("Edit Product", "file cannot be empty", "error");
+      if (file === null) {
+        editProduct(productId, form, (status) => {
+          if (status) {
+            navigation("/products");
+          }
+        });
+      } else {
+        const formData = new FormData();
+        formData.append("images", file);
+        formData.append("name", form.name);
+        formData.append("dateStart", form.dateStart);
+        formData.append("dateEnd", form.dateEnd);
+        formData.append("price", form.price);
+        formData.append("province", form.province);
+        formData.append("city", form.city);
+        formData.append("addressDetail", form.addressDetail);
+        formData.append("description", form.description);
+        formData.append("addressMeetingPoint", form.addressMeetingPoint);
+        formData.append("guideId", form.guideId);
+
+        editProductWithImage(form.id, formData, (status) => {
+          if (status) {
+            navigation("/products");
+          }
+        });
+      }
     }
   };
   //Preview
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
-    setIsExist(true)
+    setIsExist(true);
     reader.onload = (event) => {
       setPreviewImage(event.target.result);
     };
@@ -93,19 +164,20 @@ const EditProduct = () => {
   return (
     <>
       <div>
-        <h2>Form Product</h2>
+        <h2>Edit Product</h2>
         <form className="card shadow-lg">
           <div className="container px-5">
             <img
-              src={isExist ===false ?`${imageUrl}${form.imageProducts}` : previewImage }
-              className="rounded mx-auto d-block"
+              src={
+                isExist === false
+                  ? `${imageUrl}${form.imageProducts}`
+                  : previewImage
+              }
+              className="rounded mx-auto d-block m-3"
               alt="Preview"
-              style={{ maxWidth: "300px" }}
+              style={{ height: "300px" }}
             ></img>
             <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
-                Product Images: {form.imageProducts}
-              </label>
               <input
                 type="file"
                 className="form-control"
@@ -182,26 +254,28 @@ const EditProduct = () => {
                 <label htmlFor="formFile" className="form-label">
                   Province
                 </label>
-                <input
-                  value={form.province}
-                  onChange={(e) =>
-                    setForm({ ...form, province: e.target.value })
-                  }
-                  className="form-control"
-                  type="text"
-                  aria-label="default input example"
+                <Select
+                  value={{ label: form.province }}
+                  options={provinceOptions}
+                  onChange={(e) => {
+                    provinceChangeHandler(e.value);
+                    setForm({ ...form, province: e.label });
+                  }}
                 />
               </div>
               <div className="mb-3">
                 <label htmlFor="formFile" className="form-label">
                   City
                 </label>
-                <input
-                  value={form.city}
-                  onChange={(e) => setForm({ ...form, city: e.target.value })}
-                  className="form-control"
-                  type="text"
-                  aria-label="default input example"
+                <Select
+                  value={{ label: form.city }}
+                  options={cityOptions}
+                  onChange={(e) => {
+                    setForm({
+                      ...form,
+                      city: CityFormatter(e.label),
+                    });
+                  }}
                 />
               </div>
               <div className="mb-3">
@@ -250,22 +324,24 @@ const EditProduct = () => {
               </div>
               <div className="mb-3">
                 <label htmlFor="formFile" className="form-label">
-                  GuideId
+                  Guide
                 </label>
-                <input
-                  value={form.guideId}
-                  onChange={(e) =>
-                    setForm({ ...form, guideId: e.target.value })
-                  }
-                  className="form-control"
-                  type="text"
-                  aria-label="default input example"
+                <Select
+                  value={{
+                    label: TitleCaseFormatter(selectedGuide.name),
+                    value: +selectedGuide.id,
+                  }}
+                  options={guideOptions}
+                  onChange={(e) => {
+                    setForm({ ...form, guideId: e.value });
+                    setSelectedGuide({ name: e.label, id: e.value });
+                  }}
                 />
               </div>
             </div>
-            <div className="row row-cols-2 d-flex align-items-center justify-content-center mb-1">
+            <div className="row row-cols-2 d-flex align-items-center justify-content-center m-5">
               <Link
-                className="btn btn-lg btn-primary"
+                className="btn btn-lg active text-white"
                 type="submit"
                 onClick={() => submitHandler()}
               >

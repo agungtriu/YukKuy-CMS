@@ -11,10 +11,25 @@ const product = models.product;
 class AccountController {
   static async registerCMS(req, res) {
     try {
-      const { username, name, email, password, confirmPassword } = req.body;
+      let { username, name, email, password, confirmPassword } = req.body;
+      username = username.toLowerCase();
+      email = email.toLowerCase();
       if (password === confirmPassword) {
         const checkUsername = await account.findOne({ where: { username } });
-        if (checkUsername === null) {
+        const checkEmail = await account.findOne({
+          where: { email },
+        });
+        if (checkUsername !== null) {
+          res.status(400).json({
+            status: false,
+            message: "username not available",
+          });
+        } else if (checkEmail !== null) {
+          res.status(400).json({
+            status: false,
+            message: "email is already registered",
+          });
+        } else {
           const result = await account.create({
             username,
             name,
@@ -37,11 +52,6 @@ class AccountController {
               message: "account failed to created!",
             });
           }
-        } else {
-          res.status(400).json({
-            status: false,
-            message: "username not available",
-          });
         }
       } else {
         res.status(400).json({
@@ -59,10 +69,24 @@ class AccountController {
 
   static async registerMobile(req, res) {
     try {
-      const { username, name, email, password, confirmPassword } = req.body;
+      let { username, name, email, password, confirmPassword } = req.body;
+      username = username.toLowerCase();
+      email = email.toLowerCase();
       if (password === confirmPassword) {
         const checkUsername = await account.findOne({ where: { username } });
-        if (checkUsername === null) {
+        const checkEmail = await account.findOne({ where: { email } });
+
+        if (checkUsername !== null) {
+          res.status(400).json({
+            status: false,
+            message: "username not available",
+          });
+        } else if (checkEmail !== null) {
+          res.status(400).json({
+            status: false,
+            message: "email is already registered",
+          });
+        } else {
           const result = await account.create({
             username,
             name,
@@ -85,11 +109,6 @@ class AccountController {
               message: "account failed to created!",
             });
           }
-        } else {
-          res.status(400).json({
-            status: false,
-            message: "username not available",
-          });
         }
       } else {
         res.status(400).json({
@@ -111,7 +130,10 @@ class AccountController {
       const result = await account.findOne({
         where: {
           role: "seller",
-          [Op.or]: [{ username: key }, { email: key }],
+          [Op.or]: [
+            { username: key.toLowerCase() },
+            { email: key.toLowerCase() },
+          ],
         },
         include: [profile],
       });
@@ -156,7 +178,10 @@ class AccountController {
       const result = await account.findOne({
         where: {
           role: "customer",
-          [Op.or]: [{ username: key }, { email: key }],
+          [Op.or]: [
+            { username: key.toLowerCase() },
+            { email: key.toLowerCase() },
+          ],
         },
         include: [profile],
       });
@@ -389,9 +414,23 @@ class AccountController {
     try {
       const _id = +req.accountData.id;
       const _username = req.accountData.username;
-      const { username, name, email, phone, address } = req.body;
+      var { username, name, email, phone, address } = req.body;
+      username = username.toLowerCase();
+      email = email.toLowerCase();
       const checkUsername = await account.findOne({ where: { username } });
-      if (checkUsername === null || _username === username) {
+      const checkEmail = await account.findOne({ where: { email } });
+      const checkAccount = await account.findOne({ where: { id: _id } });
+      if (checkUsername !== null && _username !== username) {
+        res.status(400).json({
+          status: false,
+          message: "username not available",
+        });
+      } else if (checkEmail !== null && checkAccount.email !== email) {
+        res.status(400).json({
+          status: false,
+          message: "email is already registered",
+        });
+      } else {
         const result = await account.update(
           {
             username,
@@ -425,11 +464,6 @@ class AccountController {
             message: "update profile unsuccessful",
           });
         }
-      } else {
-        res.status(400).json({
-          status: false,
-          message: "username not available",
-        });
       }
     } catch (error) {
       res.status(500).json({

@@ -85,18 +85,27 @@ const Success = () => {
                 data-bs-target="#detailSuccessModal"
                 onClick={() => clickHanlder(product)}
               >
-                <div className="card-body">
+                <div
+                  className={
+                    +product.isLive === 0
+                      ? "card-body bg-hide rounded-3"
+                      : "card-body"
+                  }
+                >
                   <LazyLoadImage
                     className="rounded-3 float-start me-3"
-                    style={{ height: "110px" }}
+                    style={{ height: "150px" }}
                     src={imageUrl + product.imageProducts[0].src}
                     alt={product.imageProducts[0].src}
                   ></LazyLoadImage>
-                  <div className="row">
+                  <div className="row position-relative">
                     <div className="col-sm-8">
-                      <h5 className="card-title">
-                        {product.name} #{product.id}
-                      </h5>
+                      <h5 className="card-title">{product.name}</h5>
+                      {+product.isLive === 0 ? (
+                        <h6 className="position-absolute top-0 end-0 text-danger mx-3">
+                          Hidden
+                        </h6>
+                      ) : null}
                       <p className="card-text my-2">
                         {readableDate(product.dateStart)} -{" "}
                         {readableDate(product.dateEnd)}
@@ -173,13 +182,13 @@ const Success = () => {
               <h6>
                 Guide :{" "}
                 {guide.name !== undefined
-                  ? `${guide.name}(${guide.phone})`
+                  ? `${guide.name} (${guide.phone})`
                   : "undefined"}
               </h6>
               <table className="table table-hover">
                 <thead>
                   <tr className="table-active">
-                    <th scope="col">Kode Order</th>
+                    <th scope="col">Order Id</th>
                     <th scope="col">Name</th>
                     <th scope="col">Phone</th>
                     <th scope="col">Email</th>

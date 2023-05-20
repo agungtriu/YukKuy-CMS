@@ -41,13 +41,7 @@ class HomeCMSController {
         },
       });
 
-      const visitProducts = await visitProduct.findAll({
-        where: {
-          accountId,
-          createdAt: { [Op.between]: [startDate, endDate] },
-        },
-      });
-
+      var countVisitProduct = 0;
       var detailVisitProducts = [];
 
       for (const product of products) {
@@ -62,6 +56,7 @@ class HomeCMSController {
             ...product.dataValues,
             countVisit: result.length,
           });
+          countVisitProduct += result.length;
         }
       }
       detailVisitProducts.sort((a, b) => b.countVisit - a.countVisit);
@@ -70,7 +65,7 @@ class HomeCMSController {
         countProduct: products.length,
         countNewOrder: orders.length,
         countVisitAccount: visitAccounts.length,
-        countVisitProduct: visitProducts.length,
+        countVisitProduct: countVisitProduct,
         dataVisitProduct: detailVisitProducts,
       });
     } catch (error) {

@@ -15,11 +15,12 @@ productRoutes.post(
   ProductController.addProduct
 );
 productRoutes.put(
-  "/edit/:id",
+  "/edit/image/:id",
   auth,
   upload.array("images"),
-  ProductController.editProduct
+  ProductController.editProductWithImage
 );
+productRoutes.put("/edit/:id", auth, ProductController.editProduct);
 productRoutes.put("/show/:id", auth, ProductController.showProduct);
 productRoutes.get("/delete/:id", auth, ProductController.deleteProduct);
 

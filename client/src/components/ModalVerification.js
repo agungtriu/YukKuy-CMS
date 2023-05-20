@@ -41,7 +41,8 @@ const ModalVerification = (props) => {
             </div>
             <div className="modal-body row">
               <LazyLoadImage
-                className="rounded-3 float-start me-3 col"
+                className="col"
+                style={{ maxHeight: "450px", maxWidth: "450px" }}
                 src={imageUrl + order.imageReceipt}
                 alt={order.imageReceipt}
               ></LazyLoadImage>

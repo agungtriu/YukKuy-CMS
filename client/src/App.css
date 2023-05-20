@@ -1,32 +1,85 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
-:root{
-    font-size: 15px;
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap");
+:root {
+  font-size: 15px;
 }
 body {
-    font-family: 'Roboto', 'sans-serif';
-    background-color: #F5F5F5;
-
-
+  font-family: "Roboto", "sans-serif" !important;
+  background-color: #f5f5f5;
 }
 .avatar-mini {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-  }
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
 
-.card-img-top { 
-    object-fit: cover; 
-    object-position: center; 
-  }
+.card-img-top {
+  object-fit: cover;
+  object-position: center;
+}
 
-.card-body:hover {
-    background-color: #00000027;
-    cursor: pointer;
-  }
-  
 .card-body h6 {
-    color: #FFFFFF;
-  }
-  
+  color: #ffffff;
+}
 
+.calendarWrap {
+  display: inline-block;
+  position: relative;
+}
+
+.calendarElement {
+  position: absolute;
+  left: 100%;
+  transform: translateX(-100%);
+  top: 40px;
+  border: 1px solid #ccc;
+  z-index: 999;
+}
+
+.bg-hide {
+  background-color: #00000027;
+}
+.btn-success {
+  background-color: #19a463 !important;
+  border-color: #19a463 !important;
+  color: white !important;
+}
+
+.link-success {
+  color: #19a463 !important;
+}
+
+.btn-outline-success:hover {
+  background-color: #19a463 !important;
+  border-color: #19a463 !important;
+  color: white !important;
+}
+.btn-outline-success {
+  background-color: #ffffff !important;
+  border-color: #ffffff !important;
+  color: darkred !important;
+}
+.active {
+  background-color: #19a463 !important;
+  border-color: #19a463 !important;
+}
+
+.dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+.dropdown > .dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+  pointer-events: none;
+}
+
+.dropdown-menu-right {
+  right: 0 !important;
+  left: auto !important;
+}
+
+.avatar-mini {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
 
