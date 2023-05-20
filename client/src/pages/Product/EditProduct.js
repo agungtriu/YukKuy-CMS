@@ -6,6 +6,7 @@ import {
   editProduct,
   getProvinces,
   getCities,
+  editProductWithImage,
 } from "../../axios/productAxios";
 import Swal from "sweetalert2";
 import { Form } from "react-bootstrap";
@@ -19,6 +20,7 @@ import CityFormatter from "../../helpers/CityFormatter";
 const EditProduct = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [selectedGuide, setSelectedGuide] = useState({});
+  const [productId, setProductId] = useState(0);
   const [form, setForm] = useState({
     imageProducts: [],
     name: "",
@@ -41,8 +43,8 @@ const EditProduct = () => {
   const getParams = () => {
     const id = params.productId;
     getDetailProduct(id, (result) => {
+      setProductId(result.data.id);
       setForm({
-        id: result.data.id,
         imageProducts: result.data.imageProducts.map((item) => item.src),
         name: result.data.name,
         dateStart: result.data.dateStart,
@@ -98,27 +100,53 @@ const EditProduct = () => {
   });
 
   const submitHandler = () => {
-    if (file !== null) {
-      const formData = new FormData();
-      formData.append("images", file);
-      formData.append("name", form.name);
-      formData.append("dateStart", form.dateStart);
-      formData.append("dateEnd", form.dateEnd);
-      formData.append("price", form.price);
-      formData.append("province", form.province);
-      formData.append("city", form.city);
-      formData.append("addressDetail", form.addressDetail);
-      formData.append("description", form.description);
-      formData.append("addressMeetingPoint", form.addressMeetingPoint);
-      formData.append("guideId", form.guideId);
-
-      editProduct(form.id, formData, (status) => {
-        if (status) {
-          navigation("/products");
-        }
-      });
+    if (form.name === "") {
+      Swal.fire("Add Products", "Name cannot be empty", "error");
+    } else if (form.dateStart === "") {
+      Swal.fire("Add Products", "Start Date cannot be empty", "error");
+    } else if (form.dateEnd === "") {
+      Swal.fire("Add Products", "End Date cannot be empty", "error");
+    } else if (form.price === 0) {
+      Swal.fire("Add Products", "Price cannot be 0", "error");
+    } else if (form.province === "") {
+      Swal.fire("Add Products", "Province cannot be empty", "error");
+    } else if (form.city === "") {
+      Swal.fire("Add Products", "City cannot be empty", "error");
+    } else if (form.addressDetail === "") {
+      Swal.fire("Add Products", "Address cannot be empty", "error");
+    } else if (form.description === "") {
+      Swal.fire("Add Products", "Description cannot be empty", "error");
+    } else if (form.addressMeetingPoint === "") {
+      Swal.fire("Add Products", "Meeting Point cannot be empty", "error");
+    } else if (form.guideId === 0) {
+      Swal.fire("Add Products", "Guide cannot be empty", "error");
     } else {
-      Swal.fire("Edit Product", "file cannot be empty", "error");
+      if (file === null) {
+        editProduct(productId, form, (status) => {
+          if (status) {
+            navigation("/products");
+          }
+        });
+      } else {
+        const formData = new FormData();
+        formData.append("images", file);
+        formData.append("name", form.name);
+        formData.append("dateStart", form.dateStart);
+        formData.append("dateEnd", form.dateEnd);
+        formData.append("price", form.price);
+        formData.append("province", form.province);
+        formData.append("city", form.city);
+        formData.append("addressDetail", form.addressDetail);
+        formData.append("description", form.description);
+        formData.append("addressMeetingPoint", form.addressMeetingPoint);
+        formData.append("guideId", form.guideId);
+
+        editProductWithImage(form.id, formData, (status) => {
+          if (status) {
+            navigation("/products");
+          }
+        });
+      }
     }
   };
   //Preview
@@ -150,9 +178,6 @@ const EditProduct = () => {
               style={{ height: "300px" }}
             ></img>
             <div className="mb-3">
-              {/* <label htmlFor="formFile" className="form-label">
-                Product Images: {form.imageProducts}
-              </label> */}
               <input
                 type="file"
                 className="form-control"
@@ -309,6 +334,7 @@ const EditProduct = () => {
                   options={guideOptions}
                   onChange={(e) => {
                     setForm({ ...form, guideId: e.value });
+                    setSelectedGuide({ name: e.label, id: e.value });
                   }}
                 />
               </div>

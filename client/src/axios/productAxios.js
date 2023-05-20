@@ -74,12 +74,35 @@ const getDetailProduct = async (productId, cb) => {
     }
   }
 };
-
 const editProduct = async (productId, form, cb) => {
   try {
     let results = await axios({
       method: "PUT",
       url: URL + "edit/" + productId,
+      data: form,
+      headers: {
+        access_token: localStorage.access_token,
+      },
+    });
+    cb(true);
+    Swal.fire("Edit Product", results.data.message, "success");
+  } catch (err) {
+    if (err.response.status === 500) {
+      Swal.fire(
+        "Error!",
+        err.response.data.error.errors[0].original.validatorArgs[0].message,
+        "error"
+      );
+    } else {
+      Swal.fire("Error!", err.response.data.message, "error");
+    }
+  }
+};
+const editProductWithImage = async (productId, form, cb) => {
+  try {
+    let results = await axios({
+      method: "PUT",
+      url: URL + "edit/image/" + productId,
       data: form,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -205,6 +228,7 @@ export {
   getDetailProduct,
   addProduct,
   editProduct,
+  editProductWithImage,
   getShow,
   deleteProduct,
   getProvinces,

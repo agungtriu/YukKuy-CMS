@@ -64,7 +64,29 @@ const FormProduct = () => {
   });
 
   const submitHandler = () => {
-    if (file !== null) {
+    if (file === null) {
+      Swal.fire("Add Products", "File cannot be empty", "error");
+    } else if (form.name === "") {
+      Swal.fire("Add Products", "Name cannot be empty", "error");
+    } else if (form.dateStart === "") {
+      Swal.fire("Add Products", "Start Date cannot be empty", "error");
+    } else if (form.dateEnd === "") {
+      Swal.fire("Add Products", "End Date cannot be empty", "error");
+    } else if (form.price === 0) {
+      Swal.fire("Add Products", "Price cannot be 0", "error");
+    } else if (form.province === "") {
+      Swal.fire("Add Products", "Province cannot be empty", "error");
+    } else if (form.city === "") {
+      Swal.fire("Add Products", "City cannot be empty", "error");
+    } else if (form.addressDetail === "") {
+      Swal.fire("Add Products", "Address cannot be empty", "error");
+    } else if (form.description === "") {
+      Swal.fire("Add Products", "Description cannot be empty", "error");
+    } else if (form.addressMeetingPoint === "") {
+      Swal.fire("Add Products", "Meeting Point cannot be empty", "error");
+    } else if (form.guideId === 0) {
+      Swal.fire("Add Products", "Guide cannot be empty", "error");
+    } else {
       const formData = new FormData();
       formData.append("images", file);
       formData.append("name", form.name);
@@ -83,8 +105,6 @@ const FormProduct = () => {
           navigation("/products");
         }
       });
-    } else {
-      Swal.fire("Add Products", "file cannot be empty", "error");
     }
   };
 

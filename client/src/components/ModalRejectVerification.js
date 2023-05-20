@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { rejectVerificationOrder } from "../axios/orderAxios";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const ModalRejectVerification = (props) => {
   const { orderId } = props;
@@ -8,11 +8,12 @@ const ModalRejectVerification = (props) => {
     reason: "",
   });
   const navigate = useNavigate();
-
+  const closeRef = useRef();
   const rejectHandler = (orderId, reason) => {
     rejectVerificationOrder(orderId, reason, (status) => {
       if (status) {
         navigate("/orders");
+        closeRef.current.click();
       }
     });
   };
@@ -55,13 +56,13 @@ const ModalRejectVerification = (props) => {
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
+                ref={closeRef}
               >
                 Cancel
               </button>
               <button
                 type="button"
                 className="btn btn-primary"
-                data-bs-dismiss="modal"
                 onClick={() => {
                   rejectHandler(orderId, reason);
                 }}

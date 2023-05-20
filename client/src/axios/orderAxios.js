@@ -97,16 +97,21 @@ const acceptVerificationOrder = async (id, cb) => {
 
 const rejectVerificationOrder = async (id, reason, cb) => {
   try {
-    let results = await axios({
-      method: "PUT",
-      url: URL + "/verifications/reject/" + id,
-      data: reason,
-      headers: {
-        access_token: localStorage.access_token,
-      },
-    });
-    cb(results.data.status);
-    Swal.fire("Reject Verification", results.data.message, "success");
+    if (reason.reason === "") {
+      Swal.fire("Reject Verification", "Reason cannot be empty", "error");
+      cb(false);
+    } else {
+      let results = await axios({
+        method: "PUT",
+        url: URL + "/verifications/reject/" + id,
+        data: reason,
+        headers: {
+          access_token: localStorage.access_token,
+        },
+      });
+      cb(results.data.status);
+      Swal.fire("Reject Verification", results.data.message, "success");
+    }
   } catch (err) {
     if (err.response.status === 500) {
       Swal.fire(
