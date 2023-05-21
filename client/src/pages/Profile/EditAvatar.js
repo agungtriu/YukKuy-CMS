@@ -54,12 +54,12 @@ const EditAvatar = () => {
           setAvatar(avatar);
           navigation("/profile");
         }
+        window.location.reload()
       });
     } else {
       Swal.fire("Edit Avatar", "file cannot be empty", "error");
     }
   };
-  console.log(avatar)
 
   return (
     <>

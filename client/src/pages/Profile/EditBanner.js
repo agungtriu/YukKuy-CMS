@@ -55,6 +55,7 @@ const EditBanner = () => {
           setBanner(banner);
           navigation("/profile");
         }
+        window.location.reload()
       });
     } else {
       Swal.fire("Edit Banner", "file cannot be empty", "error");

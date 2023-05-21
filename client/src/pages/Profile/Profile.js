@@ -13,6 +13,8 @@ import { ProfileBar } from "../../components";
 import { Modal } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { editProfile } from "../../axios/accountAxios";
+import EditAvatar from "./EditAvatar";
+import EditBanner from "./EditBanner";
 const Profile = () => {
   const [user, setUser] = useState({
     username: "",
@@ -25,11 +27,6 @@ const Profile = () => {
     avatar: "",
     bannerImage: "",
   });
-
-  const [showEditModal, setShowEditModal] = useState(false);
-
-  const handleCloseEditModal = () => setShowEditModal(false);
-  const handleShowEditModal = () => setShowEditModal(true);
 
   const getAccount = () => {
     const username = localStorage.username;
@@ -60,10 +57,26 @@ const Profile = () => {
     });
   };
 
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [clickedAvatar, setClickedAvatar] = useState(false);
+  const [clickedBanner, setClickedBanner] = useState(false);
+
+  const handleCloseEditModal = () => setShowEditModal(false);
+  const handleShowEditModal = () => setShowEditModal(true);
+
+  const handleClickedAvatar = () => {
+    setClickedAvatar(true);
+  };
+  const handleClickedBanner = () => {
+    setClickedBanner(true);
+  };
+  console.log(clickedBanner);
   return (
     <>
       <ProfileBar></ProfileBar>
       <div>
+        {clickedAvatar ? <EditAvatar></EditAvatar> : null}
+        {clickedBanner ? <EditBanner></EditBanner> : null}
         <div className="card border-0 shadow">
           <div className="d-flex justify-content-center">
             <img
@@ -90,7 +103,8 @@ const Profile = () => {
                     <div className="col">
                       <div className="input-group flex-nowrap">
                         <Link
-                          className="btn btn-outline-dark" to={'edit/password'}
+                          className="btn btn-outline-dark"
+                          to={"edit/password"}
                         >
                           <FontAwesomeIcon icon={faKey} />
                         </Link>
@@ -98,22 +112,22 @@ const Profile = () => {
                     </div>
                     <div className="col">
                       <div className="input-group flex-nowrap">
-                        <Link className="btn btn-outline-dark" to={'edit/avatar'}>
+                        <Link className="btn btn-outline-dark">
                           <FontAwesomeIcon
                             icon={faUser}
                             style={{ color: "#ba1c1c" }}
+                            onClick={handleClickedAvatar}
                           />
                         </Link>
                       </div>
                     </div>
                     <div className="col">
                       <div className="input-group flex-nowrap">
-                        <Link
-                          className="btn btn-outline-dark" to={'edit/banner'}
-                        >
+                        <Link className="btn btn-outline-dark">
                           <FontAwesomeIcon
                             icon={faImage}
                             style={{ color: "#ba1c1c" }}
+                            onClick={handleClickedBanner}
                           />
                         </Link>
                       </div>
