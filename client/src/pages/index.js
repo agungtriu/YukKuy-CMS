@@ -4,7 +4,7 @@ import NewOrder from "./Order/NewOrder";
 import Rejected from "./Order/Rejected";
 import Cancel from "./Order/Cancel";
 import Success from "./Order/Success";
-import Product from "./Product/Product";
+import Products from "./Product/Products";
 import FormProduct from "./Product/FormProduct";
 import EditProduct from "./Product/EditProduct";
 import Login from "./Account/Login";
@@ -20,7 +20,7 @@ import SocialMedia from "./SocialMedia/SocialMedia";
 export {
     Dashboard,
     Orders,NewOrder,Rejected,Cancel,Success,
-    Product,FormProduct,EditProduct,
+    Products,FormProduct,EditProduct,
     Login, Register,
     Profile,EditAvatar,EditBanner,EditPassword,
     Guide,

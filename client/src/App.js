@@ -1,5 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import { Account, BarMenu } from "./components";
 import SideBar from "./components/SideBar";
 import React, { useState } from "react";

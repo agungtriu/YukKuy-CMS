@@ -10,7 +10,7 @@ import {
   Dashboard,
   NewOrder,
   Orders,
-  Product,
+  Products,
   Profile,
   Rejected,
   Success,
@@ -30,7 +30,7 @@ const MainContent = () => {
           <Route path="reject" element={<Rejected></Rejected>}></Route>
           <Route path="cancel" element={<Cancel></Cancel>}></Route>
         </Route>
-        <Route path="/products" element={<Product></Product>}></Route>
+        <Route path="/products" element={<Products></Products>}></Route>
         <Route path="products">
           <Route path="add" element={<FormProduct></FormProduct>}></Route>
           <Route
@@ -46,9 +46,9 @@ const MainContent = () => {
           ></Route>
           <Route path="edit/avatar" element={<EditAvatar></EditAvatar>}></Route>
           <Route path="edit/banner" element={<EditBanner></EditBanner>}></Route>
-          <Route path="bank" element={<Bank></Bank>}></Route>
-          <Route path="guide" element={<Guide></Guide>}></Route>
         </Route>
+        <Route path="bank" element={<Bank></Bank>}></Route>
+        <Route path="guide" element={<Guide></Guide>}></Route>
       </Routes>
     </>
   );

@@ -278,7 +278,7 @@ class ProductController {
     }
   }
 
-  static async editProduct(req, res) {
+  static async editProductWithImage(req, res) {
     try {
       const id = +req.params.id;
       const {
@@ -342,6 +342,64 @@ class ProductController {
           deleteFile(image.filename);
         });
 
+        res.status(400).json({
+          status: false,
+          message: "update product unsuccessful",
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        status: false,
+        error: error,
+      });
+    }
+  }
+
+  static async editProduct(req, res) {
+    try {
+      const id = +req.params.id;
+      const {
+        name,
+        dateStart,
+        dateEnd,
+        price,
+        province,
+        city,
+        addressDetail,
+        longitude,
+        latitude,
+        description,
+        addressMeetingPoint,
+        guideId,
+      } = req.body;
+
+      const _dateStart = new Date(dateStart);
+      const _dateEnd = new Date(dateEnd);
+
+      const result = await product.update(
+        {
+          name,
+          dateStart: _dateStart,
+          dateEnd: _dateEnd,
+          price,
+          province,
+          city,
+          addressDetail,
+          longitude,
+          latitude,
+          description,
+          addressMeetingPoint,
+          guideId,
+        },
+        { where: { id } }
+      );
+
+      if (result[0] === 1) {
+        res.status(201).json({
+          status: true,
+          message: "update product successful",
+        });
+      } else {
         res.status(400).json({
           status: false,
           message: "update product unsuccessful",

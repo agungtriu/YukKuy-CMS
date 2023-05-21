@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { editBanner, getAccountByUsername } from "../../axios/accountAxios";
 import { imageUrl } from "../../config/config";
 import Swal from "sweetalert2";
+import { Modal, Button } from "react-bootstrap";
 
 const EditBanner = () => {
   const [user, setUser] = useState({ bannerImage: "" });
@@ -10,6 +11,7 @@ const EditBanner = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [banner, setBanner] = useState();
   const [isExist, setIsExist] = useState(false);
+  const [showModal, setShowModal] = useState(true);
 
   const getBanner = () => {
     const username = localStorage.username;
@@ -19,6 +21,7 @@ const EditBanner = () => {
       });
     });
   };
+
   useEffect(() => {
     getBanner();
     setBanner(localStorage.image);
@@ -35,7 +38,14 @@ const EditBanner = () => {
 
     reader.readAsDataURL(file);
   };
+
   const navigation = useNavigate();
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+
   const submitHandler = () => {
     if (file !== null) {
       const fromData = new FormData();
@@ -50,42 +60,47 @@ const EditBanner = () => {
       Swal.fire("Edit Banner", "file cannot be empty", "error");
     }
   };
+
   return (
     <>
-      <div className="card">
-        <div className="d-flex justify-content-center">
-          <img
-            src={isExist === false ? user.bannerImage : previewImage}
-            className="card-img-top"
-            style={{ width: "75%", height: "250px" }}
-            alt=""
-          ></img>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="formFile" className="form-label">
-            image: {banner}
-          </label>
-          <input
-            className="form-control"
-            type="file"
-            id="formFile"
-            onChange={(e) => {
-              setFile(e.target.files[0]);
-              setBanner(e.target.files[0].name);
-              handleImageUpload(e);
-            }}
-          ></input>
-        </div>
-        <div className="d-flex justify-content-center">
-          <Link
-            type="submit"
-            className="btn btn-primary mb-3"
-            onClick={() => submitHandler()}
-          >
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Banner</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="d-flex justify-content-center">
+            <img
+              src={isExist === false ? user.bannerImage : previewImage}
+              className="card-img-top"
+              style={{ width: "75%", height: "250px" }}
+              alt=""
+            ></img>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="formFile" className="form-label">
+              Image: {banner}
+            </label>
+            <input
+              className="form-control"
+              type="file"
+              id="formFile"
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+                setBanner(e.target.files[0].name);
+                handleImageUpload(e);
+              }}
+            ></input>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={submitHandler}>
             Confirm
-          </Link>
-        </div>
-      </div>
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

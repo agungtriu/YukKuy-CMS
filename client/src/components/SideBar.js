@@ -4,7 +4,7 @@ import MainContent from "./MainContent";
 import { Link } from "react-router-dom";
 
 const SideBar = () => {
-  const [activeItem, setActiveItem] = useState(null);
+  const [activeItem, setActiveItem] = useState("dashboard");
 
   const handleItemClick = (item) => {
     setActiveItem(item);
@@ -12,9 +12,9 @@ const SideBar = () => {
 
   const getItemClassName = (item) => {
     if (activeItem === item) {
-      return "nav-link px-5 py-2 mx-auto active";
+      return "nav-item nav-link mt-3 active py-3";
     } else {
-      return "nav-link px-5 py-2 mx-auto link-dark";
+      return "nav-item nav-link bg-white mt-3 text-dark py-3";
     }
   };
 
@@ -23,52 +23,32 @@ const SideBar = () => {
       <div className="container-fluid">
         <div className="row flex-nowrap">
           <div
-            className="card col-auto col-md-3 col-xl-2 px-sm-2 px-0 shadow-lg"
+            className="card col-auto col-md-3 col-xl-2 px-sm-2 px-0 shadow-lg min-vh-100"
             style={{ backgroundColor: "#F5F5F5", borderColor: "white" }}
           >
-            <div className="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
-              <ul
-                className="nav nav-pills flex-column mb-sm-auto mx-auto mb-0"
-                id="menu"
+            <nav className="nav flex-column nav-pills text-center">
+              <Link
+                className={getItemClassName("dashboard")}
+                to={"/"}
+                onClick={() => handleItemClick("dashboard")}
               >
-                <li className="card w-100 my-2 border-0">
-                  <Link
-                    className={getItemClassName("home")}
-                    to={"/"}
-                    onClick={() => handleItemClick("home")}
-                  >
-                    <i className="fs-4 bi-house"></i>{" "}
-                    <span className="ms-1 d-none d-sm-inline">Home</span>
-                  </Link>
-                </li>
-                <li className="card w-100 my-2 border-0">
-                  <Link
-                    className={getItemClassName("orders")}
-                    to={"/orders"}
-                    onClick={() => handleItemClick("orders")}
-                  >
-                    <i className="fs-4 bi-table"></i>{" "}
-                    <span className="ms-1 d-none d-sm-inline">Orders</span>
-                  </Link>
-                </li>
-                <li className="card w-100 my-2 border-0">
-                  <Link
-                    className={getItemClassName("products")}
-                    to={"/products"}
-                    onClick={() => handleItemClick("products")}
-                  >
-                    <i className="fs-4 bi-grid"></i>{" "}
-                    <span className="ms-1 d-none d-sm-inline">Products</span>
-                  </Link>
-                  <ul
-                    className="collapse nav flex-column ms-1"
-                    id="submenu3"
-                    data-bs-parent="#menu"
-                  ></ul>
-                </li>
-              </ul>
-              <hr></hr>
-            </div>
+                Dashboard
+              </Link>
+              <Link
+                className={getItemClassName("orders")}
+                to={"/orders"}
+                onClick={() => handleItemClick("orders")}
+              >
+                Order
+              </Link>
+              <Link
+                className={getItemClassName("products")}
+                to={"/products"}
+                onClick={() => handleItemClick("products")}
+              >
+                Product
+              </Link>
+            </nav>
           </div>
           <div
             className="card col py-3 mx-4 shadow-lg"

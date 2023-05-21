@@ -13,7 +13,6 @@ import { ProfileBar } from "../../components";
 import { Modal } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { editProfile } from "../../axios/accountAxios";
-
 const Profile = () => {
   const [user, setUser] = useState({
     username: "",
@@ -57,7 +56,7 @@ const Profile = () => {
       if (status) {
         navigation("/profile");
       }
-      window.location.reload()
+      window.location.reload();
     });
   };
 
@@ -91,8 +90,7 @@ const Profile = () => {
                     <div className="col">
                       <div className="input-group flex-nowrap">
                         <Link
-                          className="btn btn-outline-dark"
-                          onClick={handleShowEditModal}
+                          className="btn btn-outline-dark" to={'edit/password'}
                         >
                           <FontAwesomeIcon icon={faKey} />
                         </Link>
@@ -100,10 +98,7 @@ const Profile = () => {
                     </div>
                     <div className="col">
                       <div className="input-group flex-nowrap">
-                        <Link
-                          className="btn btn-outline-dark"
-                          onClick={handleShowEditModal}
-                        >
+                        <Link className="btn btn-outline-dark" to={'edit/avatar'}>
                           <FontAwesomeIcon
                             icon={faUser}
                             style={{ color: "#ba1c1c" }}
@@ -114,8 +109,7 @@ const Profile = () => {
                     <div className="col">
                       <div className="input-group flex-nowrap">
                         <Link
-                          className="btn btn-outline-dark"
-                          onClick={handleShowEditModal}
+                          className="btn btn-outline-dark" to={'edit/banner'}
                         >
                           <FontAwesomeIcon
                             icon={faImage}
@@ -142,7 +136,8 @@ const Profile = () => {
                         <FontAwesomeIcon
                           icon={faPen}
                           style={{ color: "#30c0af" }}
-                        />{" "}
+                          className="mx-2"
+                        />
                         Edit
                       </Link>
                     </div>
@@ -193,9 +188,8 @@ const Profile = () => {
           </div>
         </div>
       </div>
-
       <Modal show={showEditModal} onHide={handleCloseEditModal}>
-        <Modal.Header closeLink>
+        <Modal.Header>
           <Modal.Title>Edit Profile</Modal.Title>
         </Modal.Header>
         <Modal.Body>

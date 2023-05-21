@@ -4,7 +4,6 @@ import {
   deleteBank,
   editBanks,
   getBanks,
-  getListBanks,
 } from "../../axios/bankAxios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -12,10 +11,10 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { ProfileBar } from "../../components";
 import { Button, Form, Modal } from "react-bootstrap";
+import bankOptions from "../../data/bankOption.json";
 
 const Bank = () => {
   const [banks, setBanks] = useState([]);
-  const [listBank, setListBank] = useState([])
   const [editForm, setEditForm] = useState({
     id: "",
     nameBank: "",
@@ -38,9 +37,6 @@ const Bank = () => {
     getBanks(accountId, (banks) => {
       setBanks(banks);
     });
-    getListBanks(result => {
-      setListBank(result)
-    })
   }, []);
 
   const handleEdit = (index, data) => {
@@ -88,12 +84,11 @@ const Bank = () => {
   const deleteHandler = (id) => {
     deleteBank(id, (status) => {
       if (status) {
-        navigation("/profile");
+        navigation("/profile/bank");
         window.location.reload();
       }
     });
   };
-console.log(listBank)
   return (
     <>
       <ProfileBar></ProfileBar>
@@ -126,10 +121,12 @@ console.log(listBank)
                                   onChange={handleEditFormChange}
                                 >
                                   <option value="">Pilih Nama Bank</option>
-                                  <option value="Bank A">Bank A</option>
-                                  <option value="Bank B">Bank B</option>
-                                  <option value="Bank C">Bank C</option>
-                                  {/* Tambahkan opsi bank lainnya di sini */}
+                                  {bankOptions.map((item, index) => (
+                                    <option
+                                      value={item.name}
+                                      key={index}
+                                    >{`${item.name} : ${item.code}`}</option>
+                                  ))}
                                 </Form.Control>
                               </Form.Group>
 
@@ -216,13 +213,21 @@ console.log(listBank)
                       >
                         <Form.Label>Nama Bank</Form.Label>
                         <Form.Control
+                          as="select"
                           className="input-group"
-                          placeholder="Bank"
-                          type="text"
                           name="nameBank"
                           value={addForm.nameBank}
                           onChange={handleAddFormChange}
-                        ></Form.Control>
+                        >
+                          <option value="">Pilih Nama Bank</option>
+                          <option value="">Pilih Nama Bank</option>
+                          {bankOptions.map((item, index) => (
+                            <option
+                              value={item.name}
+                              key={index}
+                            >{`${item.name} : ${item.code}`}</option>
+                          ))}
+                        </Form.Control>
                       </Form.Group>
                       <Form.Group
                         className="mb-3"
