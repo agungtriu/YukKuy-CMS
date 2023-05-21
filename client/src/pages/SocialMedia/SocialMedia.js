@@ -68,7 +68,6 @@ const SocialMedia = () => {
       }
     });
   };
-  console.log(addForm);
   return (
     <>
       <h6 className="text-black py-2">Social Media:</h6>

@@ -1,4 +1,6 @@
 const baseUrl = "https://yukkuy.fly.dev"
 const imageUrl = `${baseUrl}/images/`
 
-module.exports = { baseUrl, imageUrl} 
+const apiKeyBank = 'dp_test_VAxY2v89A05sBXZp'
+
+module.exports = { baseUrl, imageUrl, apiKeyBank} 

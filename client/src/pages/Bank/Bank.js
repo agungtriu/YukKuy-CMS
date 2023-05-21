@@ -4,19 +4,18 @@ import {
   deleteBank,
   editBanks,
   getBanks,
+  getListBanks,
 } from "../../axios/bankAxios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEdit,
-  faPlus,
-  faSave,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { ProfileBar } from "../../components";
+import { Button, Form, Modal } from "react-bootstrap";
 
 const Bank = () => {
   const [banks, setBanks] = useState([]);
+  const [listBank, setListBank] = useState([])
   const [editForm, setEditForm] = useState({
     id: "",
     nameBank: "",
@@ -31,16 +30,22 @@ const Bank = () => {
   });
 
   const navigation = useNavigate();
-  const [isAddVisible, setIsAddVisible] = useState(false);
+  const [show, setShow] = useState(false);
+  const [addShow, setAddShow] = useState(false);
+
   useEffect(() => {
     const accountId = localStorage.id;
     getBanks(accountId, (banks) => {
       setBanks(banks);
     });
+    getListBanks(result => {
+      setListBank(result)
+    })
   }, []);
 
   const handleEdit = (index, data) => {
     setEditIndex(index);
+    setShow(true);
     setEditForm({
       id: data.id,
       nameBank: data.bank,
@@ -48,10 +53,14 @@ const Bank = () => {
       number: data.number,
     });
   };
+
+  const handleClose = () => setShow(false);
+  const handleAddClose = () => setAddShow(false);
+
   const submitHandler = (id, form) => {
     editBanks(id, form, (status) => {
       if (status) {
-        navigation("/profile");
+        navigation("/profile/bank");
       } else {
         Swal.fire("Edit Product", "file cannot be empty", "error");
       }
@@ -76,10 +85,6 @@ const Bank = () => {
     });
   };
 
-  const toggleAddBankForm = () => {
-    setIsAddVisible(!isAddVisible);
-  };
-
   const deleteHandler = (id) => {
     deleteBank(id, (status) => {
       if (status) {
@@ -88,8 +93,10 @@ const Bank = () => {
       }
     });
   };
+console.log(listBank)
   return (
     <>
+      <ProfileBar></ProfileBar>
       <div className="card mx-2 border-0 shadow">
         <h6 className="mx-3">Your Bank Account:</h6>
         <div className="overflow-scroll">
@@ -97,124 +104,179 @@ const Bank = () => {
             {banks.map((item, index) => (
               <div className="col" key={item.id}>
                 <div className="card w-75 my-1 px-0">
-                  <div className="card-header d-flex justify-content-between align-items-center">
+                  <div className="card-header d-flex justify-content-between align-items-start">
                     {editIndex === index ? (
                       <>
-                        <input
-                          className="input-group"
-                          placeholder="Bank"
-                          type="text"
-                          name="bank"
-                          value={editForm.nameBank}
-                          onChange={handleEditFormChange}
-                        />
-                        <Link
-                          className="link-dark"
-                          onClick={() => submitHandler(item.id, editForm)}
-                        >
-                          <FontAwesomeIcon icon={faSave} />
-                        </Link>
+                        <Modal show={show} onHide={handleClose}>
+                          <Modal.Header closeButton>
+                            <Modal.Title>Edit Product</Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            <Form>
+                              <Form.Group
+                                className="mb-3"
+                                controlId="exampleForm.ControlInput1"
+                              >
+                                <Form.Label>Nama Bank</Form.Label>
+                                <Form.Control
+                                  as="select"
+                                  className="input-group"
+                                  name="nameBank"
+                                  value={editForm.nameBank}
+                                  onChange={handleEditFormChange}
+                                >
+                                  <option value="">Pilih Nama Bank</option>
+                                  <option value="Bank A">Bank A</option>
+                                  <option value="Bank B">Bank B</option>
+                                  <option value="Bank C">Bank C</option>
+                                  {/* Tambahkan opsi bank lainnya di sini */}
+                                </Form.Control>
+                              </Form.Group>
+
+                              <Form.Group
+                                className="mb-3"
+                                controlId="exampleForm.ControlInput1"
+                              >
+                                <Form.Label>Nama Akun</Form.Label>
+                                <Form.Control
+                                  className="input-group"
+                                  placeholder="Name"
+                                  type="text"
+                                  name="name"
+                                  value={editForm.name}
+                                  onChange={handleEditFormChange}
+                                ></Form.Control>
+                              </Form.Group>
+                              <Form.Group
+                                className="mb-3"
+                                controlId="exampleForm.ControlInput1"
+                              >
+                                <Form.Label>Nomor</Form.Label>
+                                <Form.Control
+                                  className="input-group"
+                                  placeholder="No"
+                                  type="text"
+                                  name="number"
+                                  value={editForm.number}
+                                  onChange={handleEditFormChange}
+                                ></Form.Control>
+                              </Form.Group>
+                            </Form>
+                          </Modal.Body>
+                          <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                              Close
+                            </Button>
+                            <Button
+                              variant="primary"
+                              onClick={() => submitHandler(item.id, editForm)}
+                            >
+                              Save Changes
+                            </Button>
+                          </Modal.Footer>
+                        </Modal>
                       </>
-                    ) : (
-                      <>
-                        <h5 className="mb-0">{item.bank}</h5>
-                        <Link
-                          className="link-dark"
-                          onClick={() => handleEdit(index, item)}
-                        >
-                          <FontAwesomeIcon icon={faEdit} />
-                        </Link>
-                        <Link
-                          className="link-dark"
-                          onClick={() => deleteHandler(item.id)}
-                        >
-                          <FontAwesomeIcon icon={faTrash} />
-                        </Link>
-                      </>
-                    )}
+                    ) : null}
+                    <div className="card-header d-flex justify-content-between align-items-start">
+                      <h5 className="mb-0">{item.bank}</h5>
+                    </div>
+                    <div className="button-container">
+                      <Link
+                        className="link-dark me-2"
+                        onClick={() => handleEdit(index, item)}
+                      >
+                        <FontAwesomeIcon icon={faEdit} />
+                      </Link>
+                      <Link
+                        className="link-dark me-2"
+                        onClick={() => deleteHandler(item.id)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Link>
+                    </div>
                   </div>
                   <div className="card-body">
-                    {editIndex === index ? (
-                      <>
-                        <input
-                          className="input-group"
-                          placeholder="Name"
-                          type="text"
-                          value={editForm.name}
-                          onChange={handleEditFormChange}
-                        />
-                        <input
-                          className="input-group"
-                          placeholder="No"
-                          type="text"
-                          value={editForm.number}
-                          onChange={handleEditFormChange}
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <h6 className="card-title text-black">{item.name}</h6>
-                        <h6 className="card-text text-black">{item.number}</h6>
-                      </>
-                    )}
+                    <h6 className="card-title text-black">{item.name}</h6>
+                    <h6 className="card-text text-black">{item.number}</h6>
                   </div>
                 </div>
               </div>
             ))}
             <div className="col">
-              {isAddVisible && (
-                <div className="card w-75 my-1 px-0">
-                  <div className="card-header d-flex justify-content-between align-items-center">
-                    <input
-                      className="input-group"
-                      placeholder="Bank"
-                      type="text"
-                      name="nameBank"
-                      value={addForm.nameBank}
-                      onChange={handleAddFormChange}
-                    />
-                  </div>
-                  <div className="card-body">
-                    <input
-                      className="input-group"
-                      placeholder="name"
-                      type="text"
-                      name="name"
-                      value={addForm.name}
-                      onChange={handleAddFormChange}
-                    />
-                    <input
-                      className="input-group"
-                      placeholder="No"
-                      type="number"
-                      name="number"
-                      value={addForm.number}
-                      onChange={handleAddFormChange}
-                    />
-                  </div>
-                  <div
-                    className="btn-group"
-                    role="group"
-                    aria-label="Basic example"
-                  >
-                    <Link
-                      className="btn btn-success btn-sm"
-                      onClick={handleAddBank}
+              {addShow ? (
+                <Modal show={addShow} onHide={handleAddClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Add Product</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Form>
+                      <Form.Group
+                        className="mb-3"
+                        controlId="exampleForm.ControlInput1"
+                      >
+                        <Form.Label>Nama Bank</Form.Label>
+                        <Form.Control
+                          className="input-group"
+                          placeholder="Bank"
+                          type="text"
+                          name="nameBank"
+                          value={addForm.nameBank}
+                          onChange={handleAddFormChange}
+                        ></Form.Control>
+                      </Form.Group>
+                      <Form.Group
+                        className="mb-3"
+                        controlId="exampleForm.ControlInput1"
+                      >
+                        <Form.Label>Nama Akun</Form.Label>
+                        <Form.Control
+                          className="input-group"
+                          placeholder="Name"
+                          type="text"
+                          name="name"
+                          value={addForm.name}
+                          onChange={handleAddFormChange}
+                        ></Form.Control>
+                      </Form.Group>
+                      <Form.Group
+                        className="mb-3"
+                        controlId="exampleForm.ControlInput1"
+                      >
+                        <Form.Label>Nomor</Form.Label>
+                        <Form.Control
+                          className="input-group"
+                          placeholder="No"
+                          type="text"
+                          name="number"
+                          value={addForm.number}
+                          onChange={handleAddFormChange}
+                        ></Form.Control>
+                      </Form.Group>
+                    </Form>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={handleAddClose}>
+                      Close
+                    </Button>
+                    <Button
+                      variant="primary"
+                      onClick={() => handleAddBank(addForm)}
                     >
-                      Save
-                    </Link>
+                      Save Changes
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              ) : (
+                <Link
+                  className="card w-75 my-1 px-0 text-decoration-none"
+                  onClick={() => setAddShow(true)}
+                >
+                  <div className="card-body text-center">
+                    <h6 className="card-title text-black">Add Bank</h6>
+                    <FontAwesomeIcon icon={faPlus} size="2xl" />
                   </div>
-                </div>
+                </Link>
               )}
-              <Link
-                className="card w-75 my-1 px-0 text-decoration-none"
-                onClick={toggleAddBankForm}
-              >
-                <div className="card-body text-center">
-                  <h6 className="card-title text-black">Add Bank</h6>
-                  <FontAwesomeIcon icon={faPlus} size="2xl" />
-                </div>
-              </Link>
             </div>
           </div>
         </div>

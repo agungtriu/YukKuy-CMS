@@ -62,48 +62,7 @@ const EditAvatar = () => {
           />
           <div className="card-body">
             <h5 className="text-center">{user.username}</h5>
-            <div className="row row-cols-auto d-flex justify-content-center">
-              <div className="col">
-                <div className="input-group flex-nowrap">
-                  <Link
-                    className="btn btn-outline-dark"
-                    to="/profile/edit/password"
-                  >
-                    <FontAwesomeIcon icon={faKey} />
-                  </Link>
-                </div>
-              </div>
-              <div className="col">
-                <div className="input-group flex-nowrap">
-                  <Link
-                    className="btn btn-outline-dark"
-                    to="/profile/edit/avatar"
-                  >
-                    <FontAwesomeIcon
-                      icon={faUser}
-                      style={{ color: "#ba1c1c" }}
-                    />
-                  </Link>
-                </div>
-              </div>
-              <div className="col">
-                <div className="input-group flex-nowrap">
-                  <Link
-                    className="btn btn-outline-dark"
-                    to="/profile/edit/banner"
-                  >
-                    <FontAwesomeIcon
-                      icon={faImage}
-                      style={{ color: "#ba1c1c" }}
-                    />
-                  </Link>
-                </div>
-              </div>
-            </div>
             <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
-                image: {avatar}
-              </label>
               <input
                 className="form-control"
                 type="file"

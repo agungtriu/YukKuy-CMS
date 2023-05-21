@@ -11,7 +11,6 @@ import Login from "./Account/Login";
 import Register from "./Account/Register";
 import Profile from "./Profile/Profile";
 import EditAvatar from "./Profile/EditAvatar";
-import EditProfile from "./Profile/EditProfile";
 import EditPassword from "./Profile/EditPassword";
 import EditBanner from "./Profile/EditBanner";
 import Guide from "./Guide/guide";
@@ -23,7 +22,7 @@ export {
     Orders,NewOrder,Rejected,Cancel,Success,
     Product,FormProduct,EditProduct,
     Login, Register,
-    Profile,EditAvatar,EditProfile,EditBanner,EditPassword,
+    Profile,EditAvatar,EditBanner,EditPassword,
     Guide,
     Bank,
     SocialMedia

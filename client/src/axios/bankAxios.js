@@ -3,8 +3,26 @@ import Swal from "sweetalert2";
 
 const config = require("../config/config");
 const baseUrl = config.baseUrl;
+const apiKeyBank = config.apiKeyBank
 
 const URL = baseUrl + "/accounts/banks/";
+
+const getListBanks = async (cb) => {
+  try {
+    let result = await axios({
+      method: "GET",
+      url: 'https://api.durianpay.id/v1/disbursements/banks',
+      headers: {
+        authorization: `[Base64({${apiKeyBank}}:)]`,
+        'content-type': 'application/json'
+      },
+    });
+    cb(result);
+    console.log(result)
+  } catch (err) {
+    console.log(err)
+  }
+};
 
 const getBanks = async (accountId, cb) => {
   try {
@@ -108,4 +126,4 @@ const deleteBank = async (id, cb) => {
   }
 };
 
-export { getBanks, deleteBank, addBanks, editBanks };
+export { getBanks, deleteBank, addBanks, editBanks, getListBanks };

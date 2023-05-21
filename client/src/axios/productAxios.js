@@ -79,7 +79,7 @@ const editProduct = async (productId, form, cb) => {
   try {
     let results = await axios({
       method: "PUT",
-      url: URL + "edit" + productId,
+      url: URL + "edit/" + productId,
       data: form,
       headers: {
         "Content-Type": "multipart/form-data",

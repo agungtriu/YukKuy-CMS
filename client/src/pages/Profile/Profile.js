@@ -6,12 +6,14 @@ import {
   faUser,
   faImage,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 import { getAccountByUsername } from "../../axios/accountAxios";
 import { imageUrl } from "../../config/config";
-import Guide from "../Guide/guide";
-import Bank from "../Bank/Bank";
 import SocialMedia from "../SocialMedia/SocialMedia";
+import { ProfileBar } from "../../components";
+import { Modal } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { editProfile } from "../../axios/accountAxios";
+
 const Profile = () => {
   const [user, setUser] = useState({
     username: "",
@@ -24,6 +26,12 @@ const Profile = () => {
     avatar: "",
     bannerImage: "",
   });
+
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const handleCloseEditModal = () => setShowEditModal(false);
+  const handleShowEditModal = () => setShowEditModal(true);
+
   const getAccount = () => {
     const username = localStorage.username;
     getAccountByUsername(username, (result) => {
@@ -39,13 +47,23 @@ const Profile = () => {
       });
     });
   };
+  const navigation = useNavigate();
 
   useEffect(() => {
     getAccount();
   }, []);
+  const submitHandler = () => {
+    editProfile(user, (status) => {
+      if (status) {
+        navigation("/profile");
+      }
+      window.location.reload()
+    });
+  };
 
   return (
     <>
+      <ProfileBar></ProfileBar>
       <div>
         <div className="card border-0 shadow">
           <div className="d-flex justify-content-center">
@@ -74,7 +92,7 @@ const Profile = () => {
                       <div className="input-group flex-nowrap">
                         <Link
                           className="btn btn-outline-dark"
-                          to="/profile/edit/password"
+                          onClick={handleShowEditModal}
                         >
                           <FontAwesomeIcon icon={faKey} />
                         </Link>
@@ -84,7 +102,7 @@ const Profile = () => {
                       <div className="input-group flex-nowrap">
                         <Link
                           className="btn btn-outline-dark"
-                          to="/profile/edit/avatar"
+                          onClick={handleShowEditModal}
                         >
                           <FontAwesomeIcon
                             icon={faUser}
@@ -97,7 +115,7 @@ const Profile = () => {
                       <div className="input-group flex-nowrap">
                         <Link
                           className="btn btn-outline-dark"
-                          to="/profile/edit/banner"
+                          onClick={handleShowEditModal}
                         >
                           <FontAwesomeIcon
                             icon={faImage}
@@ -119,7 +137,7 @@ const Profile = () => {
                     <div className="input-group flex-nowrap">
                       <Link
                         className="btn btn-outline-dark border-0"
-                        to="/profile/edit/profile"
+                        onClick={handleShowEditModal}
                       >
                         <FontAwesomeIcon
                           icon={faPen}
@@ -171,12 +189,87 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <Bank></Bank>
             </div>
           </div>
-          <Guide></Guide>
         </div>
       </div>
+
+      <Modal show={showEditModal} onHide={handleCloseEditModal}>
+        <Modal.Header closeLink>
+          <Modal.Title>Edit Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            <div className="card-body">
+              <h5 className="card-title">Information</h5>
+              <div className="container text-center">
+                <div className="row row-cols-2">
+                  <div className="col my-3">
+                    <label>Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="exampleFormControlInput1"
+                      placeholder="Enter Your Name"
+                      value={user.name}
+                      onChange={(e) =>
+                        setUser({ ...user, name: e.target.value })
+                      }
+                    ></input>
+                  </div>
+                  <div className="col my-3">
+                    <label>Phone</label>
+                    <input
+                      type="phone"
+                      className="form-control"
+                      id="exampleFormControlInput1"
+                      placeholder="Enter your Phone"
+                      value={user.phone}
+                      onChange={(e) =>
+                        setUser({ ...user, phone: e.target.value })
+                      }
+                    ></input>
+                  </div>
+                  <div className="col my-3">
+                    <label>Address</label>
+                    <textarea
+                      className="form-control"
+                      id="exampleFormControlTextarea1"
+                      rows="3"
+                      value={user.address}
+                      onChange={(e) =>
+                        setUser({ ...user, address: e.target.value })
+                      }
+                    ></textarea>
+                  </div>
+                  <div className="col my-3">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      id="exampleFormControlInput1"
+                      placeholder="name@example.com"
+                      value={user.email}
+                      onChange={(e) =>
+                        setUser({ ...user, email: e.target.value })
+                      }
+                    ></input>
+                  </div>
+                </div>
+              </div>
+              <div className="col-auto mx-2">
+                <Link
+                  type="submit"
+                  className="btn btn-primary mb-3"
+                  onClick={() => submitHandler()}
+                >
+                  Confirm
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

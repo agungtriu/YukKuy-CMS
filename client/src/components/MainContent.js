@@ -6,7 +6,6 @@ import {
   EditBanner,
   EditPassword,
   EditProduct,
-  EditProfile,
   FormProduct,
   Dashboard,
   NewOrder,
@@ -15,6 +14,8 @@ import {
   Profile,
   Rejected,
   Success,
+  Bank,
+  Guide,
 } from "../pages";
 
 const MainContent = () => {
@@ -40,15 +41,13 @@ const MainContent = () => {
         <Route path="/profile" element={<Profile></Profile>}></Route>
         <Route path="/profile">
           <Route
-            path="edit/profile"
-            element={<EditProfile></EditProfile>}
-          ></Route>
-          <Route
             path="edit/password"
             element={<EditPassword></EditPassword>}
           ></Route>
           <Route path="edit/avatar" element={<EditAvatar></EditAvatar>}></Route>
           <Route path="edit/banner" element={<EditBanner></EditBanner>}></Route>
+          <Route path="bank" element={<Bank></Bank>}></Route>
+          <Route path="guide" element={<Guide></Guide>}></Route>
         </Route>
       </Routes>
     </>
