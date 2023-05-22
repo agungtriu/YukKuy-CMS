@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   addGuide,
   deleteGuide,
@@ -23,12 +23,13 @@ const Guide = () => {
   });
   const [isAddGuideVisible, setIsAddGuideVisible] = useState(false); // State untuk menampilkan/menyembunyikan form tambahan
   const navigation = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     getGuide((result) => {
       setGuide(result);
     });
-  }, []);
+  }, [location.key]);
 
   const handleEdit = (index, data) => {
     setEditIndex(index);
@@ -38,11 +39,10 @@ const Guide = () => {
   const submitHandler = (id, form) => {
     editGuide(id, form, (status) => {
       if (status) {
-        navigation("/profile");
+        navigation(0);
       } else {
         Swal.fire("Edit Product", "file cannot be empty", "error");
       }
-      window.location.reload();
     });
   };
 
@@ -59,7 +59,7 @@ const Guide = () => {
       if (!status) {
         Swal.fire("Add Guide", "file cannot be empty", "error");
       }
-      window.location.reload();
+      navigation(0);
     });
   };
 
@@ -70,8 +70,7 @@ const Guide = () => {
   const deleteHandler = (id) => {
     deleteGuide(id, (status) => {
       if (status) {
-        navigation("/profile");
-        window.location.reload();
+        navigation(0);
       }
     });
   };

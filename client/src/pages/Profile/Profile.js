@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './styles.css'
+import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faKey,
@@ -12,11 +12,12 @@ import { imageUrl } from "../../config/config";
 import SocialMedia from "../SocialMedia/SocialMedia";
 import { ProfileBar } from "../../components";
 import { Modal } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { editProfile } from "../../axios/accountAxios";
 import EditAvatar from "./EditAvatar";
 import EditBanner from "./EditBanner";
-const Profile = () => {
+
+const Profile = (props) => {
   const [user, setUser] = useState({
     username: "",
     name: "",
@@ -31,6 +32,10 @@ const Profile = () => {
 
   const cbShow = (result) => {
     setClickedBanner(result);
+  };
+
+  const cbAvatarShow = (result) => {
+    setClickedAvatar(result);
   };
 
   const getAccount = () => {
@@ -49,18 +54,20 @@ const Profile = () => {
     });
   };
   const navigation = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     getAccount();
-    setClickedBanner(false);
-    setClickedAvatar(false);
-  }, []);
+    // setClickedBanner(false);
+    // setClickedAvatar(false);
+  }, [location.key]);
+
   const submitHandler = () => {
     editProfile(user, (status) => {
       if (status) {
         navigation("/profile");
       }
-      window.location.reload();
+      // window.location.reload();
     });
   };
 
@@ -84,7 +91,9 @@ const Profile = () => {
     <>
       <ProfileBar></ProfileBar>
       <div>
-        {clickedAvatar ? <EditAvatar></EditAvatar> : null}
+        {clickedAvatar ? (
+          <EditAvatar cbAvatarShow={cbAvatarShow}></EditAvatar>
+        ) : null}
         {clickedBanner ? <EditBanner cbShow={cbShow}></EditBanner> : null}
         <div className="card border-0 shadow">
           <div className="d-flex justify-content-center">
@@ -101,7 +110,7 @@ const Profile = () => {
               <div className="card shadow border-0">
                 <img
                   src={user.avatar}
-                  className="rounded-circle ms-auto me-auto img-avatar"
+                  className="rounded-circle ms-auto me-auto img-avatar mt-4"
                   alt="..."
                 />
                 <div className="card-body">
@@ -176,26 +185,26 @@ const Profile = () => {
                         ) : null}
                       </div>
                     </div>
-                    <div className="col my-3">
-                      <label>Phone</label>
-                      <div className="form-control">
-                        {user.phone !== null && user.phone !== "" ? (
+                    {user.phone !== null && user.phone !== "" ? (
+                      <div className="col my-3">
+                        <label>Phone</label>
+                        <div className="form-control">
                           <h5 className="input-group flex-nowrap">
                             {user.phone}
                           </h5>
-                        ) : null}
+                        </div>
                       </div>
-                    </div>
-                    <div className="col my-3">
-                      <label>Address</label>
-                      <div className="form-control">
-                        {user.address !== null && user.address !== "" ? (
+                    ) : null}
+                    {user.address !== null && user.address !== "" ? (
+                      <div className="col my-3">
+                        <label>Address</label>
+                        <div className="form-control">
                           <h5 className="input-group flex-nowrap">
                             {user.address}
                           </h5>
-                        ) : null}
+                        </div>
                       </div>
-                    </div>
+                    ) : null}
                     <div className="col my-3">
                       <label>Email</label>
                       <div className="form-control">
@@ -205,6 +214,19 @@ const Profile = () => {
                           </h5>
                         ) : null}
                       </div>
+                    </div>
+                  </div>
+                  <div className="row row-cols-2">
+                    <div className="col my-3">
+                      <label>Password</label>
+                      <div className="form-control">
+                        <h5 className="input-group flex-nowrap">********</h5>
+                      </div>
+                    </div>
+                    <div className="col my-3 align-self-end">
+                      <button type="button" className="btn btn-success">
+                        Password
+                      </button>
                     </div>
                   </div>
                 </div>

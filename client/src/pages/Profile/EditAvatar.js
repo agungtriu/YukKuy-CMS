@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
+import "./styles.css";
 import { useNavigate } from "react-router-dom";
 import { editAvatar, getAccountByUsername } from "../../axios/accountAxios";
 import { imageUrl } from "../../config/config";
 import Swal from "sweetalert2";
 import { Modal, Button } from "react-bootstrap";
 
-const EditAvatar = () => {
+const EditAvatar = (props) => {
   const [previewImage, setPreviewImage] = useState("");
   const [avatar, setAvatar] = useState();
   const [file, setFile] = useState(null);
   const [user, setUser] = useState({ avatar: "" });
   const [isExist, setIsExist] = useState(false);
   const [showModal, setShowModal] = useState(true);
+
+  const { cbAvatarShow } = props;
 
   const getAccount = () => {
     const username = localStorage.username;
@@ -43,6 +46,7 @@ const EditAvatar = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+    cbAvatarShow(false);
   };
 
   const submitHandler = () => {
@@ -52,9 +56,10 @@ const EditAvatar = () => {
       editAvatar(fromData, (status, avatar) => {
         if (status) {
           setAvatar(avatar);
+          handleCloseModal();
           navigation("/profile");
         }
-        window.location.reload()
+        // window.location.reload()
       });
     } else {
       Swal.fire("Edit Avatar", "file cannot be empty", "error");
@@ -70,11 +75,11 @@ const EditAvatar = () => {
         <Modal.Body>
           <img
             src={isExist === false ? user.avatar : previewImage}
-            className="rounded-circle ms-auto me-auto"
-            style={{ width: "50%" }}
+            className="rounded-circle mb-4 ms-auto me-auto img-avatar d-flex justify-content-center"
+            // style={{ width: "50%" }}
             alt="..."
           />
-          <h5 className="text-center">{user.username}</h5>
+          {/* <h5 className="text-center">{user.username}</h5> */}
           <div className="mb-3">
             <label>{avatar}</label>
             <input

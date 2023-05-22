@@ -7,7 +7,7 @@ import {
 } from "../../axios/bankAxios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { ProfileBar } from "../../components";
 import { Button, Form, Modal } from "react-bootstrap";
@@ -30,6 +30,7 @@ const Bank = () => {
   });
 
   const navigation = useNavigate();
+  const location = useLocation();
   const [show, setShow] = useState(false);
   const [addShow, setAddShow] = useState(false);
 
@@ -38,7 +39,7 @@ const Bank = () => {
     getBanks(accountId, (banks) => {
       setBanks(banks);
     });
-  }, []);
+  }, [location.key]);
 
   const handleEdit = (index, data) => {
     setEditIndex(index);
@@ -57,11 +58,11 @@ const Bank = () => {
   const submitHandler = (id, form) => {
     editBanks(id, form, (status) => {
       if (status) {
-        navigation("/profile/bank");
+        navigation(0);
       } else {
         Swal.fire("Edit Product", "file cannot be empty", "error");
       }
-      window.location.reload();
+      // window.location.reload();
     });
   };
 
@@ -77,16 +78,19 @@ const Bank = () => {
     addBanks(addForm, (status) => {
       if (!status) {
         Swal.fire("Add Bank", "file cannot be empty", "error");
+      } else {
+        handleAddClose();
+        navigation(0);
       }
-      window.location.reload();
+      // window.location.reload();
     });
   };
 
   const deleteHandler = (id) => {
     deleteBank(id, (status) => {
       if (status) {
-        navigation("/profile/bank");
-        window.location.reload();
+        navigation(0);
+        // window.location.reload();
       }
     });
   };
@@ -193,7 +197,7 @@ const Bank = () => {
               {addShow ? (
                 <Modal show={addShow} onHide={handleAddClose}>
                   <Modal.Header closeButton>
-                    <Modal.Title>Add Product</Modal.Title>
+                    <Modal.Title>Add Bank</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     <Form>
@@ -209,8 +213,7 @@ const Bank = () => {
                           value={addForm.nameBank}
                           onChange={handleAddFormChange}
                         >
-                          <option value="">Pilih Nama Bank</option>
-                          <option value="">Pilih Nama Bank</option>
+                          {/* <option value="">Pilih Nama Bank</option> */}
                           {bankOptions.map((item, index) => (
                             <option
                               value={item.name}

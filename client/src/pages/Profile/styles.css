@@ -2,11 +2,10 @@
     object-fit: cover;
     width: 200px;
     height: 200px;
-    margin-top: 2rem;
 }
 
 .img-banner {
     object-fit: cover;
-    object-position: 10% 100%;
+    object-position: 50% 50%;
     height: 250px;
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { editBanner, getAccountByUsername } from "../../axios/accountAxios";
 import { imageUrl } from "../../config/config";
 import Swal from "sweetalert2";
@@ -13,7 +13,7 @@ const EditBanner = (props) => {
   const [isExist, setIsExist] = useState(false);
   const [showModal, setShowModal] = useState(true);
 
-  const {cbShow} = props
+  const { cbShow } = props;
 
   const getBanner = () => {
     const username = localStorage.username;
@@ -45,9 +45,8 @@ const EditBanner = (props) => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    cbShow(false)
+    cbShow(false);
   };
-
 
   const submitHandler = () => {
     if (file !== null) {
@@ -56,9 +55,10 @@ const EditBanner = (props) => {
       editBanner(fromData, (status, banner) => {
         if (status) {
           setBanner(banner);
+          handleCloseModal();
           navigation("/profile");
         }
-        window.location.reload()
+        // window.location.reload()
       });
     } else {
       Swal.fire("Edit Banner", "file cannot be empty", "error");
