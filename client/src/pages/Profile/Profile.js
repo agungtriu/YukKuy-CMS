@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import './styles.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faKey,
@@ -81,8 +82,7 @@ const Profile = () => {
           <div className="d-flex justify-content-center">
             <img
               src={user.bannerImage}
-              className="card-img-top rounded-start"
-              style={{ width: "90%", height: "250px" }}
+              className="card-img-top rounded-start img-banner"
               alt=""
             ></img>
           </div>
@@ -93,8 +93,7 @@ const Profile = () => {
               <div className="card shadow border-0">
                 <img
                   src={user.avatar}
-                  className="rounded-circle ms-auto me-auto"
-                  style={{ width: "50%" }}
+                  className="rounded-circle ms-auto me-auto img-avatar"
                   alt="..."
                 />
                 <div className="card-body">

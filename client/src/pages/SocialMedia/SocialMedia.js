@@ -2,8 +2,14 @@ import { faEdit, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { addSosmed, deleteSosmed, editSosmed, getSosmed } from "../../axios/socialAxios";
+import {
+  addSosmed,
+  deleteSosmed,
+  editSosmed,
+  getSosmed,
+} from "../../axios/socialAxios";
 import Swal from "sweetalert2";
+import { ReactSocialMediaIcons } from "react-social-media-icons";
 
 const SocialMedia = () => {
   const [account, setAccount] = useState([]);
@@ -106,29 +112,69 @@ const SocialMedia = () => {
             </>
           ) : (
             <>
-              <div className="input-group" key={index + 1}>
-                <Link
-                  className="input-group-text text-decoration-none"
-                  to={item.link}
-                >
-                  Go
-                </Link>
-                <div
-                  type="text"
-                  aria-label="First name"
-                  className="form-control"
-                >
-                  {item.platform}
+              <div className="row align-items-center justify-content-start" key={index + 1}>
+                {item.platform === "youtube" ? (
+                  <>
+                    <div className="col-3 p-3 mb-2">
+                      <ReactSocialMediaIcons
+                        borderColor="rgba(217, 46, 46,1)"
+                        icon="youtube"
+                        iconColor="rgba(255, 255, 255,1)"
+                        backgroundColor="rgba(217, 46, 46,1)"
+                        url={item.link}
+                        size="35"
+                      />
+                    </div>
+                  </>
+                ) : null}
+                {item.platform === "twitter" ? (
+                  <>
+                    <div className="col-3 p-3 mb-2">
+                      <ReactSocialMediaIcons
+                        borderColor="rgba(26,166,233,1)"
+                        icon="twitter"
+                        iconColor="rgba(255,255,255,1)"
+                        backgroundColor="rgba(26,166,233,1)"
+                        url={item.link}
+                        size="35"
+                      />
+                    </div>
+                  </>
+                ) : null}
+
+                {item.platform === "facebook" ? (
+                  <>
+                    <div className="col-3 p-3 mb-2">
+                      <ReactSocialMediaIcons
+                        borderColor="rgba(24, 119, 242,1)"
+                        icon="facebook"
+                        iconColor="rgba(255,255,255,1)"
+                        backgroundColor="rgba(24, 119, 242,1)"
+                        url={item.link}
+                        size="35"
+                      />
+                    </div>
+                  </>
+                ) : null}
+
+                <div type="text" aria-label="First name" className="col-3 p-3 mb-2">
+                  {item.link}
                 </div>
               </div>
-              <div className="d-flex justify-content-end">
+              {/* <div className="d-flex justify-content-end">
                 <FontAwesomeIcon
                   icon={faEdit}
                   className="mx-2 my-1 link-dark"
                   onClick={() => handleEdit(index, item)}
                 />
-                <FontAwesomeIcon icon={faTrash} className="mx-2 my-1" onClick={() => {deleteHandler(item.id)}} />
-              </div>
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  className="mx-2 my-1"
+                  onClick={() => {
+                    deleteHandler(item.id);
+                  }}
+                />
+              </div> */}
             </>
           )}
         </React.Fragment>
