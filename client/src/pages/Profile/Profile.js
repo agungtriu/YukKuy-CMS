@@ -28,6 +28,10 @@ const Profile = () => {
     bannerImage: "",
   });
 
+  const cbShow = (result) => {
+    setClickedBanner(result);
+  };
+
   const getAccount = () => {
     const username = localStorage.username;
     getAccountByUsername(username, (result) => {
@@ -47,6 +51,8 @@ const Profile = () => {
 
   useEffect(() => {
     getAccount();
+    setClickedBanner(false);
+    setClickedAvatar(false);
   }, []);
   const submitHandler = () => {
     editProfile(user, (status) => {
@@ -66,9 +72,11 @@ const Profile = () => {
 
   const handleClickedAvatar = () => {
     setClickedAvatar(true);
+    setClickedBanner(false);
   };
   const handleClickedBanner = () => {
     setClickedBanner(true);
+    setClickedAvatar(false);
   };
   console.log(clickedBanner);
   return (
@@ -76,7 +84,7 @@ const Profile = () => {
       <ProfileBar></ProfileBar>
       <div>
         {clickedAvatar ? <EditAvatar></EditAvatar> : null}
-        {clickedBanner ? <EditBanner></EditBanner> : null}
+        {clickedBanner ? <EditBanner cbShow={cbShow}></EditBanner> : null}
         <div className="card border-0 shadow">
           <div className="d-flex justify-content-center">
             <img
@@ -112,22 +120,26 @@ const Profile = () => {
                     </div>
                     <div className="col">
                       <div className="input-group flex-nowrap">
-                        <Link className="btn btn-outline-dark">
+                        <Link
+                          className="btn btn-outline-dark"
+                          onClick={handleClickedAvatar}
+                        >
                           <FontAwesomeIcon
                             icon={faUser}
                             style={{ color: "#ba1c1c" }}
-                            onClick={handleClickedAvatar}
                           />
                         </Link>
                       </div>
                     </div>
                     <div className="col">
                       <div className="input-group flex-nowrap">
-                        <Link className="btn btn-outline-dark">
+                        <Link
+                          className="btn btn-outline-dark"
+                          onClick={handleClickedBanner}
+                        >
                           <FontAwesomeIcon
                             icon={faImage}
                             style={{ color: "#ba1c1c" }}
-                            onClick={handleClickedBanner}
                           />
                         </Link>
                       </div>

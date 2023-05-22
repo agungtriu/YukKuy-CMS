@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { ProfileBar } from "../../components";
 import { Button, Form, Modal } from "react-bootstrap";
 import bankOptions from "../../data/bankOption.json";
+import Select from "react-select";
 
 const Bank = () => {
   const [banks, setBanks] = useState([]);
@@ -113,23 +114,12 @@ const Bank = () => {
                                 controlId="exampleForm.ControlInput1"
                               >
                                 <Form.Label>Nama Bank</Form.Label>
-                                <Form.Control
-                                  as="select"
-                                  className="input-group"
-                                  name="nameBank"
+                                <Select
                                   value={editForm.nameBank}
+                                  options={bankOptions}
                                   onChange={handleEditFormChange}
-                                >
-                                  <option value="">Pilih Nama Bank</option>
-                                  {bankOptions.map((item, index) => (
-                                    <option
-                                      value={item.name}
-                                      key={index}
-                                    >{`${item.name} : ${item.code}`}</option>
-                                  ))}
-                                </Form.Control>
+                                ></Select>
                               </Form.Group>
-
                               <Form.Group
                                 className="mb-3"
                                 controlId="exampleForm.ControlInput1"
