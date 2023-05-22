@@ -5,13 +5,15 @@ import { imageUrl } from "../../config/config";
 import Swal from "sweetalert2";
 import { Modal, Button } from "react-bootstrap";
 
-const EditBanner = () => {
+const EditBanner = (props) => {
   const [user, setUser] = useState({ bannerImage: "" });
   const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState("");
   const [banner, setBanner] = useState();
   const [isExist, setIsExist] = useState(false);
   const [showModal, setShowModal] = useState(true);
+
+  const {cbShow} = props
 
   const getBanner = () => {
     const username = localStorage.username;
@@ -43,6 +45,7 @@ const EditBanner = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+    cbShow(false)
   };
 
 
