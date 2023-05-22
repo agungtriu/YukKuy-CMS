@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faKey, faUser, faImage } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { editAvatar, getAccountByUsername } from "../../axios/accountAxios";
 import { imageUrl } from "../../config/config";
 import Swal from "sweetalert2";
+import { Modal, Button } from "react-bootstrap";
 
 const EditAvatar = () => {
   const [previewImage, setPreviewImage] = useState("");
@@ -12,6 +11,8 @@ const EditAvatar = () => {
   const [file, setFile] = useState(null);
   const [user, setUser] = useState({ avatar: "" });
   const [isExist, setIsExist] = useState(false);
+  const [showModal, setShowModal] = useState(true);
+
   const getAccount = () => {
     const username = localStorage.username;
     getAccountByUsername(username, (result) => {
@@ -20,10 +21,12 @@ const EditAvatar = () => {
       });
     });
   };
+
   useEffect(() => {
     getAccount();
     setAvatar(localStorage.image);
   }, []);
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -35,7 +38,13 @@ const EditAvatar = () => {
 
     reader.readAsDataURL(file);
   };
+
   const navigation = useNavigate();
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   const submitHandler = () => {
     if (file !== null) {
       const fromData = new FormData();
@@ -45,88 +54,50 @@ const EditAvatar = () => {
           setAvatar(avatar);
           navigation("/profile");
         }
+        window.location.reload()
       });
     } else {
       Swal.fire("Edit Avatar", "file cannot be empty", "error");
     }
   };
+
   return (
     <>
-      <div className="d-flex justify-content-center">
-        <div className="card shadow border-0">
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Avatar</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <img
             src={isExist === false ? user.avatar : previewImage}
             className="rounded-circle ms-auto me-auto"
             style={{ width: "50%" }}
             alt="..."
           />
-          <div className="card-body">
-            <h5 className="text-center">{user.username}</h5>
-            <div className="row row-cols-auto d-flex justify-content-center">
-              <div className="col">
-                <div className="input-group flex-nowrap">
-                  <Link
-                    className="btn btn-outline-dark"
-                    to="/profile/edit/password"
-                  >
-                    <FontAwesomeIcon icon={faKey} />
-                  </Link>
-                </div>
-              </div>
-              <div className="col">
-                <div className="input-group flex-nowrap">
-                  <Link
-                    className="btn btn-outline-dark"
-                    to="/profile/edit/avatar"
-                  >
-                    <FontAwesomeIcon
-                      icon={faUser}
-                      style={{ color: "#ba1c1c" }}
-                    />
-                  </Link>
-                </div>
-              </div>
-              <div className="col">
-                <div className="input-group flex-nowrap">
-                  <Link
-                    className="btn btn-outline-dark"
-                    to="/profile/edit/banner"
-                  >
-                    <FontAwesomeIcon
-                      icon={faImage}
-                      style={{ color: "#ba1c1c" }}
-                    />
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
-                image: {avatar}
-              </label>
-              <input
-                className="form-control"
-                type="file"
-                id="formFile"
-                onChange={(e) => {
-                  setFile(e.target.files[0]);
-                  setAvatar(e.target.files[0].name);
-                  handleImageUpload(e);
-                }}
-              ></input>
-            </div>
-            <div className="d-flex justify-content-center">
-              <Link
-                type="submit"
-                className="btn btn-primary mb-3"
-                onClick={() => submitHandler()}
-              >
-                Confirm
-              </Link>
-            </div>
+          <h5 className="text-center">{user.username}</h5>
+          <div className="mb-3">
+            <label>{avatar}</label>
+            <input
+              className="form-control"
+              type="file"
+              id="formFile"
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+                setAvatar(e.target.files[0].name);
+                handleImageUpload(e);
+              }}
+            ></input>
           </div>
-        </div>
-      </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={submitHandler}>
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

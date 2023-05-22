@@ -6,12 +6,15 @@ import {
   faUser,
   faImage,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 import { getAccountByUsername } from "../../axios/accountAxios";
 import { imageUrl } from "../../config/config";
-import Guide from "../Guide/guide";
-import Bank from "../Bank/Bank";
 import SocialMedia from "../SocialMedia/SocialMedia";
+import { ProfileBar } from "../../components";
+import { Modal } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { editProfile } from "../../axios/accountAxios";
+import EditAvatar from "./EditAvatar";
+import EditBanner from "./EditBanner";
 const Profile = () => {
   const [user, setUser] = useState({
     username: "",
@@ -24,6 +27,11 @@ const Profile = () => {
     avatar: "",
     bannerImage: "",
   });
+
+  const cbShow = (result) => {
+    setClickedBanner(result);
+  };
+
   const getAccount = () => {
     const username = localStorage.username;
     getAccountByUsername(username, (result) => {
@@ -39,14 +47,44 @@ const Profile = () => {
       });
     });
   };
+  const navigation = useNavigate();
 
   useEffect(() => {
     getAccount();
+    setClickedBanner(false);
+    setClickedAvatar(false);
   }, []);
+  const submitHandler = () => {
+    editProfile(user, (status) => {
+      if (status) {
+        navigation("/profile");
+      }
+      window.location.reload();
+    });
+  };
 
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [clickedAvatar, setClickedAvatar] = useState(false);
+  const [clickedBanner, setClickedBanner] = useState(false);
+
+  const handleCloseEditModal = () => setShowEditModal(false);
+  const handleShowEditModal = () => setShowEditModal(true);
+
+  const handleClickedAvatar = () => {
+    setClickedAvatar(true);
+    setClickedBanner(false);
+  };
+  const handleClickedBanner = () => {
+    setClickedBanner(true);
+    setClickedAvatar(false);
+  };
+  console.log(clickedBanner);
   return (
     <>
+      <ProfileBar></ProfileBar>
       <div>
+        {clickedAvatar ? <EditAvatar></EditAvatar> : null}
+        {clickedBanner ? <EditBanner cbShow={cbShow}></EditBanner> : null}
         <div className="card border-0 shadow">
           <div className="d-flex justify-content-center">
             <img
@@ -74,7 +112,7 @@ const Profile = () => {
                       <div className="input-group flex-nowrap">
                         <Link
                           className="btn btn-outline-dark"
-                          to="/profile/edit/password"
+                          to={"edit/password"}
                         >
                           <FontAwesomeIcon icon={faKey} />
                         </Link>
@@ -84,7 +122,7 @@ const Profile = () => {
                       <div className="input-group flex-nowrap">
                         <Link
                           className="btn btn-outline-dark"
-                          to="/profile/edit/avatar"
+                          onClick={handleClickedAvatar}
                         >
                           <FontAwesomeIcon
                             icon={faUser}
@@ -97,7 +135,7 @@ const Profile = () => {
                       <div className="input-group flex-nowrap">
                         <Link
                           className="btn btn-outline-dark"
-                          to="/profile/edit/banner"
+                          onClick={handleClickedBanner}
                         >
                           <FontAwesomeIcon
                             icon={faImage}
@@ -119,12 +157,13 @@ const Profile = () => {
                     <div className="input-group flex-nowrap">
                       <Link
                         className="btn btn-outline-dark border-0"
-                        to="/profile/edit/profile"
+                        onClick={handleShowEditModal}
                       >
                         <FontAwesomeIcon
                           icon={faPen}
                           style={{ color: "#30c0af" }}
-                        />{" "}
+                          className="mx-2"
+                        />
                         Edit
                       </Link>
                     </div>
@@ -171,12 +210,86 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <Bank></Bank>
             </div>
           </div>
-          <Guide></Guide>
         </div>
       </div>
+      <Modal show={showEditModal} onHide={handleCloseEditModal}>
+        <Modal.Header>
+          <Modal.Title>Edit Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            <div className="card-body">
+              <h5 className="card-title">Information</h5>
+              <div className="container text-center">
+                <div className="row row-cols-2">
+                  <div className="col my-3">
+                    <label>Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="exampleFormControlInput1"
+                      placeholder="Enter Your Name"
+                      value={user.name}
+                      onChange={(e) =>
+                        setUser({ ...user, name: e.target.value })
+                      }
+                    ></input>
+                  </div>
+                  <div className="col my-3">
+                    <label>Phone</label>
+                    <input
+                      type="phone"
+                      className="form-control"
+                      id="exampleFormControlInput1"
+                      placeholder="Enter your Phone"
+                      value={user.phone}
+                      onChange={(e) =>
+                        setUser({ ...user, phone: e.target.value })
+                      }
+                    ></input>
+                  </div>
+                  <div className="col my-3">
+                    <label>Address</label>
+                    <textarea
+                      className="form-control"
+                      id="exampleFormControlTextarea1"
+                      rows="3"
+                      value={user.address}
+                      onChange={(e) =>
+                        setUser({ ...user, address: e.target.value })
+                      }
+                    ></textarea>
+                  </div>
+                  <div className="col my-3">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      id="exampleFormControlInput1"
+                      placeholder="name@example.com"
+                      value={user.email}
+                      onChange={(e) =>
+                        setUser({ ...user, email: e.target.value })
+                      }
+                    ></input>
+                  </div>
+                </div>
+              </div>
+              <div className="col-auto mx-2">
+                <Link
+                  type="submit"
+                  className="btn btn-primary mb-3"
+                  onClick={() => submitHandler()}
+                >
+                  Confirm
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

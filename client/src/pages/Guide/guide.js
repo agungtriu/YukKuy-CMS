@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React,{useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   addGuide,
@@ -7,6 +7,7 @@ import {
   getGuide,
 } from "../../axios/guideAxios";
 import Swal from "sweetalert2";
+import { ProfileBar } from "../../components";
 
 const Guide = () => {
   const [guide, setGuide] = useState([]);
@@ -77,6 +78,7 @@ const Guide = () => {
 
   return (
     <>
+    <ProfileBar></ProfileBar>
       <div className="row row-cols-2">
         <div className="col">
           <h5 className="my-2 px-3">List Guide:</h5>
