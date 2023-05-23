@@ -14,6 +14,11 @@ function App() {
   const loginCbHandler = (result) => {
     setLoginStatus(result);
   };
+  const [changeAvatar, setAvatar] = useState();
+  const avatarCbHandler = (result) => {
+    setAvatar(result);
+  };
+
   useState(() => {
     if (localStorage.getItem("access_token")) {
       setLoginStatus({
@@ -36,8 +41,11 @@ function App() {
           <Account loginCbHandler={loginCbHandler}></Account>
         ) : (
           <>
-            <BarMenu loginStatus={loginStatus}></BarMenu>
-            <SideBar></SideBar>
+            <BarMenu
+              loginStatus={loginStatus}
+              changeAvatar={changeAvatar}
+            ></BarMenu>
+            <SideBar avatarCbHandler={avatarCbHandler}></SideBar>
           </>
         )}
       </div>

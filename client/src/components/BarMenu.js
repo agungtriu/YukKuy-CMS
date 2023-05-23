@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
@@ -7,12 +7,17 @@ import { imageUrl } from "../config/config";
 import { FiLogOut, FiUser } from "react-icons/fi";
 
 const BarMenu = (props) => {
-  const { loginStatus, loginCbHandler } = props;
+  const { loginStatus, loginCbHandler, changeAvatar } = props;
+  const [avatar, setAvatar] = useState();
   const logoutHandler = () => {
     localStorage.clear();
     loginCbHandler({ status: false, data: {} });
     Swal.fire("Logout", "logout successful", "success");
   };
+  useEffect(() => {
+    setAvatar(loginStatus.data.avatar);
+  }, []);
+
   return (
     <>
       <nav
@@ -26,7 +31,9 @@ const BarMenu = (props) => {
           <div className="dropdown m-1">
             <img
               className="rounded-circle avatar-mini"
-              src={`${imageUrl}${loginStatus.data.avatar}`}
+              src={`${imageUrl}${
+                changeAvatar !== undefined ? changeAvatar : avatar
+              }`}
               alt=""
             ></img>
             <ul className="dropdown-menu dropdown-menu-right">
