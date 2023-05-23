@@ -190,7 +190,7 @@ const EditProduct = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
+              <label htmlFor="formName" className="form-label">
                 Name
               </label>
               <input
@@ -198,6 +198,7 @@ const EditProduct = () => {
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="form-control"
                 type="text"
+                id="formName"
                 aria-label="default input example"
               />
             </div>
@@ -205,8 +206,9 @@ const EditProduct = () => {
               <div className="row row-cols-2">
                 <div className="col">
                   <Form.Group controlId="dob">
-                    <Form.Label>Start Date</Form.Label>
+                    <Form.Label htmlFor="formStartDate">Start Date</Form.Label>
                     <Form.Control
+                      id="formStartDate"
                       type="date"
                       name="startDate"
                       placeholder="Date of Birth"
@@ -220,8 +222,9 @@ const EditProduct = () => {
                 </div>
                 <div className="col">
                   <Form.Group controlId="dob">
-                    <Form.Label>End Date</Form.Label>
+                    <Form.Label htmlFor="formEndDate">End Date</Form.Label>
                     <Form.Control
+                      id="formEndDate"
                       type="date"
                       name="endDate"
                       placeholder="Date of Birth"
@@ -236,12 +239,13 @@ const EditProduct = () => {
               </div>
             </div>
             <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
+              <label htmlFor="formPrice" className="form-label">
                 Price
               </label>
               <div className="input-group">
                 <span className="input-group-text">IDR</span>
                 <input
+                  id="formPrice"
                   value={form.price}
                   onChange={(e) => setForm({ ...form, price: e.target.value })}
                   type="number"
@@ -251,10 +255,11 @@ const EditProduct = () => {
             </div>
             <div className="row row-cols-3">
               <div className="mb-3">
-                <label htmlFor="formFile" className="form-label">
+                <label htmlFor="formProvince" className="form-label">
                   Province
                 </label>
                 <Select
+                  id="formProvince"
                   value={{ label: form.province }}
                   options={provinceOptions}
                   onChange={(e) => {
@@ -264,10 +269,11 @@ const EditProduct = () => {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="formFile" className="form-label">
+                <label htmlFor="formCity" className="form-label">
                   City
                 </label>
                 <Select
+                  id="formCity"
                   value={{ label: form.city }}
                   options={cityOptions}
                   onChange={(e) => {
@@ -279,10 +285,11 @@ const EditProduct = () => {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="formFile" className="form-label">
+                <label htmlFor="formAddress" className="form-label">
                   Address Detail
                 </label>
                 <textarea
+                  id="formAddress"
                   value={form.addressDetail}
                   onChange={(e) =>
                     setForm({ ...form, addressDetail: e.target.value })
@@ -294,25 +301,26 @@ const EditProduct = () => {
               </div>
             </div>
             <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
+              <label htmlFor="formDescription" className="form-label">
                 Description
               </label>
               <textarea
+                id="formDescription"
                 value={form.description}
                 onChange={(e) =>
                   setForm({ ...form, description: e.target.value })
                 }
                 className="form-control"
-                id="exampleFormControlTextarea1"
                 rows="3"
               ></textarea>
             </div>
             <div className="row row-cols-2">
               <div className="mb-3">
-                <label htmlFor="formFile" className="form-label">
+                <label htmlFor="formMeetingPoint" className="form-label">
                   Address Meeting Point
                 </label>
                 <input
+                  id="formMeetingPoint"
                   value={form.addressMeetingPoint}
                   onChange={(e) =>
                     setForm({ ...form, addressMeetingPoint: e.target.value })
@@ -323,10 +331,11 @@ const EditProduct = () => {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="formFile" className="form-label">
+                <label htmlFor="formGuide" className="form-label">
                   Guide
                 </label>
                 <Select
+                  id="formGuide"
                   value={{
                     label: TitleCaseFormatter(selectedGuide.name),
                     value: +selectedGuide.id,

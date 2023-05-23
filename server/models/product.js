@@ -84,7 +84,7 @@ module.exports = (sequelize, DataTypes) => {
       longitude: DataTypes.STRING,
       latitude: DataTypes.STRING,
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         validate: {
           notEmpty: {
             message: "description can not be empty.",
