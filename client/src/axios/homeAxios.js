@@ -16,6 +16,10 @@ const getHomeData = async (startDate, endDate, cb) => {
     });
     cb(results.data);
   } catch (err) {
+    if (err.code === "ECONNABORTED") {
+      Swal.fire("Error!", err.message, "error");
+      return;
+    }
     if (err.response.status === 500) {
       Swal.fire(
         "Error!",

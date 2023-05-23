@@ -29,13 +29,15 @@ const BarMenu = (props) => {
             <img src={images.logo} alt="" style={{ width: "120px" }} />
           </a>
           <div className="dropdown m-1">
-            <img
-              className="rounded-circle avatar-mini"
-              src={`${imageUrl}${
-                changeAvatar !== undefined ? changeAvatar : avatar
-              }`}
-              alt=""
-            ></img>
+            {avatar !== undefined || changeAvatar !== undefined ? (
+              <img
+                className="rounded-circle avatar-mini"
+                src={`${imageUrl}${
+                  changeAvatar !== undefined ? changeAvatar : avatar
+                }`}
+                alt=""
+              ></img>
+            ) : null}
             <ul className="dropdown-menu dropdown-menu-right">
               <li>
                 <Link className="dropdown-item" to={"/profile"}>
