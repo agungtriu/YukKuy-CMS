@@ -186,15 +186,16 @@ const getProvinces = async (cb) => {
     });
     cb(results.data.value);
   } catch (err) {
-    if (err.response.status === 500) {
-      Swal.fire(
-        "Error!",
-        err.response.data.error.errors[0].original.validatorArgs[0].message,
-        "error"
-      );
-    } else {
-      Swal.fire("Error!", err.response.data.message, "error");
-    }
+    // if (err.response.status === 500) {
+    //   Swal.fire(
+    //     "Error!",
+    //     err.response.data.error.errors[0].original.validatorArgs[0].message,
+    //     "error"
+    //   );
+    // } else {
+    //   Swal.fire("Error!", err.response.data.message, "error");
+    // }
+    console.log(err)
   }
 };
 
@@ -211,15 +212,16 @@ const getCities = async (idProvince, cb) => {
     });
     cb(results.data.value);
   } catch (err) {
-    if (err.response.status === 500) {
-      Swal.fire(
-        "Error!",
-        err.response.data.error.errors[0].original.validatorArgs[0].message,
-        "error"
-      );
-    } else {
-      Swal.fire("Error!", err.response.data.message, "error");
-    }
+    // if (err.response.status === 500) {
+    //   Swal.fire(
+    //     "Error!",
+    //     err.response.data.error.errors[0].original.validatorArgs[0].message,
+    //     "error"
+    //   );
+    // } else {
+    //   Swal.fire("Error!", err.response.data.message, "error");
+    // }
+    console.log(err)
   }
 };
 

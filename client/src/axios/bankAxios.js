@@ -6,6 +6,7 @@ const baseUrl = config.baseUrl;
 
 const URL = baseUrl + "/accounts/banks/";
 
+
 const getBanks = async (accountId, cb) => {
   try {
     let result = await axios({
