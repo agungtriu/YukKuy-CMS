@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { editBanner, getAccountByUsername } from "../../axios/accountAxios";
 import { imageUrl } from "../../config/config";
 import Swal from "sweetalert2";
@@ -9,11 +9,10 @@ const EditBanner = (props) => {
   const [user, setUser] = useState({ bannerImage: "" });
   const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState("");
-  const [banner, setBanner] = useState();
   const [isExist, setIsExist] = useState(false);
   const [showModal, setShowModal] = useState(true);
 
-  const {cbShow} = props
+  const { cbShow } = props;
 
   const getBanner = () => {
     const username = localStorage.username;
@@ -26,7 +25,6 @@ const EditBanner = (props) => {
 
   useEffect(() => {
     getBanner();
-    setBanner(localStorage.image);
   }, []);
 
   const handleImageUpload = (e) => {
@@ -45,9 +43,8 @@ const EditBanner = (props) => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    cbShow(false)
+    cbShow(false);
   };
-
 
   const submitHandler = () => {
     if (file !== null) {
@@ -55,10 +52,10 @@ const EditBanner = (props) => {
       fromData.append("banner", file);
       editBanner(fromData, (status, banner) => {
         if (status) {
-          setBanner(banner);
+          handleCloseModal();
           navigation("/profile");
         }
-        window.location.reload()
+        // window.location.reload()
       });
     } else {
       Swal.fire("Edit Banner", "file cannot be empty", "error");
@@ -72,7 +69,7 @@ const EditBanner = (props) => {
           <Modal.Title>Edit Banner</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center mb-3">
             <img
               src={isExist === false ? user.bannerImage : previewImage}
               className="card-img-top"
@@ -81,26 +78,22 @@ const EditBanner = (props) => {
             ></img>
           </div>
           <div className="mb-3">
-            <label htmlFor="formFile" className="form-label">
-              Image: {banner}
-            </label>
             <input
               className="form-control"
               type="file"
               id="formFile"
               onChange={(e) => {
                 setFile(e.target.files[0]);
-                setBanner(e.target.files[0].name);
                 handleImageUpload(e);
               }}
             ></input>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+          <Button variant="" className="btn btn-danger" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={submitHandler}>
+          <Button variant="" className="btn btn-success" onClick={submitHandler}>
             Confirm
           </Button>
         </Modal.Footer>
