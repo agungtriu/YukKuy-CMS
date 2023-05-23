@@ -72,7 +72,7 @@ const EditBanner = (props) => {
           <Modal.Title>Edit Banner</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center mb-3">
             <img
               src={isExist === false ? user.bannerImage : previewImage}
               className="card-img-top"
@@ -81,9 +81,6 @@ const EditBanner = (props) => {
             ></img>
           </div>
           <div className="mb-3">
-            <label htmlFor="formFile" className="form-label">
-              Image: {banner}
-            </label>
             <input
               className="form-control"
               type="file"
@@ -97,10 +94,10 @@ const EditBanner = (props) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+          <Button variant="" className="btn btn-danger" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={submitHandler}>
+          <Button variant="" className="btn btn-success" onClick={submitHandler}>
             Confirm
           </Button>
         </Modal.Footer>

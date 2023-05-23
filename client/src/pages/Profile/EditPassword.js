@@ -66,7 +66,7 @@ const EditPassword = () => {
           <div className="mb-3 text-center">
             <button
               onClick={() => submitHandler()}
-              className="btn btn-block btn-primary"
+              className="btn btn-block btn-success"
             >
               Submit Changes
             </button>

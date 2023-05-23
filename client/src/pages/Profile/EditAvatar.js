@@ -81,7 +81,6 @@ const EditAvatar = (props) => {
           />
           {/* <h5 className="text-center">{user.username}</h5> */}
           <div className="mb-3">
-            <label>{avatar}</label>
             <input
               className="form-control"
               type="file"
@@ -95,10 +94,10 @@ const EditAvatar = (props) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+          <Button variant="" className="btn btn-danger" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={submitHandler}>
+          <Button variant="" className="btn btn-success" onClick={submitHandler}>
             Confirm
           </Button>
         </Modal.Footer>

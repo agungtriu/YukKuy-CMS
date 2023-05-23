@@ -37,6 +37,7 @@ const Bank = () => {
   useEffect(() => {
     const accountId = localStorage.id;
     getBanks(accountId, (banks) => {
+      console.log(banks);
       setBanks(banks);
     });
   }, [location.key]);
@@ -52,13 +53,17 @@ const Bank = () => {
     });
   };
 
+  const showAddModal = (result) => {
+    setAddShow(result);
+  };
   const handleClose = () => setShow(false);
   const handleAddClose = () => setAddShow(false);
 
   const submitHandler = (id, form) => {
     editBanks(id, form, (status) => {
       if (status) {
-        navigation(0);
+        setShow(false);
+        navigation("/bank");
       } else {
         Swal.fire("Edit Product", "file cannot be empty", "error");
       }
@@ -80,7 +85,7 @@ const Bank = () => {
         Swal.fire("Add Bank", "file cannot be empty", "error");
       } else {
         handleAddClose();
-        navigation(0);
+        navigation("/bank");
       }
       // window.location.reload();
     });
@@ -89,7 +94,7 @@ const Bank = () => {
   const deleteHandler = (id) => {
     deleteBank(id, (status) => {
       if (status) {
-        navigation(0);
+        navigation("/bank");
         // window.location.reload();
       }
     });
@@ -97,9 +102,200 @@ const Bank = () => {
   return (
     <>
       <ProfileBar></ProfileBar>
-      <div className="card mx-2 border-0 shadow">
-        <h6 className="mx-3">Your Bank Account:</h6>
-        <div className="overflow-scroll">
+
+      <div className="card border-0 shadow">
+        <div className="mt-4 row row-cols-2">
+          <div className="col">
+            <h5 className="mx-3">Your Bank Account:</h5>
+          </div>
+          <div className="col" style={{paddingRight:"7.5%"}}>
+            <div className="d-flex justify-content-end">
+              <Link
+                className="btn btn-outline-dark"
+                onClick={() => showAddModal(true)}
+              >
+                Add Bank
+              </Link>
+            </div>
+          </div>
+        </div>
+        <table className="table">
+          <thead>
+            <tr className="text-center">
+              <th style={{ width: "10%" }} scope="col">No</th>
+              <th style={{ width: "25%" }} scope="col">Name</th>
+              <th style={{ width: "25%" }} scope="col">Bank</th>
+              <th style={{ width: "20%" }} scope="col">Number</th>
+              <th style={{ width: "20%" }} scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {banks.map((item, index) => (
+              <tr className="text-center" key={item.id}>
+                <th scope="row">{index + 1}</th>
+                <td>{item.name}</td>
+                <td className="text-start">{item.bank}</td>
+                <td>{item.number}</td>
+                <td>
+                  {editIndex === index ? (
+                    <>
+                      <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                          <Modal.Title>Edit Bank</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          <Form>
+                            <Form.Group
+                              className="mb-3"
+                              controlId="exampleForm.ControlInput1"
+                            >
+                              <Form.Label>Nama Bank</Form.Label>
+                              <Form.Control
+                                as="select"
+                                className="input-group"
+                                name="nameBank"
+                                value={editForm.nameBank}
+                                onChange={handleEditFormChange}
+                              >
+                                {/* <option value="">Pilih Nama Bank</option> */}
+                                {bankOptions.map((item, index) => (
+                                  <option
+                                    value={item.name}
+                                    key={index}
+                                  >{`${item.name}`}</option>
+                                ))}
+                              </Form.Control>
+                            </Form.Group>
+                            <Form.Group
+                              className="mb-3"
+                              controlId="exampleForm.ControlInput1"
+                            >
+                              <Form.Label>Nama Akun</Form.Label>
+                              <Form.Control
+                                className="input-group"
+                                placeholder="Name"
+                                type="text"
+                                name="name"
+                                value={editForm.name}
+                                onChange={handleEditFormChange}
+                              ></Form.Control>
+                            </Form.Group>
+                            <Form.Group
+                              className="mb-3"
+                              controlId="exampleForm.ControlInput1"
+                            >
+                              <Form.Label>Nomor</Form.Label>
+                              <Form.Control
+                                className="input-group"
+                                placeholder="No"
+                                type="text"
+                                name="number"
+                                value={editForm.number}
+                                onChange={handleEditFormChange}
+                              ></Form.Control>
+                            </Form.Group>
+                          </Form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button variant="secondary" onClick={handleClose}>
+                            Close
+                          </Button>
+                          <Button
+                            variant="primary"
+                            onClick={() => submitHandler(item.id, editForm)}
+                          >
+                            Save Changes
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
+                    </>
+                  ) : null}
+
+                  <Link
+                    className="btn btn-sm btn-primary mx-1"
+                    onClick={() => handleEdit(index, item)}
+                  >
+                    Edit
+                  </Link>
+
+                  <Link
+                    className="btn btn-sm btn-danger mx-1"
+                    onClick={() => deleteHandler(item.id)}
+                  >
+                    Delete
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {addShow ? (
+          <Modal show={addShow} onHide={handleAddClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Add Bank</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput1"
+                >
+                  <Form.Label>Nama Bank</Form.Label>
+                  <Form.Control
+                    as="select"
+                    className="input-group"
+                    name="nameBank"
+                    value={addForm.nameBank}
+                    onChange={handleAddFormChange}
+                  >
+                    <option value="">Pilih Nama Bank</option>
+                    {bankOptions.map((item, index) => (
+                      <option
+                        value={item.name}
+                        key={index}
+                      >{`${item.name}`}</option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput1"
+                >
+                  <Form.Label>Nama Akun</Form.Label>
+                  <Form.Control
+                    className="input-group"
+                    placeholder="Name"
+                    type="text"
+                    name="name"
+                    onChange={handleAddFormChange}
+                  ></Form.Control>
+                </Form.Group>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput1"
+                >
+                  <Form.Label>Nomor</Form.Label>
+                  <Form.Control
+                    className="input-group"
+                    placeholder="No"
+                    type="text"
+                    name="number"
+                    onChange={handleAddFormChange}
+                  ></Form.Control>
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleAddClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={() => handleAddBank(addForm)}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        ) : null}
+        {/* <div className="overflow-scroll">
           <div className="group row row-cols-3 mx-2">
             {banks.map((item, index) => (
               <div className="col" key={item.id}>
@@ -120,7 +316,7 @@ const Bank = () => {
                                 <Form.Label>Nama Bank</Form.Label>
                                 <Select
                                   value={editForm.nameBank}
-                                  options={bankOptions}
+                                  options={bankOptions.nama}
                                   onChange={handleEditFormChange}
                                 ></Select>
                               </Form.Group>
@@ -213,7 +409,7 @@ const Bank = () => {
                           value={addForm.nameBank}
                           onChange={handleAddFormChange}
                         >
-                          {/* <option value="">Pilih Nama Bank</option> */}
+                          <option value="">Pilih Nama Bank</option>
                           {bankOptions.map((item, index) => (
                             <option
                               value={item.name}
@@ -277,7 +473,7 @@ const Bank = () => {
               )}
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

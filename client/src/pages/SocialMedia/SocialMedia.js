@@ -42,13 +42,17 @@ const SocialMedia = () => {
       value: "instagram",
       label: "Instagram",
     },
+    {
+      value: "twitter",
+      label: "Twitter",
+    },
   ];
 
   useEffect(() => {
     const accountId = localStorage.id;
     getSosmed(accountId, (result) => {
       setAccount(result.data);
-      console.log(result.data);
+      // console.log(result.data);
     });
   }, [location.key]);
 
@@ -61,10 +65,15 @@ const SocialMedia = () => {
     });
   };
 
+  const closeEdit = () => {
+    setEditIndex(-1);
+  };
+
   const submitHandler = (id, form) => {
     editSosmed(id, form, (status) => {
       if (status) {
-        navigation(0);
+        closeEdit();
+        navigation("/profile");
       } else {
         Swal.fire("Edit Product", "file cannot be empty", "error");
       }
@@ -81,7 +90,9 @@ const SocialMedia = () => {
       if (!status) {
         Swal.fire("Add Bank", "file cannot be empty", "error");
       } else {
-        navigation(0);
+        toggleAddBankForm();
+        navigation("/profile");
+        setAddForm({ ...addForm, link: "" });
       }
     });
   };
@@ -91,7 +102,7 @@ const SocialMedia = () => {
   const deleteHandler = (id) => {
     deleteSosmed(id, (status) => {
       if (status) {
-        navigation(0);
+        navigation("/profile");
       }
     });
   };
@@ -100,7 +111,7 @@ const SocialMedia = () => {
       <div className="mt-3 mb-2 d-flex justify-content-between">
         <h6 className="text-black align-self-center">Social Media:</h6>
         <div className="d-flex justify-content-center">
-          <Link className="btn btn-outline-dark" onClick={toggleAddBankForm}>
+          <Link className="btn btn-success" onClick={toggleAddBankForm}>
             <FontAwesomeIcon icon={faPlus} />
           </Link>
         </div>
@@ -110,33 +121,42 @@ const SocialMedia = () => {
           {editIndex === index ? (
             <>
               <div className="input-group">
-                <Link className="input-group-text text-decoration-none">
-                  Go
-                </Link>
-                <input
+                {/* <input
                   type="text"
                   className="form-control"
                   placeholder="plattform"
                   name="platform"
                   value={editForm.platform}
                   onChange={handleEditFormChange}
+                /> */}
+                <Select
+                  options={socialMedias}
+                  placeholder={editForm.platform}
+                  onChange={(e) => {
+                    setEditForm({ ...editForm, platform: e.label });
+                  }}
                 />
                 <input
                   type="text"
                   aria-label="Last name"
-                  className="form-control"
+                  className="form-control ms-2"
                   name="link"
                   value={editForm.link}
                   placeholder="link"
                   onChange={handleEditFormChange}
                 />
               </div>
-              <Link
-                className="link-dark"
-                onClick={() => submitHandler(item.id, editForm)}
-              >
-                Save
-              </Link>
+              <div className="d-flex justify-content-center my-2">
+                <Link className="btn btn-danger mx-2" onClick={closeEdit}>
+                  Cancel
+                </Link>
+                <Link
+                  className="btn btn-success"
+                  onClick={() => submitHandler(item.id, editForm)}
+                >
+                  Save
+                </Link>
+              </div>
             </>
           ) : (
             <>
@@ -144,7 +164,7 @@ const SocialMedia = () => {
                 className="d-flex justify-content-start mb-1"
                 key={index + 1}
               >
-                {item.platform === "youtube" ? (
+                {item.platform === "Youtube" ? (
                   <>
                     <div className="">
                       <ReactSocialMediaIcons
@@ -152,13 +172,13 @@ const SocialMedia = () => {
                         icon="youtube"
                         iconColor="rgba(255, 255, 255,1)"
                         backgroundColor="rgba(217, 46, 46,1)"
-                        url={item.link}
+                        url={`https://www.youtube.com/${item.link}`}
                         size="35"
                       />
                     </div>
                   </>
                 ) : null}
-                {item.platform === "twitter" ? (
+                {item.platform === "Twitter" ? (
                   <>
                     <div className="">
                       <ReactSocialMediaIcons
@@ -166,14 +186,14 @@ const SocialMedia = () => {
                         icon="twitter"
                         iconColor="rgba(255,255,255,1)"
                         backgroundColor="rgba(26,166,233,1)"
-                        url={item.link}
+                        url={`https://www.twitter.com/${item.link}`}
                         size="35"
                       />
                     </div>
                   </>
                 ) : null}
 
-                {item.platform === "facebook" ? (
+                {item.platform === "Facebook" ? (
                   <>
                     <div className="">
                       <ReactSocialMediaIcons
@@ -181,14 +201,14 @@ const SocialMedia = () => {
                         icon="facebook"
                         iconColor="rgba(255,255,255,1)"
                         backgroundColor="rgba(24, 119, 242,1)"
-                        url={item.link}
+                        url={`https://www.facebook.com/${item.link}`}
                         size="35"
                       />
                     </div>
                   </>
                 ) : null}
 
-                {item.platform === "instagram" ? (
+                {item.platform === "Instagram" ? (
                   <>
                     <div className="">
                       <ReactSocialMediaIcons
@@ -196,7 +216,7 @@ const SocialMedia = () => {
                         icon="instagram"
                         iconColor="rgba(255,255,255,1)"
                         backgroundColor="rgba(233, 68, 117,1)"
-                        url={item.link}
+                        url={`https://www.instagram.com/${item.link}`}
                         size="35"
                       />
                     </div>
@@ -266,25 +286,27 @@ const SocialMedia = () => {
             <Select
               options={socialMedias}
               onChange={(e) => {
-                setAddForm({ ...addForm, platform: e.value });
+                setAddForm({ ...addForm, platform: e.label });
               }}
             />
             <input
               type="text"
               aria-label="Last name"
-              className="form-control"
+              className="form-control ms-2"
               name="link"
               value={addForm.link}
               onChange={handleAddFormChange}
               placeholder="link"
             />
           </div>
-          <Link className="link-dark" onClick={handleAddSosmed}>
-            Save
-          </Link>
-          <Link className="link-dark mx-2" onClick={toggleAddBankForm}>
-            Cancel
-          </Link>
+          <div className="d-flex justify-content-center mt-2">
+            <Link className="btn btn-danger mx-2" onClick={toggleAddBankForm}>
+              Cancel
+            </Link>
+            <Link className="btn btn-success" onClick={handleAddSosmed}>
+              Save
+            </Link>
+          </div>
         </>
       )}
     </>
