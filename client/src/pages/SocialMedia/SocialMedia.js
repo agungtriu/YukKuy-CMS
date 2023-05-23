@@ -1,4 +1,4 @@
-import { faEdit, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -228,7 +228,7 @@ const SocialMedia = () => {
                   aria-label="First name"
                   className="align-self-center mx-2 flex-grow-1"
                 >
-                  {item.link}
+                  @{item.link}
                 </div>
                 <div className="dropdown align-self-center">
                   <SlOptionsVertical className="mx-3 dropdown-toggle" />

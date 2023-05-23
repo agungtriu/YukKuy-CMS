@@ -128,7 +128,7 @@ const editAvatar = async (image, cb) => {
       },
     });
     cb(true, results.data.data.image);
-    localStorage.setItem("image", results.data.data.image);
+    localStorage.setItem("avatar", results.data.data.image);
     Swal.fire("Edit Avatar", results.data.message, "success");
   } catch (err) {
     if (err.response.status === 500) {

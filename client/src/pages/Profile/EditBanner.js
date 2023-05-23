@@ -9,7 +9,6 @@ const EditBanner = (props) => {
   const [user, setUser] = useState({ bannerImage: "" });
   const [file, setFile] = useState(null);
   const [previewImage, setPreviewImage] = useState("");
-  const [banner, setBanner] = useState();
   const [isExist, setIsExist] = useState(false);
   const [showModal, setShowModal] = useState(true);
 
@@ -26,7 +25,6 @@ const EditBanner = (props) => {
 
   useEffect(() => {
     getBanner();
-    setBanner(localStorage.image);
   }, []);
 
   const handleImageUpload = (e) => {
@@ -54,7 +52,6 @@ const EditBanner = (props) => {
       fromData.append("banner", file);
       editBanner(fromData, (status, banner) => {
         if (status) {
-          setBanner(banner);
           handleCloseModal();
           navigation("/profile");
         }
@@ -87,7 +84,6 @@ const EditBanner = (props) => {
               id="formFile"
               onChange={(e) => {
                 setFile(e.target.files[0]);
-                setBanner(e.target.files[0].name);
                 handleImageUpload(e);
               }}
             ></input>

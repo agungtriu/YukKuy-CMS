@@ -5,8 +5,6 @@ import {
   editBanks,
   getBanks,
 } from "../../axios/bankAxios";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { ProfileBar } from "../../components";
@@ -41,6 +39,14 @@ const Bank = () => {
       setBanks(banks);
     });
   }, [location.key]);
+
+  let listBankOptions = [];
+  bankOptions?.forEach((bank) => {
+    listBankOptions.push({
+      value: bank.name,
+      label: bank.name,
+    });
+  });
 
   const handleEdit = (index, data) => {
     setEditIndex(index);
@@ -108,10 +114,10 @@ const Bank = () => {
           <div className="col">
             <h5 className="mx-3">Your Bank Account:</h5>
           </div>
-          <div className="col" style={{paddingRight:"7.5%"}}>
+          <div className="col" style={{ paddingRight: "7.5%" }}>
             <div className="d-flex justify-content-end">
               <Link
-                className="btn btn-outline-dark"
+                className="btn btn-success"
                 onClick={() => showAddModal(true)}
               >
                 Add Bank
@@ -122,11 +128,21 @@ const Bank = () => {
         <table className="table">
           <thead>
             <tr className="text-center">
-              <th style={{ width: "10%" }} scope="col">No</th>
-              <th style={{ width: "25%" }} scope="col">Name</th>
-              <th style={{ width: "25%" }} scope="col">Bank</th>
-              <th style={{ width: "20%" }} scope="col">Number</th>
-              <th style={{ width: "20%" }} scope="col">Action</th>
+              <th style={{ width: "10%" }} scope="col">
+                No
+              </th>
+              <th style={{ width: "25%" }} scope="col">
+                Name
+              </th>
+              <th style={{ width: "25%" }} scope="col">
+                Bank
+              </th>
+              <th style={{ width: "20%" }} scope="col">
+                Number
+              </th>
+              <th style={{ width: "20%" }} scope="col">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -134,7 +150,7 @@ const Bank = () => {
               <tr className="text-center" key={item.id}>
                 <th scope="row">{index + 1}</th>
                 <td>{item.name}</td>
-                <td className="text-start">{item.bank}</td>
+                <td >{item.bank}</td>
                 <td>{item.number}</td>
                 <td>
                   {editIndex === index ? (
@@ -149,28 +165,18 @@ const Bank = () => {
                               className="mb-3"
                               controlId="exampleForm.ControlInput1"
                             >
-                              <Form.Label>Nama Bank</Form.Label>
-                              <Form.Control
-                                as="select"
-                                className="input-group"
-                                name="nameBank"
-                                value={editForm.nameBank}
-                                onChange={handleEditFormChange}
-                              >
-                                {/* <option value="">Pilih Nama Bank</option> */}
-                                {bankOptions.map((item, index) => (
-                                  <option
-                                    value={item.name}
-                                    key={index}
-                                  >{`${item.name}`}</option>
-                                ))}
-                              </Form.Control>
+                              <Form.Label>Bank</Form.Label>
+                              <Select
+                                value={{ label: editForm.nameBank }}
+                                options={listBankOptions}
+                                onChange={handleAddFormChange}
+                              />
                             </Form.Group>
                             <Form.Group
                               className="mb-3"
                               controlId="exampleForm.ControlInput1"
                             >
-                              <Form.Label>Nama Akun</Form.Label>
+                              <Form.Label>Name</Form.Label>
                               <Form.Control
                                 className="input-group"
                                 placeholder="Name"
@@ -184,11 +190,11 @@ const Bank = () => {
                               className="mb-3"
                               controlId="exampleForm.ControlInput1"
                             >
-                              <Form.Label>Nomor</Form.Label>
+                              <Form.Label>Number</Form.Label>
                               <Form.Control
                                 className="input-group"
-                                placeholder="No"
-                                type="text"
+                                placeholder="NUmber"
+                                type="number"
                                 name="number"
                                 value={editForm.number}
                                 onChange={handleEditFormChange}
@@ -197,14 +203,17 @@ const Bank = () => {
                           </Form>
                         </Modal.Body>
                         <Modal.Footer>
-                          <Button variant="secondary" onClick={handleClose}>
+                          <Button
+                            className="btn btn-danger"
+                            onClick={handleClose}
+                          >
                             Close
                           </Button>
                           <Button
-                            variant="primary"
+                            className="btn btn-success"
                             onClick={() => submitHandler(item.id, editForm)}
                           >
-                            Save Changes
+                            Save
                           </Button>
                         </Modal.Footer>
                       </Modal>
@@ -240,28 +249,17 @@ const Bank = () => {
                   className="mb-3"
                   controlId="exampleForm.ControlInput1"
                 >
-                  <Form.Label>Nama Bank</Form.Label>
-                  <Form.Control
-                    as="select"
-                    className="input-group"
-                    name="nameBank"
-                    value={addForm.nameBank}
+                  <Form.Label>Bank</Form.Label>
+                  <Select
+                    options={listBankOptions}
                     onChange={handleAddFormChange}
-                  >
-                    <option value="">Pilih Nama Bank</option>
-                    {bankOptions.map((item, index) => (
-                      <option
-                        value={item.name}
-                        key={index}
-                      >{`${item.name}`}</option>
-                    ))}
-                  </Form.Control>
+                  />
                 </Form.Group>
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlInput1"
                 >
-                  <Form.Label>Nama Akun</Form.Label>
+                  <Form.Label>Name</Form.Label>
                   <Form.Control
                     className="input-group"
                     placeholder="Name"
@@ -274,11 +272,11 @@ const Bank = () => {
                   className="mb-3"
                   controlId="exampleForm.ControlInput1"
                 >
-                  <Form.Label>Nomor</Form.Label>
+                  <Form.Label>Number</Form.Label>
                   <Form.Control
                     className="input-group"
-                    placeholder="No"
-                    type="text"
+                    placeholder="Number"
+                    type="number"
                     name="number"
                     onChange={handleAddFormChange}
                   ></Form.Control>
@@ -286,194 +284,18 @@ const Bank = () => {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleAddClose}>
+              <Button className="btn btn-danger" onClick={handleAddClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={() => handleAddBank(addForm)}>
-                Save Changes
+              <Button
+                className="btn btn-success"
+                onClick={() => handleAddBank(addForm)}
+              >
+                Save
               </Button>
             </Modal.Footer>
           </Modal>
         ) : null}
-        {/* <div className="overflow-scroll">
-          <div className="group row row-cols-3 mx-2">
-            {banks.map((item, index) => (
-              <div className="col" key={item.id}>
-                <div className="card w-75 my-1 px-0">
-                  <div className="card-header d-flex justify-content-between align-items-start">
-                    {editIndex === index ? (
-                      <>
-                        <Modal show={show} onHide={handleClose}>
-                          <Modal.Header closeButton>
-                            <Modal.Title>Edit Product</Modal.Title>
-                          </Modal.Header>
-                          <Modal.Body>
-                            <Form>
-                              <Form.Group
-                                className="mb-3"
-                                controlId="exampleForm.ControlInput1"
-                              >
-                                <Form.Label>Nama Bank</Form.Label>
-                                <Select
-                                  value={editForm.nameBank}
-                                  options={bankOptions.nama}
-                                  onChange={handleEditFormChange}
-                                ></Select>
-                              </Form.Group>
-                              <Form.Group
-                                className="mb-3"
-                                controlId="exampleForm.ControlInput1"
-                              >
-                                <Form.Label>Nama Akun</Form.Label>
-                                <Form.Control
-                                  className="input-group"
-                                  placeholder="Name"
-                                  type="text"
-                                  name="name"
-                                  value={editForm.name}
-                                  onChange={handleEditFormChange}
-                                ></Form.Control>
-                              </Form.Group>
-                              <Form.Group
-                                className="mb-3"
-                                controlId="exampleForm.ControlInput1"
-                              >
-                                <Form.Label>Nomor</Form.Label>
-                                <Form.Control
-                                  className="input-group"
-                                  placeholder="No"
-                                  type="text"
-                                  name="number"
-                                  value={editForm.number}
-                                  onChange={handleEditFormChange}
-                                ></Form.Control>
-                              </Form.Group>
-                            </Form>
-                          </Modal.Body>
-                          <Modal.Footer>
-                            <Button variant="secondary" onClick={handleClose}>
-                              Close
-                            </Button>
-                            <Button
-                              variant="primary"
-                              onClick={() => submitHandler(item.id, editForm)}
-                            >
-                              Save Changes
-                            </Button>
-                          </Modal.Footer>
-                        </Modal>
-                      </>
-                    ) : null}
-                    <div className="card-header d-flex justify-content-between align-items-start">
-                      <h5 className="mb-0">{item.bank}</h5>
-                    </div>
-                    <div className="button-container">
-                      <Link
-                        className="link-dark me-2"
-                        onClick={() => handleEdit(index, item)}
-                      >
-                        <FontAwesomeIcon icon={faEdit} />
-                      </Link>
-                      <Link
-                        className="link-dark me-2"
-                        onClick={() => deleteHandler(item.id)}
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <h6 className="card-title text-black">{item.name}</h6>
-                    <h6 className="card-text text-black">{item.number}</h6>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <div className="col">
-              {addShow ? (
-                <Modal show={addShow} onHide={handleAddClose}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Add Bank</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <Form>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Label>Nama Bank</Form.Label>
-                        <Form.Control
-                          as="select"
-                          className="input-group"
-                          name="nameBank"
-                          value={addForm.nameBank}
-                          onChange={handleAddFormChange}
-                        >
-                          <option value="">Pilih Nama Bank</option>
-                          {bankOptions.map((item, index) => (
-                            <option
-                              value={item.name}
-                              key={index}
-                            >{`${item.name} : ${item.code}`}</option>
-                          ))}
-                        </Form.Control>
-                      </Form.Group>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Label>Nama Akun</Form.Label>
-                        <Form.Control
-                          className="input-group"
-                          placeholder="Name"
-                          type="text"
-                          name="name"
-                          value={addForm.name}
-                          onChange={handleAddFormChange}
-                        ></Form.Control>
-                      </Form.Group>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlInput1"
-                      >
-                        <Form.Label>Nomor</Form.Label>
-                        <Form.Control
-                          className="input-group"
-                          placeholder="No"
-                          type="text"
-                          name="number"
-                          value={addForm.number}
-                          onChange={handleAddFormChange}
-                        ></Form.Control>
-                      </Form.Group>
-                    </Form>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={handleAddClose}>
-                      Close
-                    </Button>
-                    <Button
-                      variant="primary"
-                      onClick={() => handleAddBank(addForm)}
-                    >
-                      Save Changes
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
-              ) : (
-                <Link
-                  className="card w-75 my-1 px-0 text-decoration-none"
-                  onClick={() => setAddShow(true)}
-                >
-                  <div className="card-body text-center">
-                    <h6 className="card-title text-black">Add Bank</h6>
-                    <FontAwesomeIcon icon={faPlus} size="2xl" />
-                  </div>
-                </Link>
-              )}
-            </div>
-          </div>
-        </div> */}
       </div>
     </>
   );

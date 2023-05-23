@@ -8,7 +8,6 @@ import { Modal, Button } from "react-bootstrap";
 
 const EditAvatar = (props) => {
   const [previewImage, setPreviewImage] = useState("");
-  const [avatar, setAvatar] = useState();
   const [file, setFile] = useState(null);
   const [user, setUser] = useState({ avatar: "" });
   const [isExist, setIsExist] = useState(false);
@@ -27,7 +26,6 @@ const EditAvatar = (props) => {
 
   useEffect(() => {
     getAccount();
-    setAvatar(localStorage.image);
   }, []);
 
   const handleImageUpload = (e) => {
@@ -55,7 +53,6 @@ const EditAvatar = (props) => {
       fromData.append("avatar", file);
       editAvatar(fromData, (status, avatar) => {
         if (status) {
-          setAvatar(avatar);
           handleCloseModal();
           navigation("/profile");
         }
@@ -76,10 +73,8 @@ const EditAvatar = (props) => {
           <img
             src={isExist === false ? user.avatar : previewImage}
             className="rounded-circle mb-4 ms-auto me-auto img-avatar d-flex justify-content-center"
-            // style={{ width: "50%" }}
             alt="..."
           />
-          {/* <h5 className="text-center">{user.username}</h5> */}
           <div className="mb-3">
             <input
               className="form-control"
@@ -87,17 +82,24 @@ const EditAvatar = (props) => {
               id="formFile"
               onChange={(e) => {
                 setFile(e.target.files[0]);
-                setAvatar(e.target.files[0].name);
                 handleImageUpload(e);
               }}
             ></input>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="" className="btn btn-danger" onClick={handleCloseModal}>
+          <Button
+            variant=""
+            className="btn btn-danger"
+            onClick={handleCloseModal}
+          >
             Close
           </Button>
-          <Button variant="" className="btn btn-success" onClick={submitHandler}>
+          <Button
+            variant=""
+            className="btn btn-success"
+            onClick={submitHandler}
+          >
             Confirm
           </Button>
         </Modal.Footer>

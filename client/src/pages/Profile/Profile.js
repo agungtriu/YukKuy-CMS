@@ -3,9 +3,6 @@ import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faKey,
-  faPen,
-  faUser,
-  faImage,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { getAccountByUsername } from "../../axios/accountAxios";
@@ -17,7 +14,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { editProfile } from "../../axios/accountAxios";
 import EditAvatar from "./EditAvatar";
 import EditBanner from "./EditBanner";
-import { SlOptionsVertical } from "react-icons/sl";
 
 const Profile = (props) => {
   const [user, setUser] = useState({
