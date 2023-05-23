@@ -99,6 +99,11 @@ const EditProduct = () => {
     });
   });
 
+  guideOptions.push({
+    value: "add",
+    label: "Add Guide",
+  });
+
   const submitHandler = () => {
     if (form.name === "") {
       Swal.fire("Add Products", "Name cannot be empty", "error");
@@ -342,7 +347,9 @@ const EditProduct = () => {
                   }}
                   options={guideOptions}
                   onChange={(e) => {
-                    setForm({ ...form, guideId: e.value });
+                    e.value === "add"
+                      ? navigation("/guide")
+                      : setForm({ ...form, guideId: e.value });
                     setSelectedGuide({ name: e.label, id: e.value });
                   }}
                 />

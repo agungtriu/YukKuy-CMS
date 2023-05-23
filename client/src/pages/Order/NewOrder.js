@@ -83,7 +83,9 @@ const NewOrder = () => {
           );
         })
       ) : (
-        <DataEmpty></DataEmpty>
+        <div className="mt-5 text-center">
+          <DataEmpty></DataEmpty>
+        </div>
       )}
       <ModalVerification order={order} bank={bank}></ModalVerification>
 

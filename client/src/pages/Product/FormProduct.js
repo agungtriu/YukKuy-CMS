@@ -63,6 +63,11 @@ const FormProduct = () => {
     });
   });
 
+  guideOptions.push({
+    value: "add",
+    label: "Add Guide",
+  });
+
   const submitHandler = () => {
     if (file === null) {
       Swal.fire("Add Products", "File cannot be empty", "error");
@@ -134,9 +139,6 @@ const FormProduct = () => {
               ></img>
             ) : null}
             <div className="my-3">
-              <label htmlFor="formFile" className="form-label">
-                Product Images: {form.imageProducts}
-              </label>
               <input
                 type="file"
                 className="form-control"
@@ -291,7 +293,9 @@ const FormProduct = () => {
                   id="formGuide"
                   options={guideOptions}
                   onChange={(e) => {
-                    setForm({ ...form, guideId: e.value });
+                    e.value === "add"
+                      ? navigation("/guide")
+                      : setForm({ ...form, guideId: e.value });
                   }}
                 />
               </div>

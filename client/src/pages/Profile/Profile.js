@@ -71,8 +71,6 @@ const Profile = (props) => {
 
   useEffect(() => {
     getAccount();
-    // setClickedBanner(false);
-    // setClickedAvatar(false);
   }, [location.key]);
 
   const submitHandler = () => {
@@ -81,7 +79,6 @@ const Profile = (props) => {
         handleCloseEditModal();
         navigation("/profile");
       }
-      // window.location.reload();
     });
   };
 
@@ -112,7 +109,7 @@ const Profile = (props) => {
         <div className="card border-0 shadow">
           <div className="position-absolute top-0 end-0 mt-2 mx-4">
             <button
-              className="btn btn-outline-success btn-banner border-0"
+              className="btn btn-success"
               onClick={handleClickedBanner}
             >
               <FontAwesomeIcon
@@ -155,21 +152,6 @@ const Profile = (props) => {
                 </div>
                 <div className="card-body">
                   <h5 className="text-center">{user.username}</h5>
-
-                  {/* <div className="col">
-                      <div className="input-group flex-nowrap">
-                        <Link
-                          className="btn btn-outline-dark"
-                          onClick={handleClickedBanner}
-                        >
-                          <FontAwesomeIcon
-                            icon={faImage}
-                            style={{ color: "#ba1c1c" }}
-                          />
-                        </Link>
-                      </div>
-                    </div> */}
-                  {/* </div> */}
                   <SocialMedia></SocialMedia>
                 </div>
               </div>
@@ -185,42 +167,8 @@ const Profile = (props) => {
                   >
                     <FontAwesomeIcon icon={faPenToSquare} />
                   </button>
-                  {/* <ul className="dropdown-menu dropdown-menu-right">
-                      <li>
-                        <button
-                          className="dropdown-item"
-                          onClick={handleShowEditModal}
-                        >
-                          Edit Profile
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="dropdown-item"
-                          onClick={handleClickedBanner}
-                        >
-                          Edit Banner
-                        </button>
-                      </li>
-                    </ul> */}
-                  {/* </div> */}
                 </div>
                 <div className="container text center">
-                  {/* <div className="position-absolute top-0 end-0">
-                    <div className="input-group flex-nowrap">
-                      <Link
-                        className="btn btn-outline-dark border-0"
-                        onClick={handleShowEditModal}
-                      >
-                        <FontAwesomeIcon
-                          icon={faPen}
-                          style={{ color: "#30c0af" }}
-                          className="mx-2"
-                        />
-                        Edit
-                      </Link>
-                    </div>
-                  </div> */}
                   <div className="row row-cols-2">
                     <div className="col my-3">
                       <label>Name</label>
