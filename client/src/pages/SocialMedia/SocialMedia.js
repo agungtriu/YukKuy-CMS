@@ -31,10 +31,6 @@ const SocialMedia = () => {
 
   const socialMedias = [
     {
-      value: "facebook",
-      label: "Facebook",
-    },
-    {
       value: "youtube",
       label: "Youtube",
     },
@@ -52,7 +48,6 @@ const SocialMedia = () => {
     const accountId = localStorage.id;
     getSosmed(accountId, (result) => {
       setAccount(result.data);
-      // console.log(result.data);
     });
   }, [location.key]);
 
@@ -121,14 +116,6 @@ const SocialMedia = () => {
           {editIndex === index ? (
             <>
               <div className="input-group">
-                {/* <input
-                  type="text"
-                  className="form-control"
-                  placeholder="plattform"
-                  name="platform"
-                  value={editForm.platform}
-                  onChange={handleEditFormChange}
-                /> */}
                 <Select
                   options={socialMedias}
                   placeholder={editForm.platform}
@@ -193,21 +180,6 @@ const SocialMedia = () => {
                   </>
                 ) : null}
 
-                {item.platform === "Facebook" ? (
-                  <>
-                    <div className="">
-                      <ReactSocialMediaIcons
-                        borderColor="rgba(24, 119, 242,1)"
-                        icon="facebook"
-                        iconColor="rgba(255,255,255,1)"
-                        backgroundColor="rgba(24, 119, 242,1)"
-                        url={`https://www.facebook.com/${item.link}`}
-                        size="35"
-                      />
-                    </div>
-                  </>
-                ) : null}
-
                 {item.platform === "Instagram" ? (
                   <>
                     <div className="">
@@ -252,21 +224,6 @@ const SocialMedia = () => {
                   </ul>
                 </div>
               </div>
-              {/* <div className="d-flex justify-content-end">
-                <FontAwesomeIcon
-                  icon={faEdit}
-                  className="mx-2 my-1 link-dark"
-                  onClick={() => handleEdit(index, item)}
-                />
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  className="mx-2 my-1"
-                  onClick={() => {
-                    deleteHandler(item.id);
-                  }}
-                />
-                
-              </div> */}
             </>
           )}
         </React.Fragment>
@@ -274,15 +231,6 @@ const SocialMedia = () => {
       {isAddVisible && (
         <>
           <div className="input-group">
-            {/* <Link className="input-group-text text-decoration-none">Go</Link> */}
-            {/* <input
-              type="text"
-              className="form-control"
-              placeholder="plattform"
-              name="platform"
-              value={addForm.platform}
-              onChange={handleAddFormChange}
-            /> */}
             <Select
               options={socialMedias}
               onChange={(e) => {
