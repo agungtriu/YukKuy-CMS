@@ -11,9 +11,12 @@ import { ProfileBar } from "../../components";
 import { Button, Form, Modal } from "react-bootstrap";
 import bankOptions from "../../data/bankOption.json";
 import Select from "react-select";
+import DataEmpty from "../../components/DataEmpty";
+import ReactLoading from "react-loading";
 
 const Bank = () => {
   const [banks, setBanks] = useState([]);
+  const [done, setDone] = useState(false);
   const [editForm, setEditForm] = useState({
     id: "",
     nameBank: "",
@@ -37,6 +40,7 @@ const Bank = () => {
     getBanks(accountId, (banks) => {
       console.log(banks);
       setBanks(banks);
+      setDone(true);
     });
   }, [location.key]);
 
@@ -73,7 +77,6 @@ const Bank = () => {
       } else {
         Swal.fire("Edit Product", "file cannot be empty", "error");
       }
-      // window.location.reload();
     });
   };
 
@@ -93,7 +96,6 @@ const Bank = () => {
         handleAddClose();
         navigation("/bank");
       }
-      // window.location.reload();
     });
   };
 
@@ -101,7 +103,6 @@ const Bank = () => {
     deleteBank(id, (status) => {
       if (status) {
         navigation("/bank");
-        // window.location.reload();
       }
     });
   };
@@ -114,8 +115,8 @@ const Bank = () => {
           <div className="col">
             <h5 className="mx-3">Your Bank Account:</h5>
           </div>
-          <div className="col" style={{ paddingRight: "7.5%" }}>
-            <div className="d-flex justify-content-end">
+          <div className="col">
+            <div className="d-flex justify-content-end mx-3">
               <Link
                 className="btn btn-success"
                 onClick={() => showAddModal(true)}
@@ -146,96 +147,121 @@ const Bank = () => {
             </tr>
           </thead>
           <tbody>
-            {banks.map((item, index) => (
-              <tr className="text-center" key={item.id}>
-                <th scope="row">{index + 1}</th>
-                <td>{item.name}</td>
-                <td >{item.bank}</td>
-                <td>{item.number}</td>
-                <td>
-                  {editIndex === index ? (
-                    <>
-                      <Modal show={show} onHide={handleClose}>
-                        <Modal.Header closeButton>
-                          <Modal.Title>Edit Bank</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                          <Form>
-                            <Form.Group
-                              className="mb-3"
-                              controlId="exampleForm.ControlInput1"
-                            >
-                              <Form.Label>Bank</Form.Label>
-                              <Select
-                                value={{ label: editForm.nameBank }}
-                                options={listBankOptions}
-                                onChange={handleAddFormChange}
-                              />
-                            </Form.Group>
-                            <Form.Group
-                              className="mb-3"
-                              controlId="exampleForm.ControlInput1"
-                            >
-                              <Form.Label>Name</Form.Label>
-                              <Form.Control
-                                className="input-group"
-                                placeholder="Name"
-                                type="text"
-                                name="name"
-                                value={editForm.name}
-                                onChange={handleEditFormChange}
-                              ></Form.Control>
-                            </Form.Group>
-                            <Form.Group
-                              className="mb-3"
-                              controlId="exampleForm.ControlInput1"
-                            >
-                              <Form.Label>Number</Form.Label>
-                              <Form.Control
-                                className="input-group"
-                                placeholder="NUmber"
-                                type="number"
-                                name="number"
-                                value={editForm.number}
-                                onChange={handleEditFormChange}
-                              ></Form.Control>
-                            </Form.Group>
-                          </Form>
-                        </Modal.Body>
-                        <Modal.Footer>
-                          <Button
-                            className="btn btn-danger"
-                            onClick={handleClose}
-                          >
-                            Close
-                          </Button>
-                          <Button
-                            className="btn btn-success"
-                            onClick={() => submitHandler(item.id, editForm)}
-                          >
-                            Save
-                          </Button>
-                        </Modal.Footer>
-                      </Modal>
-                    </>
-                  ) : null}
-
-                  <Link
-                    className="btn btn-sm btn-primary mx-1"
-                    onClick={() => handleEdit(index, item)}
-                  >
-                    Edit
-                  </Link>
-
-                  <Link
-                    className="btn btn-sm btn-danger mx-1"
-                    onClick={() => deleteHandler(item.id)}
-                  >
-                    Delete
-                  </Link>
+            {!done ? (
+              <tr>
+                <td colSpan="5" className="position-relative">
+                  <ReactLoading
+                    className="position-absolute top-50 start-50 translate-middle"
+                    type={"spin"}
+                    color={"#000000"}
+                    height={50}
+                    width={50}
+                  />
                 </td>
               </tr>
-            ))}
+            ) : banks.length > 0 ? (
+              banks.map((item, index) => (
+                <tr className="text-center" key={item.id}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{item.name}</td>
+                  <td>{item.bank}</td>
+                  <td>{item.number}</td>
+                  <td>
+                    {editIndex === index ? (
+                      <>
+                        <Modal show={show} onHide={handleClose}>
+                          <Modal.Header closeButton>
+                            <Modal.Title>Edit Bank</Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            <Form>
+                              <Form.Group
+                                className="mb-3"
+                                controlId="exampleForm.ControlInput1"
+                              >
+                                <Form.Label>Bank</Form.Label>
+                                <Select
+                                  value={{ label: editForm.nameBank }}
+                                  options={listBankOptions}
+                                  onChange={(e) => {
+                                    setEditForm({
+                                      ...editForm,
+                                      nameBank: e.value,
+                                    });
+                                  }}
+                                />
+                              </Form.Group>
+                              <Form.Group
+                                className="mb-3"
+                                controlId="exampleForm.ControlInput1"
+                              >
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control
+                                  className="input-group"
+                                  placeholder="Name"
+                                  type="text"
+                                  name="name"
+                                  value={editForm.name}
+                                  onChange={handleEditFormChange}
+                                ></Form.Control>
+                              </Form.Group>
+                              <Form.Group
+                                className="mb-3"
+                                controlId="exampleForm.ControlInput1"
+                              >
+                                <Form.Label>Number</Form.Label>
+                                <Form.Control
+                                  className="input-group"
+                                  placeholder="NUmber"
+                                  type="number"
+                                  name="number"
+                                  value={editForm.number}
+                                  onChange={handleEditFormChange}
+                                ></Form.Control>
+                              </Form.Group>
+                            </Form>
+                          </Modal.Body>
+                          <Modal.Footer>
+                            <Button
+                              className="btn btn-danger"
+                              onClick={handleClose}
+                            >
+                              Close
+                            </Button>
+                            <Button
+                              className="btn btn-success"
+                              onClick={() => submitHandler(item.id, editForm)}
+                            >
+                              Save
+                            </Button>
+                          </Modal.Footer>
+                        </Modal>
+                      </>
+                    ) : null}
+
+                    <Link
+                      className="btn btn-sm btn-primary mx-1"
+                      onClick={() => handleEdit(index, item)}
+                    >
+                      Edit
+                    </Link>
+
+                    <Link
+                      className="btn btn-sm btn-danger mx-1"
+                      onClick={() => deleteHandler(item.id)}
+                    >
+                      Delete
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center">
+                  <DataEmpty></DataEmpty>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
         {addShow ? (
@@ -252,7 +278,9 @@ const Bank = () => {
                   <Form.Label>Bank</Form.Label>
                   <Select
                     options={listBankOptions}
-                    onChange={handleAddFormChange}
+                    onChange={(e) => {
+                      setAddForm({ ...addForm, nameBank: e.value });
+                    }}
                   />
                 </Form.Group>
                 <Form.Group

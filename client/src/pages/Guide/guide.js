@@ -9,9 +9,12 @@ import {
 import Swal from "sweetalert2";
 import { ProfileBar } from "../../components";
 import { Button, Form, Modal } from "react-bootstrap";
+import DataEmpty from "../../components/DataEmpty";
+import ReactLoading from "react-loading";
 
 const Guide = () => {
   const [guide, setGuide] = useState([]);
+  const [done, setDone] = useState(false);
   const [editForm, setEditForm] = useState({
     id: "",
     name: "",
@@ -29,6 +32,7 @@ const Guide = () => {
   useEffect(() => {
     getGuide((result) => {
       setGuide(result);
+      setDone(true);
     });
   }, [location.key]);
 
@@ -92,12 +96,9 @@ const Guide = () => {
           <div className="col">
             <h5 className="px-3">List Guide:</h5>
           </div>
-          <div className="col" style={{ paddingRight: "11.5%" }}>
-            <div className="d-flex justify-content-end mx-2">
-              <Link
-                className="btn btn-success"
-                onClick={toggleAddGuideForm}
-              >
+          <div className="col">
+            <div className="d-flex justify-content-end mx-3">
+              <Link className="btn btn-success" onClick={toggleAddGuideForm}>
                 Add Guide
               </Link>
             </div>
@@ -166,68 +167,88 @@ const Guide = () => {
             </tr>
           </thead>
           <tbody>
-            {guide.map((item, index) => (
-              <tr className="text-center" key={item.id}>
-                <th scope="row">{index + 1}</th>
-                <td>
-                  {editIndex === index ? (
-                    <input
-                      type="text"
-                      name="name"
-                      value={editForm.name}
-                      onChange={handleEditFormChange}
-                    />
-                  ) : (
-                    item.name
-                  )}
-                </td>
-                <td>
-                  {editIndex === index ? (
-                    <input
-                      type="text"
-                      name="phone"
-                      value={editForm.phone}
-                      onChange={handleEditFormChange}
-                    />
-                  ) : (
-                    item.phone
-                  )}
-                </td>
-                <td>
-                  {editIndex === index ? (
-                    <>
-                      <Link
-                        className="btn btn-sm btn-success mx-1"
-                        onClick={() => submitHandler(item.id, editForm)}
-                      >
-                        Save
-                      </Link>
-                      <Link
-                        className="btn btn-sm btn-secondary mx-1"
-                        onClick={closeEdit}
-                      >
-                        Cancel
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        className="btn btn-sm btn-primary mx-1"
-                        onClick={() => handleEdit(index, item)}
-                      >
-                        Edit
-                      </Link>
-                      <Link
-                        className="btn btn-sm btn-danger mx-1"
-                        onClick={() => deleteHandler(item.id)}
-                      >
-                        Delete
-                      </Link>
-                    </>
-                  )}
+            {!done ? (
+              <tr>
+                <td colSpan="5" className="position-relative">
+                  <ReactLoading
+                    className="position-absolute top-50 start-50 translate-middle"
+                    type={"spin"}
+                    color={"#000000"}
+                    height={50}
+                    width={50}
+                  />
                 </td>
               </tr>
-            ))}
+            ) : guide.length > 0 ? (
+              guide.map((item, index) => (
+                <tr className="text-center" key={item.id}>
+                  <th scope="row">{index + 1}</th>
+                  <td>
+                    {editIndex === index ? (
+                      <input
+                        type="text"
+                        name="name"
+                        value={editForm.name}
+                        onChange={handleEditFormChange}
+                      />
+                    ) : (
+                      item.name
+                    )}
+                  </td>
+                  <td>
+                    {editIndex === index ? (
+                      <input
+                        type="text"
+                        name="phone"
+                        value={editForm.phone}
+                        onChange={handleEditFormChange}
+                      />
+                    ) : (
+                      item.phone
+                    )}
+                  </td>
+                  <td>
+                    {editIndex === index ? (
+                      <>
+                        <Link
+                          className="btn btn-sm btn-success mx-1"
+                          onClick={() => submitHandler(item.id, editForm)}
+                        >
+                          Save
+                        </Link>
+                        <Link
+                          className="btn btn-sm btn-secondary mx-1"
+                          onClick={closeEdit}
+                        >
+                          Cancel
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          className="btn btn-sm btn-primary mx-1"
+                          onClick={() => handleEdit(index, item)}
+                        >
+                          Edit
+                        </Link>
+                        <Link
+                          className="btn btn-sm btn-danger mx-1"
+                          onClick={() => deleteHandler(item.id)}
+                        >
+                          Delete
+                        </Link>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center">
+                  <DataEmpty></DataEmpty>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

@@ -18,7 +18,8 @@ import {
   Guide,
 } from "../pages";
 
-const MainContent = () => {
+const MainContent = (props) => {
+  const { avatarCbHandler } = props;
   return (
     <>
       <Routes>
@@ -38,7 +39,10 @@ const MainContent = () => {
             element={<EditProduct></EditProduct>}
           ></Route>
         </Route>
-        <Route path="/profile" element={<Profile></Profile>}></Route>
+        <Route
+          path="/profile"
+          element={<Profile avatarCbHandler={avatarCbHandler}></Profile>}
+        ></Route>
         <Route path="/profile">
           <Route
             path="edit/password"

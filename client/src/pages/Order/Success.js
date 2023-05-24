@@ -123,7 +123,9 @@ const Success = () => {
           );
         })
       ) : (
-        <DataEmpty></DataEmpty>
+        <div className="mt-5 text-center">
+          <DataEmpty></DataEmpty>
+        </div>
       )}
       <div className=" d-flex justify-content-center my-2">
         <nav aria-label="Page navigation example">

@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import MainContent from "./MainContent";
 import { Link } from "react-router-dom";
 
-const SideBar = () => {
+const SideBar = (props) => {
   const [activeItem, setActiveItem] = useState("dashboard");
 
   const handleItemClick = (item) => {
@@ -18,6 +18,7 @@ const SideBar = () => {
     }
   };
 
+  const { avatarCbHandler } = props;
   return (
     <>
       <div className="container-fluid">
@@ -54,7 +55,7 @@ const SideBar = () => {
             className="card col py-3 mx-4 shadow-lg"
             style={{ backgroundColor: "#F5F5F5", borderColor: "white" }}
           >
-            <MainContent></MainContent>
+            <MainContent avatarCbHandler={avatarCbHandler}></MainContent>
           </div>
         </div>
       </div>

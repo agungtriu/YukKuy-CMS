@@ -63,6 +63,11 @@ const FormProduct = () => {
     });
   });
 
+  guideOptions.push({
+    value: "add",
+    label: "Add Guide",
+  });
+
   const submitHandler = () => {
     if (file === null) {
       Swal.fire("Add Products", "File cannot be empty", "error");
@@ -134,9 +139,6 @@ const FormProduct = () => {
               ></img>
             ) : null}
             <div className="my-3">
-              <label htmlFor="formFile" className="form-label">
-                Product Images: {form.imageProducts}
-              </label>
               <input
                 type="file"
                 className="form-control"
@@ -149,7 +151,7 @@ const FormProduct = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
+              <label htmlFor="formName" className="form-label">
                 Name
               </label>
               <input
@@ -157,6 +159,7 @@ const FormProduct = () => {
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="form-control"
                 type="text"
+                id="formName"
                 aria-label="default input example"
               />
             </div>
@@ -164,11 +167,11 @@ const FormProduct = () => {
               <div className="row row-cols-2">
                 <div className="col">
                   <Form.Group controlId="dob">
-                    <Form.Label>Start Date</Form.Label>
+                    <Form.Label htmlFor="formStartDate">Start Date</Form.Label>
                     <Form.Control
+                      id="formStartDate"
                       type="date"
                       name="startDate"
-                      placeholder="Date of Birth"
                       formTarget="dd-mm-yyyy"
                       onChange={(e) =>
                         setForm({ ...form, dateStart: e.target.value })
@@ -178,11 +181,11 @@ const FormProduct = () => {
                 </div>
                 <div className="col">
                   <Form.Group controlId="dob">
-                    <Form.Label>End Date</Form.Label>
+                    <Form.Label htmlFor="formEndDate">End Date</Form.Label>
                     <Form.Control
+                      id="formEndDate"
                       type="date"
                       name="endDate"
-                      placeholder="Date of Birth"
                       formTarget="dd-mm-yyyy"
                       onChange={(e) =>
                         setForm({ ...form, dateEnd: e.target.value })
@@ -193,7 +196,7 @@ const FormProduct = () => {
               </div>
             </div>
             <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
+              <label htmlFor="formPrice" className="form-label">
                 Price
               </label>
               <div className="input-group">
@@ -202,16 +205,18 @@ const FormProduct = () => {
                   value={form.price}
                   onChange={(e) => setForm({ ...form, price: e.target.value })}
                   type="number"
+                  id="formPrice"
                   className="form-control"
                 />
               </div>
             </div>
             <div className="row row-cols-3">
               <div className="mb-3">
-                <label htmlFor="formFile" className="form-label">
+                <label htmlFor="formProvince" className="form-label">
                   Province
                 </label>
                 <Select
+                  id="formProvince"
                   options={provinceOptions}
                   onChange={(e) => {
                     provinceChangeHandler(e.value);
@@ -220,10 +225,11 @@ const FormProduct = () => {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="formFile" className="form-label">
+                <label htmlFor="formCity" className="form-label">
                   City
                 </label>
                 <Select
+                  id="formCity"
                   options={cityOptions}
                   onChange={(e) => {
                     setForm({
@@ -234,10 +240,11 @@ const FormProduct = () => {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="formFile" className="form-label">
+                <label htmlFor="formAddress" className="form-label">
                   Address Detail
                 </label>
                 <textarea
+                  id="formAddress"
                   value={form.addressDetail}
                   onChange={(e) =>
                     setForm({ ...form, addressDetail: e.target.value })
@@ -249,25 +256,26 @@ const FormProduct = () => {
               </div>
             </div>
             <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
+              <label htmlFor="formDescription" className="form-label">
                 Description
               </label>
               <textarea
+                id="formDescription"
                 value={form.description}
                 onChange={(e) =>
                   setForm({ ...form, description: e.target.value })
                 }
                 className="form-control"
-                id="exampleFormControlTextarea1"
                 rows="3"
               ></textarea>
             </div>
             <div className="row row-cols-2">
               <div className="mb-3">
-                <label htmlFor="formFile" className="form-label">
+                <label htmlFor="formMeetingPoint" className="form-label">
                   Address Meeting Point
                 </label>
                 <input
+                  id="formMeetingPoint"
                   value={form.addressMeetingPoint}
                   onChange={(e) =>
                     setForm({ ...form, addressMeetingPoint: e.target.value })
@@ -278,13 +286,16 @@ const FormProduct = () => {
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="formFile" className="form-label">
+                <label htmlFor="formGuide" className="form-label">
                   Guide
                 </label>
                 <Select
+                  id="formGuide"
                   options={guideOptions}
                   onChange={(e) => {
-                    setForm({ ...form, guideId: e.value });
+                    e.value === "add"
+                      ? navigation("/guide")
+                      : setForm({ ...form, guideId: e.value });
                   }}
                 />
               </div>
