@@ -210,7 +210,7 @@ const EditProduct = () => {
             <div className="mb-3">
               <div className="row row-cols-2">
                 <div className="col">
-                  <Form.Group controlId="dob">
+                  <Form.Group>
                     <Form.Label htmlFor="formStartDate">Start Date</Form.Label>
                     <Form.Control
                       id="formStartDate"
@@ -226,7 +226,7 @@ const EditProduct = () => {
                   </Form.Group>
                 </div>
                 <div className="col">
-                  <Form.Group controlId="dob">
+                  <Form.Group>
                     <Form.Label htmlFor="formEndDate">End Date</Form.Label>
                     <Form.Control
                       id="formEndDate"

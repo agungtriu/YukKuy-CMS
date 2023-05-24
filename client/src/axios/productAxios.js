@@ -180,11 +180,10 @@ const getProvinces = async (cb) => {
     let results = await axios({
       method: "GET",
       url:
-        config.baseUrlBinderByte +
-        "/provinsi?api_key=" +
-        config.apiKeyBinderByte,
+        config.baseUrlEmsifa +
+        "/provinces.json",
     });
-    cb(results.data.value);
+    cb(results.data);
   } catch (err) {
     // if (err.response.status === 500) {
     //   Swal.fire(
@@ -204,13 +203,10 @@ const getCities = async (idProvince, cb) => {
     let results = await axios({
       method: "GET",
       url:
-        config.baseUrlBinderByte +
-        "/kabupaten?api_key=" +
-        config.apiKeyBinderByte +
-        "&id_provinsi=" +
-        idProvince,
+      config.baseUrlEmsifa +
+      "/regencies/"+idProvince+".json",
     });
-    cb(results.data.value);
+    cb(results.data);
   } catch (err) {
     // if (err.response.status === 500) {
     //   Swal.fire(
