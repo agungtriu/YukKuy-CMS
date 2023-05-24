@@ -20,6 +20,7 @@ import CityFormatter from "../../helpers/CityFormatter";
 const EditProduct = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [selectedGuide, setSelectedGuide] = useState({});
+  const [load, setLoad] = useState(false);
   const [productId, setProductId] = useState(0);
   const [form, setForm] = useState({
     imageProducts: [],
@@ -65,9 +66,12 @@ const EditProduct = () => {
   const [provinces, setProvinces] = useState([]);
   const [guides, setGuides] = useState([]);
   useEffect(() => {
-    getParams();
-    getProvinces((result) => setProvinces(result));
-    getGuide((result) => setGuides(result));
+    if (!load) {
+      getParams();
+      getProvinces((result) => setProvinces(result));
+      getGuide((result) => setGuides(result));
+      setLoad(true);
+    }
   }, []);
 
   let provinceOptions = [];

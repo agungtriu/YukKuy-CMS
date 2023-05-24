@@ -11,6 +11,7 @@ import { getGuide } from "../../axios/guideAxios";
 
 const FormProduct = () => {
   const [previewImage, setPreviewImage] = useState("");
+  const [load, setLoad] = useState(false);
   const [form, setForm] = useState({
     imageProducts: [],
     name: "",
@@ -30,9 +31,12 @@ const FormProduct = () => {
   const [provinces, setProvinces] = useState([]);
   const [guides, setGuides] = useState([]);
   useEffect(() => {
-    getProvinces((result) => setProvinces(result));
-    getGuide((result) => setGuides(result));
-  });
+    if (!load) {
+      getProvinces((result) => setProvinces(result));
+      getGuide((result) => setGuides(result));
+      setLoad(true);
+    }
+  }, []);
 
   let provinceOptions = [];
   provinces?.forEach((province) => {
@@ -166,7 +170,7 @@ const FormProduct = () => {
             <div className="mb-3">
               <div className="row row-cols-2">
                 <div className="col">
-                  <Form.Group >
+                  <Form.Group>
                     <Form.Label htmlFor="formStartDate">Start Date</Form.Label>
                     <Form.Control
                       id="formStartDate"

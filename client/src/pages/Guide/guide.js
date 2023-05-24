@@ -65,7 +65,6 @@ const Guide = () => {
   };
 
   const handleAddGuide = () => {
-    console.log(addForm);
     addGuide(addForm, (status) => {
       if (!status) {
         Swal.fire("Add Guide", "file cannot be empty", "error");
