@@ -1,7 +1,5 @@
 const baseUrl = "https://yukkuy.fly.dev";
 const imageUrl = `${baseUrl}/images/`;
-const baseUrlBinderByte = "https://api.binderbyte.com/wilayah";
-const apiKeyBinderByte =
-  "313405aa5ef19b005c2b72f0313adf255ec6fb421f6105907882acb7fbd284e8";
+const baseUrlEmsifa = "https://www.emsifa.com/api-wilayah-indonesia/api";
 
-module.exports = { baseUrl, imageUrl, baseUrlBinderByte, apiKeyBinderByte };
+module.exports = { baseUrl, imageUrl, baseUrlEmsifa };
