@@ -36,18 +36,18 @@ const SideBar = (props) => {
                 Dashboard
               </Link>
               <Link
-                className={getItemClassName("orders")}
-                to={"/orders"}
-                onClick={() => handleItemClick("orders")}
-              >
-                Order
-              </Link>
-              <Link
                 className={getItemClassName("products")}
                 to={"/products"}
                 onClick={() => handleItemClick("products")}
               >
                 Product
+              </Link>
+              <Link
+                className={getItemClassName("orders")}
+                to={"/orders"}
+                onClick={() => handleItemClick("orders")}
+              >
+                Order
               </Link>
             </nav>
           </div>
