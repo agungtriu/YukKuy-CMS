@@ -41,6 +41,8 @@ const registerUser = async (user, cb) => {
   try {
     if (user.username === "") {
       Swal.fire("Login", "Username can not be empty.", "error");
+    } else if (user.username.includes(" ")) {
+      Swal.fire("Login", "Invalid username format", "error");
     } else if (user.name === "") {
       Swal.fire("Login", "Name can not be empty.", "error");
     } else if (user.email === "") {
