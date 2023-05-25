@@ -38,7 +38,6 @@ const Bank = () => {
   useEffect(() => {
     const accountId = localStorage.id;
     getBanks(accountId, (banks) => {
-      console.log(banks);
       setBanks(banks);
       setDone(true);
     });
