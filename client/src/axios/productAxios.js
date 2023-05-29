@@ -180,7 +180,7 @@ const getProvinces = async (cb) => {
     let results = await axios({
       method: "GET",
       url:
-        config.baseUrlEmsifa +
+        config.baseUrlRegion +
         "/provinces.json",
     });
     cb(results.data);
@@ -203,7 +203,7 @@ const getCities = async (idProvince, cb) => {
     let results = await axios({
       method: "GET",
       url:
-      config.baseUrlEmsifa +
+      config.baseUrlRegion +
       "/regencies/"+idProvince+".json",
     });
     cb(results.data);
