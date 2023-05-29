@@ -12,6 +12,7 @@ const ModalProcessWithdraw = (props) => {
   const processHandler = (withdrawId) => {
     processWithdraw(withdrawId, (status) => {
       if (status) {
+        onHide();
         navigate("/withdraws/process");
       }
     });
