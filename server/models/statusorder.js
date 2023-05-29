@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       reason: DataTypes.STRING,
       orderId: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         validate: {
           notEmpty: {
             message: "orderId can not be empty.",

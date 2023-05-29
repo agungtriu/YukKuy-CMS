@@ -5,7 +5,7 @@ const HomeCMSController = require("./HomeCMSController");
 const SocialAccountController = require("./SocialAccountController");
 const ProductController = require("./ProductController");
 const OrderController = require("./OrderController");
-const VerificationController = require("./VerificationController");
+const WithdrawController = require("./WithdrawController");
 
 module.exports = {
   AccountController,
@@ -15,5 +15,5 @@ module.exports = {
   SocialAccountController,
   ProductController,
   OrderController,
-  VerificationController,
+  WithdrawController,
 };

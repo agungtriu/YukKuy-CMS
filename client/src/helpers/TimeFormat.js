@@ -22,4 +22,16 @@ const readableDate = (dateString) => {
   };
   return date.toLocaleDateString(undefined, options);
 };
-module.exports = { formatDate, formatTime, readableDate };
+
+const readableDateTime = (dateString) => {
+  const date = new Date(dateString);
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  return date.toLocaleString(undefined, options);
+};
+module.exports = { formatDate, formatTime, readableDate, readableDateTime };

@@ -21,6 +21,7 @@ const loginUser = async (user, cb) => {
       localStorage.setItem("access_token", users.data.data.access_token);
       localStorage.setItem("id", users.data.data.id);
       localStorage.setItem("username", users.data.data.username);
+      localStorage.setItem("role", users.data.data.role);
       localStorage.setItem("avatar", users.data.data.avatar);
       cb({ status: true, data: users.data.data });
     } catch (err) {
@@ -195,6 +196,46 @@ const editBanner = async (image, cb) => {
   }
 };
 
+const getAccounts = async (cb) => {
+  try {
+    const accountResponses = await axios({
+      method: "GET",
+      url: URL,
+    });
+    cb(accountResponses.data.data);
+  } catch (error) {
+    if (error.response.data === 500) {
+      Swal.fire(
+        "Error!",
+        error.response.data.error.errors[0].original.validatorArgs[0].message,
+        "error"
+      );
+    } else {
+      Swal.fire("Error!", error.response.data.message, "error");
+    }
+  }
+};
+
+const asAdmin = async (id, cb) => {
+  try {
+    const accountResponses = await axios({
+      method: "GET",
+      url: URL + "role?id=" + id,
+    });
+    cb(true);
+    Swal.fire("Account", accountResponses.data.message, "success");
+  } catch (error) {
+    if (error.response.data === 500) {
+      Swal.fire(
+        "Error!",
+        error.response.data.error.errors[0].original.validatorArgs[0].message,
+        "error"
+      );
+    } else {
+      Swal.fire("Error!", error.response.data.message, "error");
+    }
+  }
+};
 export {
   loginUser,
   registerUser,
@@ -203,4 +244,6 @@ export {
   editAvatar,
   editPassword,
   editBanner,
+  getAccounts,
+  asAdmin,
 };

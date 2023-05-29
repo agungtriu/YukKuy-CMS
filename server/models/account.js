@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       account.hasMany(models.product);
       account.hasMany(models.order);
       account.hasMany(models.visitProduct);
+      account.hasMany(models.withdraw);
     }
   }
   account.init(
@@ -64,8 +65,21 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      saldo: {
+        type: DataTypes.INTEGER,
+        validate: {
+          notEmpty: {
+            message: "saldo can not be empty.",
+          },
+        },
+      },
     },
     {
+      hooks: {
+        beforeCreate: function (account, option) {
+          account.saldo = 0;
+        },
+      },
       sequelize,
       modelName: "account",
     }

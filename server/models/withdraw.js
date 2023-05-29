@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class bank extends Model {
+  class withdraw extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,33 +9,26 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      bank.belongsTo(models.account);
-      bank.hasMany(models.withdraw);
+      withdraw.belongsTo(models.account);
+      withdraw.belongsTo(models.bank);
+      withdraw.hasOne(models.statusWithdraw);
     }
   }
-  bank.init(
+  withdraw.init(
     {
-      bank: {
-        type: DataTypes.STRING,
+      amount: {
+        type: DataTypes.INTEGER,
         validate: {
           notEmpty: {
-            message: "bank name can not be empty.",
+            message: "amount can not be empty.",
           },
         },
       },
-      name: {
-        type: DataTypes.STRING,
+      bankId: {
+        type: DataTypes.INTEGER,
         validate: {
           notEmpty: {
-            message: "name can not be empty.",
-          },
-        },
-      },
-      number: {
-        type: DataTypes.STRING,
-        validate: {
-          notEmpty: {
-            message: "number can not be empty.",
+            message: "bankId can not be empty.",
           },
         },
       },
@@ -50,8 +43,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "bank",
+      modelName: "withdraw",
     }
   );
-  return bank;
+  return withdraw;
 };

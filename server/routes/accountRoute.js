@@ -15,6 +15,8 @@ accountRoute.put("/edit/password", auth, AccountController.editPassword);
 accountRoute.put("/edit/avatar", auth, upload.single("avatar") , AccountController.editAvatar);
 accountRoute.put("/edit/banner", auth, upload.single("banner"), AccountController.editBanner);
 
+accountRoute.get("/", AccountController.getAccounts);
+accountRoute.get("/role", AccountController.roleAdmin);
 accountRoute.get("/:username", AccountController.getAccountByUsername);
 accountRoute.get("/seller/:username", AccountController.getSellerByUsername);
 

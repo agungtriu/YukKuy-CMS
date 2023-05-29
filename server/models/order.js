@@ -10,12 +10,20 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       order.belongsTo(models.product);
-      order.hasMany(models.verificationPayment);
       order.hasOne(models.statusOrder);
     }
   }
   order.init(
     {
+      id: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+        validate: {
+          notEmpty: {
+            message: "Id can not be empty.",
+          },
+        },
+      },
       totalPackage: {
         type: DataTypes.INTEGER,
         validate: {
@@ -59,6 +67,8 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      responseMidtrans: DataTypes.STRING,
+      urlMidtrans: DataTypes.STRING,
       productId: {
         type: DataTypes.INTEGER,
         validate: {

@@ -17,10 +17,12 @@ const Success = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [ProductPerPage] = useState(5);
   useEffect(() => {
-    getOrdersByStatus("success", (result) => {
-      setProducts(result.data);
-      setDone(true);
-    });
+    if (!done) {
+      getOrdersByStatus("success", (result) => {
+        setProducts(result.data);
+        setDone(true);
+      });
+    }
   }, []);
 
   const clickHanlder = (product) => {
@@ -65,7 +67,6 @@ const Success = () => {
   return (
     <>
       <TabsOrder></TabsOrder>
-      <h5 className="my-3">Success</h5>
       {!done ? (
         <ReactLoading
           className="position-absolute top-50 start-50 translate-middle"
@@ -79,7 +80,7 @@ const Success = () => {
           return (
             <>
               <div
-                className="card mb-2 border-0 shadow"
+                className="card m-3 border-0 shadow"
                 key={product.id}
                 data-bs-toggle="modal"
                 data-bs-target="#detailSuccessModal"

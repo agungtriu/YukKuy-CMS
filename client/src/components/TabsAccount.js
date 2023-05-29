@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 
-const TabsOrder = () => {
+const TabsAccount = () => {
   const [activeItem, setActiveItem] = useState();
   const location = useLocation();
 
@@ -20,32 +20,29 @@ const TabsOrder = () => {
 
   return (
     <div className="row me-4">
-      <Link className={getItemClassName("/orders")} to={"/orders"}>
-        All Order
-      </Link>
-      <Link className={getItemClassName("/orders/payment")} to={"/orders/payment"}>
-        Payment
+      <Link className={getItemClassName("/accounts")} to={"/accounts"}>
+        All User
       </Link>
       <Link
-        className={getItemClassName("/orders/success")}
-        to={"/orders/success"}
+        className={getItemClassName("/accounts/admin")}
+        to={"/accounts/admin"}
       >
-        Success
+        Admin
       </Link>
       <Link
-        className={getItemClassName("/orders/reject")}
-        to={"/orders/reject"}
+        className={getItemClassName("/accounts/seller")}
+        to={"/accounts/seller"}
       >
-        Rejected
+        Seller
       </Link>
       <Link
-        className={getItemClassName("/orders/cancel")}
-        to={"/orders/cancel"}
+        className={getItemClassName("/accounts/customer")}
+        to={"/accounts/customer"}
       >
-        Cancel
+        Customer
       </Link>
     </div>
   );
 };
 
-export default TabsOrder;
+export default TabsAccount;

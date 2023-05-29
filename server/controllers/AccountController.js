@@ -129,7 +129,7 @@ class AccountController {
       const { key, password } = req.body;
       const result = await account.findOne({
         where: {
-          role: "seller",
+          [Op.or]: [{ role: "seller" }, { role: "admin" }],
           [Op.or]: [
             { username: key.toLowerCase() },
             { email: key.toLowerCase() },
@@ -147,6 +147,7 @@ class AccountController {
               id: result.id,
               username: result.username,
               name: result.name,
+              role: result.role,
               avatar: result.profile.avatar,
               access_token: access_token,
             },
@@ -464,6 +465,50 @@ class AccountController {
             message: "update profile unsuccessful",
           });
         }
+      }
+    } catch (error) {
+      res.status(500).json({
+        status: false,
+        error: error,
+      });
+    }
+  }
+
+  static async getAccounts(req, res) {
+    try {
+      const result = await account.findAll({ include: [profile] });
+      res.status(200).json({
+        status: true,
+        data: result,
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: false,
+        error: error,
+      });
+    }
+  }
+
+  static async roleAdmin(req, res) {
+    try {
+      const id = +req.query.id;
+      const result = await account.update(
+        {
+          role: "admin",
+        },
+        { where: { id } }
+      );
+
+      if (result[0] === 1) {
+        res.status(201).json({
+          status: true,
+          message: `${account.name} as an admin`,
+        });
+      } else {
+        res.status(400).json({
+          status: false,
+          message: "update role unsuccessful",
+        });
       }
     } catch (error) {
       res.status(500).json({

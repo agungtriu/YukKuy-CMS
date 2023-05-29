@@ -7,10 +7,6 @@ const Order = (props) => {
   const { order } = props;
   const statusHandler = (data) => {
     switch (data.status) {
-      case "verification":
-        return (
-          <div className="btn btn-warning text-white my-5">{data.status}</div>
-        );
       case "success":
         return (
           <div className="btn btn-success disabled my-5">{data.status}</div>
@@ -31,7 +27,7 @@ const Order = (props) => {
   };
   return (
     <>
-      <div className="card mb-2 border-0 shadow" key={order.id}>
+      <div className="card m-3 border-0 shadow" key={order.id}>
         <div className="card-body">
           <LazyLoadImage
             className="rounded-3 float-start me-3"

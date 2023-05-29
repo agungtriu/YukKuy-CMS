@@ -5,11 +5,11 @@ const baseUrl = config.baseUrl;
 
 const URL = baseUrl + "/orders/";
 
-const getOrders = async (cb) => {
+const getOrders = async (status, cb) => {
   try {
     let results = await axios({
       method: "GET",
-      url: URL + "/cms",
+      url: status !== "" ? URL + "cms?status=" + status : URL + "cms",
       headers: {
         access_token: localStorage.access_token,
       },

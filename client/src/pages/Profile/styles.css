@@ -15,14 +15,3 @@
     right: 30%;
     top: 80%;
 }
-
-.btn-outline-success.btn-banner {
-    background-color: transparent !important;
-    color: white !important;
-}
-
-.btn-outline-success.btn-banner:hover {
-    background-color: #19a463 !important;
-    border-color: #19a463 !important;
-    color: white !important;
-}
