@@ -15,12 +15,10 @@ const Orders = (props) => {
 
   const location = useLocation();
   useEffect(() => {
-    if (!done) {
-      getOrders(status, (result) => {
-        setOrders(result.data);
-        setDone(true);
-      });
-    }
+    getOrders(status, (result) => {
+      setOrders(result.data);
+      setDone(true);
+    });
   }, [location.key]);
 
   const indexOfLastOrder = currentPage * OrderPerPage;
