@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 
-const TabsOrder = () => {
+const TabsWithdraw = () => {
   const [activeItem, setActiveItem] = useState();
   const location = useLocation();
 
@@ -20,32 +20,35 @@ const TabsOrder = () => {
 
   return (
     <div className="row me-4">
-      <Link className={getItemClassName("/orders")} to={"/orders"}>
-        All Order
-      </Link>
-      <Link className={getItemClassName("/orders/payment")} to={"/orders/payment"}>
-        Payment
+      <Link className={getItemClassName("/withdraws")} to={"/withdraws"}>
+        All Withdraw
       </Link>
       <Link
-        className={getItemClassName("/orders/success")}
-        to={"/orders/success"}
+        className={getItemClassName("/withdraws/request")}
+        to={"/withdraws/request"}
+      >
+        Request
+      </Link>
+      <Link
+        className={getItemClassName("/withdraws/process")}
+        to={"/withdraws/process"}
+      >
+        Process
+      </Link>
+      <Link
+        className={getItemClassName("/withdraws/success")}
+        to={"/withdraws/success"}
       >
         Success
       </Link>
       <Link
-        className={getItemClassName("/orders/reject")}
-        to={"/orders/reject"}
+        className={getItemClassName("/withdraws/reject")}
+        to={"/withdraws/reject"}
       >
         Rejected
-      </Link>
-      <Link
-        className={getItemClassName("/orders/cancel")}
-        to={"/orders/cancel"}
-      >
-        Cancel
       </Link>
     </div>
   );
 };
 
-export default TabsOrder;
+export default TabsWithdraw;

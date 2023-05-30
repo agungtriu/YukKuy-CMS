@@ -11,6 +11,7 @@ const EditBanner = (props) => {
   const [previewImage, setPreviewImage] = useState("");
   const [isExist, setIsExist] = useState(false);
   const [showModal, setShowModal] = useState(true);
+  const [done, setDone] = useState(false);
 
   const { cbShow } = props;
 
@@ -20,6 +21,7 @@ const EditBanner = (props) => {
       setUser({
         bannerImage: `${imageUrl}${result.profile.bannerImage}`,
       });
+      setDone(true);
     });
   };
 
@@ -90,10 +92,18 @@ const EditBanner = (props) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="" className="btn btn-danger" onClick={handleCloseModal}>
+          <Button
+            variant=""
+            className="btn btn-danger"
+            onClick={handleCloseModal}
+          >
             Close
           </Button>
-          <Button variant="" className="btn btn-success" onClick={submitHandler}>
+          <Button
+            variant=""
+            className="btn btn-success"
+            onClick={submitHandler}
+          >
             Confirm
           </Button>
         </Modal.Footer>

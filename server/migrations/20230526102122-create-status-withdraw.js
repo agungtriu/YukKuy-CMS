@@ -2,22 +2,22 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("verificationPayments", {
+    await queryInterface.createTable("statusWithdraws", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      bankId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      imageReceipt: {
+      status: {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      orderId: {
+      reason: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      withdrawId: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
@@ -32,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("verificationPayments");
+    await queryInterface.dropTable("statusWithdraws");
   },
 };

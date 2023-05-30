@@ -1,10 +1,10 @@
 const { where } = require("sequelize");
 const models = require("../models");
+const { coreApi, snap } = require("../middlewares/midtrans");
 const product = models.product;
 const statusOrder = models.statusOrder;
 const order = models.order;
 const account = models.account;
-const verificationPayment = models.verificationPayment;
 const imageProduct = models.imageProduct;
 const guide = models.guide;
 
@@ -23,14 +23,7 @@ class OrderController {
         for (const product of products) {
           const orders = await order.findAll({
             where: { productId: product.id },
-            include: [
-              { model: statusOrder },
-              {
-                model: verificationPayment,
-                limit: 1,
-                order: [["createdAt", "DESC"]],
-              },
-            ],
+            include: [{ model: statusOrder }],
           });
           if (orders.length > 0) {
             orders.forEach((order) => {
@@ -65,36 +58,15 @@ class OrderController {
             where: { accountId },
             include: [imageProduct],
           });
-          if (status === "verification") {
-            for (const product of products) {
-              const orders = await order.findAll({
-                where: { productId: product.id },
-                include: [
-                  { model: statusOrder, where: { status } },
-                  {
-                    model: verificationPayment,
-                    limit: 1,
-                    order: [["createdAt", "DESC"]],
-                  },
-                ],
+          for (const product of products) {
+            const orders = await order.findAll({
+              where: { productId: product.id },
+              include: [{ model: statusOrder, where: { status } }],
+            });
+            if (orders.length > 0) {
+              orders.forEach((order) => {
+                results.push({ ...order.dataValues, product: product });
               });
-              if (orders.length > 0) {
-                orders.forEach((order) => {
-                  results.push({ ...order.dataValues, product: product });
-                });
-              }
-            }
-          } else {
-            for (const product of products) {
-              const orders = await order.findAll({
-                where: { productId: product.id },
-                include: [{ model: statusOrder, where: { status } }],
-              });
-              if (orders.length > 0) {
-                orders.forEach((order) => {
-                  results.push({ ...order.dataValues, product: product });
-                });
-              }
             }
           }
           results.sort(
@@ -166,7 +138,7 @@ class OrderController {
 
   static async getOrder(req, res) {
     try {
-      const id = +req.params.id;
+      const id = req.params.id;
       const resultOrder = await order.findOne({
         where: { id },
         include: [statusOrder],
@@ -219,29 +191,51 @@ class OrderController {
         req.body;
 
       const accountId = +req.accountData.id;
-      const uniquePrice = +totalPrice + Math.floor(Math.random() * 1000);
-
+      const orderId = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
+      console.log(orderId);
       const resultOrder = await order.create({
+        id: orderId,
         totalPackage,
-        totalPrice: uniquePrice,
+        totalPrice,
         name,
         phone,
         email,
+        responseMidtrains: "",
+        urlMidtrans: "",
         productId,
         accountId,
       });
       if (resultOrder !== null) {
         await statusOrder.create({
-          orderId: resultOrder.id,
+          orderId: orderId,
           status: "payment",
         });
-
-        const _product = await product.findOne({ where: { id: productId } });
+        let parameter = {
+          transaction_details: {
+            order_id: orderId,
+            gross_amount: totalPrice,
+          },
+          credit_card: {
+            secure: true,
+          },
+          customer_details: {
+            first_name: name,
+            email: email,
+            phone: phone,
+          },
+        };
+        const resultMidtrans = await snap.createTransaction(parameter);
+        await order.update(
+          { urlMidtrans: resultMidtrans.redirect_url },
+          { where: { id: orderId } }
+        );
 
         res.status(201).json({
           status: true,
           message: "order has been made",
-          data: { ...resultOrder.dataValues, sellerId: _product.accountId },
+          data: {
+            redirectUrl: resultMidtrans.redirect_url,
+          },
         });
       } else {
         res.status(400).json({
@@ -257,26 +251,75 @@ class OrderController {
     }
   }
 
-  static async cancelOrder(req, res) {
+  static async notificationMidtrains(req, res) {
     try {
-      const orderId = req.params.id;
-      const { reason } = req.body;
-      const result = await statusOrder.update(
-        {
-          status: "cancel",
-          reason,
-        },
-        { where: { orderId } }
+      const notificationResponse = await coreApi.transaction.notification(
+        req.body
       );
-      if (result[0] === 1) {
+      let orderId = notificationResponse.order_id;
+
+      const responseMidtrains = JSON.stringify(notificationResponse);
+
+      const updateOrder = await order.update(
+        { responseMidtrans: responseMidtrains },
+        { where: { id: orderId } }
+      );
+
+      if (notificationResponse.transaction_status === "settlement") {
+        const orderResponse = await order.findOne({ where: { id: orderId } });
+        const productRespone = await product.findOne({where: {id: orderResponse.productId}})
+        const accountResponse = await account.findOne({
+          where: { id: productRespone.accountId },
+        });
+        const saldo = +accountResponse.saldo + +orderResponse.totalPrice;
+
+        await account.update({ saldo }, { where: { id: accountResponse.id } });
+
+        await statusOrder.update(
+          {
+            status: "success",
+            reason: "",
+          },
+          { where: { orderId } }
+        );
+      } else if (notificationResponse.transaction_status === "pending") {
+        await statusOrder.update(
+          {
+            status: "payment",
+            reason: "",
+          },
+          { where: { orderId } }
+        );
+      } else if (
+        notificationResponse.transaction_status === "deny" ||
+        notificationResponse.transaction_status === "cancel"
+      ) {
+        await statusOrder.update(
+          {
+            status: "reject",
+            reason: "Your transaction has been rejected by the system",
+          },
+          { where: { orderId } }
+        );
+      } else if (notificationResponse.transaction_status === "expire") {
+        await statusOrder.update(
+          {
+            status: "cancel",
+            reason: "Your transaction has expired",
+          },
+          { where: { orderId } }
+        );
+      }
+
+      if (updateOrder[0] === 1) {
         res.status(201).json({
           status: true,
-          message: "order has been canceled",
+          message: "notification success",
         });
       } else {
         res.status(400).json({
-          status: false,
-          message: "failed to cancel order",
+          status: true,
+          message: "failed to update order",
         });
       }
     } catch (error) {

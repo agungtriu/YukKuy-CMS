@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "postgres",
-    "password": "admin",
-    "database": "yukkuy",
-    "host": "127.0.0.1",
+    "password": "yukkuy-dev01",
+    "database": "postgres",
+    "host": "db.fmvojdpbkgtvwyvcajre.supabase.co",
     "dialect": "postgres"
   },
   "test": {

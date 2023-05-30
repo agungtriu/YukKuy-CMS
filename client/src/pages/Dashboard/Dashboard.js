@@ -5,6 +5,7 @@ import { DateRange } from "react-date-range";
 import { addDays, subDays } from "date-fns";
 import { formatDate, readableDate } from "../../helpers/TimeFormat";
 import ReactLoading from "react-loading";
+import RupiahFormatter from "../../helpers/RupiahFormatter";
 
 const Dashboard = () => {
   const [clicked, setClicked] = useState(false);
@@ -19,15 +20,18 @@ const Dashboard = () => {
     navigate(link);
   };
   useEffect(() => {
-    setDone(false);
-    getHomeData(
-      formatDate(range[0].startDate),
-      formatDate(addDays(range[0].endDate, 1)),
-      (result) => {
-        setDashboard(result);
-        setDone(true);
-      }
-    );
+    if (!done) {
+      getHomeData(
+        formatDate(range[0].startDate),
+        formatDate(addDays(range[0].endDate, 1)),
+        (result) => {
+          setDashboard(result);
+          setDone(true);
+        }
+      );
+    }
+    document.addEventListener("keydown", hideOnEscape, true);
+    document.addEventListener("click", hideOnClickOutside, true);
   }, []);
 
   const [range, setRange] = useState([
@@ -41,11 +45,6 @@ const Dashboard = () => {
   const [open, setOpen] = useState(false);
 
   const refOne = useRef(null);
-
-  useEffect(() => {
-    document.addEventListener("keydown", hideOnEscape, true);
-    document.addEventListener("click", hideOnClickOutside, true);
-  }, []);
 
   const hideOnEscape = (e) => {
     if (e.key === "Escape") {
@@ -102,88 +101,184 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="row">
-        <div
-          className="col btn btn-lg active text-white ms-3 p-4"
-          onClick={() => clickHandler("/products")}
-        >
-          <h6 className="text-start">All Product</h6>
-          <h4 className="text-center my-4">
-            {!done ? (
-              <ReactLoading
-                className="mx-auto"
-                type={"spin"}
-                color={"#000000"}
-                height={30}
-                width={30}
-              />
-            ) : (
-              dashboard.countProduct
-            )}
-          </h4>
-        </div>
-        <div
-          className="col btn btn-lg active text-white ms-3 p-4"
-          onClick={() => clickHandler("/orders/new")}
-        >
-          <h6 className="text-start">New Order</h6>
-          <h4 className="text-center my-4">
-            {!done ? (
-              <ReactLoading
-                className="mx-auto"
-                type={"spin"}
-                color={"#000000"}
-                height={30}
-                width={30}
-              />
-            ) : (
-              dashboard.countNewOrder
-            )}
-          </h4>
-        </div>
-        <div
-          className="col btn btn-lg active text-white  ms-3 p-4 text-white"
-          onClick={() => handleClick(true)}
-        >
-          <div className="row">
-            <h6 className="text-start col">Profile Seen</h6>
+      {localStorage.role === "seller" ? (
+        <div className="row">
+          <div
+            className="col btn btn-lg active text-white ms-3 p-4"
+            onClick={() => clickHandler("/products")}
+          >
+            <h6 className="text-start">All Product</h6>
+            <h4 className="text-center my-4">
+              {!done ? (
+                <ReactLoading
+                  className="mx-auto"
+                  type={"spin"}
+                  color={"#000000"}
+                  height={30}
+                  width={30}
+                />
+              ) : (
+                dashboard.countProduct
+              )}
+            </h4>
           </div>
-          <h4 className="text-center my-4">
-            {!done ? (
-              <ReactLoading
-                className="mx-auto"
-                type={"spin"}
-                color={"#000000"}
-                height={30}
-                width={30}
-              />
-            ) : (
-              dashboard.countVisitAccount
-            )}
-          </h4>
-        </div>
-        <div
-          className="col btn btn-lg active text-white mx-3 p-4"
-          onClick={() => handleClick(clicked)}
-        >
-          <div className="row">
-            <h6 className="text-start col">Product Seen</h6>
+          <div
+            className="col btn btn-lg active text-white ms-3 p-4"
+            onClick={() => clickHandler("/orders/success")}
+          >
+            <h6 className="text-start">Success Order</h6>
+            <h4 className="text-center my-4">
+              {!done ? (
+                <ReactLoading
+                  className="mx-auto"
+                  type={"spin"}
+                  color={"#000000"}
+                  height={30}
+                  width={30}
+                />
+              ) : (
+                dashboard.countSuccess
+              )}
+            </h4>
           </div>
-          <h4 className="text-center my-4">
-            {!done ? (
-              <ReactLoading
-                className="mx-auto"
-                type={"spin"}
-                color={"#000000"}
-                height={30}
-                width={30}
-              />
-            ) : (
-              dashboard.countVisitProduct
-            )}
-          </h4>
+          <div
+            className="col btn btn-lg active text-white ms-3 p-4"
+            onClick={() => handleClick(true)}
+          >
+            <h6 className="text-start">Income</h6>
+            <h4 className="text-center my-4">
+              {!done ? (
+                <ReactLoading
+                  className="mx-auto"
+                  type={"spin"}
+                  color={"#000000"}
+                  height={30}
+                  width={30}
+                />
+              ) : (
+                RupiahFormatter(dashboard.income)
+              )}
+            </h4>
+          </div>
+          <div
+            className="col btn btn-lg active text-white  ms-3 p-4"
+            onClick={() => handleClick(true)}
+          >
+            <div className="row">
+              <h6 className="text-start col">Profile Seen</h6>
+            </div>
+            <h4 className="text-center my-4">
+              {!done ? (
+                <ReactLoading
+                  className="mx-auto"
+                  type={"spin"}
+                  color={"#000000"}
+                  height={30}
+                  width={30}
+                />
+              ) : (
+                dashboard.countVisitAccount
+              )}
+            </h4>
+          </div>
+          <div
+            className="col btn btn-lg active text-white mx-3 p-4"
+            onClick={() => handleClick(clicked)}
+          >
+            <div className="row">
+              <h6 className="text-start col">Product Seen</h6>
+            </div>
+            <h4 className="text-center my-4">
+              {!done ? (
+                <ReactLoading
+                  className="mx-auto"
+                  type={"spin"}
+                  color={"#000000"}
+                  height={30}
+                  width={30}
+                />
+              ) : (
+                dashboard.countVisitProduct
+              )}
+            </h4>
+          </div>
         </div>
-      </div>
+      ) : localStorage.role === "admin" ? (
+        <div className="row me-3">
+          <div
+            className="col btn btn-lg active text-white ms-3 p-4"
+            onClick={() => clickHandler("/accounts")}
+          >
+            <h6 className="text-start">User</h6>
+            <h4 className="text-center my-4">
+              {!done ? (
+                <ReactLoading
+                  className="mx-auto"
+                  type={"spin"}
+                  color={"#000000"}
+                  height={30}
+                  width={30}
+                />
+              ) : (
+                dashboard.countAccount
+              )}
+            </h4>
+          </div>
+          <div
+            className="col btn btn-lg active text-white ms-3 p-4"
+            onClick={() => clickHandler("/withdraws/request")}
+          >
+            <h6 className="text-start">Request Withdraw</h6>
+            <h4 className="text-center my-4">
+              {!done ? (
+                <ReactLoading
+                  className="mx-auto"
+                  type={"spin"}
+                  color={"#000000"}
+                  height={30}
+                  width={30}
+                />
+              ) : (
+                dashboard.countRequestWithdraw
+              )}
+            </h4>
+          </div>
+          <div className="col btn btn-lg active text-white ms-3 p-4">
+            <h6 className="text-start">Transaction</h6>
+            <h4 className="text-center my-4">
+              {!done ? (
+                <ReactLoading
+                  className="mx-auto"
+                  type={"spin"}
+                  color={"#000000"}
+                  height={30}
+                  width={30}
+                />
+              ) : (
+                RupiahFormatter(dashboard.transaction)
+              )}
+            </h4>
+          </div>
+          <div className="col btn btn-lg active text-white  ms-3 p-4">
+            <div className="row">
+              <h6 className="text-start col">Trafic</h6>
+            </div>
+            <h4 className="text-center my-4">
+              {!done ? (
+                <ReactLoading
+                  className="mx-auto"
+                  type={"spin"}
+                  color={"#000000"}
+                  height={30}
+                  width={30}
+                />
+              ) : (
+                dashboard.trafic
+              )}
+            </h4>
+          </div>
+        </div>
+      ) : null}
       {clicked === true ? (
         <>
           {dashboard.countVisitProduct > 0 ? (

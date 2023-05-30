@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class verificationPayment extends Model {
+  class statusWithdraw extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,40 +9,38 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      verificationPayment.belongsTo(models.order);
+      statusWithdraw.belongsTo(models.withdraw);
     }
   }
-  verificationPayment.init(
+  statusWithdraw.init(
     {
-      bankId: {
-        type: DataTypes.INTEGER,
-        validate: {
-          notEmpty: {
-            message: "bankId can not be empty.",
-          },
-        },
-      },
-      imageReceipt: {
+      status: {
         type: DataTypes.STRING,
         validate: {
           notEmpty: {
-            message: "imageReceipt can not be empty.",
+            message: "status can not be empty.",
           },
         },
       },
-      orderId: {
+      reason: DataTypes.STRING,
+      withdrawId: {
         type: DataTypes.INTEGER,
         validate: {
           notEmpty: {
-            message: "orderId can not be empty.",
+            message: "withdrawId can not be empty.",
           },
         },
       },
     },
     {
+      hooks: {
+        beforeCreate: function (statusWithdraw, option) {
+          statusWithdraw.status = "request";
+        },
+      },
       sequelize,
-      modelName: "verificationPayment",
+      modelName: "statusWithdraw",
     }
   );
-  return verificationPayment;
+  return statusWithdraw;
 };

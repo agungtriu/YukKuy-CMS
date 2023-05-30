@@ -12,6 +12,7 @@ const EditAvatar = (props) => {
   const [user, setUser] = useState({ avatar: "" });
   const [isExist, setIsExist] = useState(false);
   const [showModal, setShowModal] = useState(true);
+  const [done, setDone] = useState(false);
 
   const { cbAvatarShow } = props;
 
@@ -21,6 +22,7 @@ const EditAvatar = (props) => {
       setUser({
         avatar: `${imageUrl}${result.profile.avatar}`,
       });
+      setDone(true);
     });
   };
 

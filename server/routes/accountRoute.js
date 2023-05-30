@@ -15,6 +15,11 @@ accountRoute.put("/edit/password", auth, AccountController.editPassword);
 accountRoute.put("/edit/avatar", auth, upload.single("avatar") , AccountController.editAvatar);
 accountRoute.put("/edit/banner", auth, upload.single("banner"), AccountController.editBanner);
 
+accountRoute.get("/", AccountController.getAccounts);
+accountRoute.get("/role/admin", AccountController.roleAdmin);
+accountRoute.get("/role/seller", AccountController.roleSeller);
+accountRoute.get("/role/customer", AccountController.roleCustomer);
+accountRoute.get("/delete", AccountController.deleteAccount);
 accountRoute.get("/:username", AccountController.getAccountByUsername);
 accountRoute.get("/seller/:username", AccountController.getSellerByUsername);
 

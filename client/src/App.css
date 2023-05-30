@@ -90,3 +90,25 @@ body {
   height: 50px;
   object-fit: cover;
 }
+
+.btn-outline-success.btn-banner {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+.btn-outline-success.btn-banner:hover {
+  background-color: #19a463 !important;
+  border-color: #19a463 !important;
+  color: white !important;
+}
+
+.btn-outline-secondary.btn-saldo {
+  background-color: transparent !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+.btn-outline-secondary.btn-saldo:hover {
+  background-color: #00000027 !important;
+  border-color: #00000027 !important;
+  color: rgb(0, 0, 0) !important;
+}
