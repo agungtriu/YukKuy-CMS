@@ -216,11 +216,11 @@ const getAccounts = async (cb) => {
   }
 };
 
-const asAdmin = async (id, cb) => {
+const changeRole = async (id, role, cb) => {
   try {
     const accountResponses = await axios({
       method: "GET",
-      url: URL + "role?id=" + id,
+      url: URL + `role/${role}?id=${id}`,
     });
     cb(true);
     Swal.fire("Account", accountResponses.data.message, "success");
@@ -236,6 +236,28 @@ const asAdmin = async (id, cb) => {
     }
   }
 };
+
+const deleteAccount = async (id, cb) => {
+  try {
+    const accountResponses = await axios({
+      method: "GET",
+      url: URL + "delete?id=" + id,
+    });
+    cb(true);
+    Swal.fire("Account", accountResponses.data.message, "success");
+  } catch (error) {
+    if (error.response.data === 500) {
+      Swal.fire(
+        "Error!",
+        error.response.data.error.errors[0].original.validatorArgs[0].message,
+        "error"
+      );
+    } else {
+      Swal.fire("Error!", error.response.data.message, "error");
+    }
+  }
+};
+
 export {
   loginUser,
   registerUser,
@@ -245,5 +267,6 @@ export {
   editPassword,
   editBanner,
   getAccounts,
-  asAdmin,
+  changeRole,
+  deleteAccount,
 };

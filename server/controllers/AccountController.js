@@ -517,6 +517,86 @@ class AccountController {
       });
     }
   }
+
+  static async roleSeller(req, res) {
+    try {
+      const id = +req.query.id;
+      const result = await account.update(
+        {
+          role: "seller",
+        },
+        { where: { id } }
+      );
+
+      if (result[0] === 1) {
+        res.status(201).json({
+          status: true,
+          message: `${account.name} as an seller`,
+        });
+      } else {
+        res.status(400).json({
+          status: false,
+          message: "update role unsuccessful",
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        status: false,
+        error: error,
+      });
+    }
+  }
+  static async roleCustomer(req, res) {
+    try {
+      const id = +req.query.id;
+      const result = await account.update(
+        {
+          role: "customer",
+        },
+        { where: { id } }
+      );
+
+      if (result[0] === 1) {
+        res.status(201).json({
+          status: true,
+          message: `${account.name} as an customer`,
+        });
+      } else {
+        res.status(400).json({
+          status: false,
+          message: "update role unsuccessful",
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        status: false,
+        error: error,
+      });
+    }
+  }
+  static async deleteAccount(req, res) {
+    try {
+      const id = +req.query.id;
+      const result = await account.destroy({ where: { id } });
+
+      if (result[0] === 1) {
+        res.status(201).json({
+          status: true,
+          message: `${account.name} deleted`,
+        });
+      } else {
+        res.status(400).json({
+          status: false,
+          message: "delete account unsuccessful",
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        status: false,
+        error: error,
+      });
+    }
+  }
 }
 
 module.exports = AccountController;

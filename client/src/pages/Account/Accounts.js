@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
-import { asAdmin, getAccounts } from "../../axios/accountAxios";
+import {
+  asAdmin,
+  asCostumer,
+  asSeller,
+  changeRole,
+  deleteAccount,
+  getAccounts,
+} from "../../axios/accountAxios";
 import ReactLoading from "react-loading";
-import { GrUserAdmin } from "react-icons/gr";
+import { GrUser, GrUserAdmin, GrUserManager } from "react-icons/gr";
+import { AiOutlineDelete } from "react-icons/ai";
 import { useLocation, useNavigate } from "react-router-dom";
 import TabsAccount from "../../components/TabsAccount";
 
@@ -54,8 +62,16 @@ const Accounts = (props) => {
   };
 
   const navigate = useNavigate();
-  const adminHandler = (id) => {
-    asAdmin(id, (result) => {
+  const changeRoleHandler = (id, role) => {
+    changeRole(id, role, (result) => {
+      if (result) {
+        navigate("/accounts");
+        setDone(false);
+      }
+    });
+  };
+  const deleteHandler = (id) => {
+    deleteAccount(id, (result) => {
       if (result) {
         navigate("/accounts");
         setDone(false);
@@ -73,7 +89,7 @@ const Accounts = (props) => {
         style={{ width: "200px" }}
         onChange={(e) => searchHandler(e.target.value, accounts)}
       />
-      <table className="table table-hover my-3">
+      <table className="table table-hover my-3 text-center">
         <thead>
           <tr className="table-active">
             <th scope="col">No</th>
@@ -101,12 +117,36 @@ const Accounts = (props) => {
                 <td>{item.role}</td>
                 <td>
                   {item.role !== "admin" ? (
-                    <div
-                      onClick={() => adminHandler(item.id)}
-                      className="btn btn-outline-light border-0"
-                    >
-                      <GrUserAdmin />
-                    </div>
+                    <>
+                      <span
+                        onClick={() => changeRoleHandler(item.id, "admin")}
+                        className="btn btn-outline-light border-0"
+                      >
+                        <GrUserAdmin />
+                      </span>
+                    </>
+                  ) : item.role === "admin" &&
+                    item.username !== localStorage.username ? (
+                    <>
+                      <span
+                        onClick={() => changeRoleHandler(item.id, "seller")}
+                        className="btn btn-outline-light border-0 "
+                      >
+                        <GrUserManager />
+                      </span>
+                      <span
+                        onClick={() => changeRoleHandler(item.id, "customer")}
+                        className="btn btn-outline-light border-0 ms-3"
+                      >
+                        <GrUser />
+                      </span>
+                      <span
+                        onClick={() => deleteHandler(item.id)}
+                        className="btn btn-outline-light border-0 text-black ms-3"
+                      >
+                        <AiOutlineDelete />
+                      </span>
+                    </>
                   ) : null}
                 </td>
               </tr>
