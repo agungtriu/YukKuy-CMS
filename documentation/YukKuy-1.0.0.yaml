@@ -12,7 +12,7 @@ tags:
   - name: SocialAccount
   - name: Product
   - name: Order
-  - name: Order > Verification
+  - name: Withdraw
 paths:
   /cms:
     get:
@@ -258,6 +258,66 @@ paths:
                   type: string
                 confirmPassword:
                   type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/role/admin/:
+    get:
+      tags:
+        - Account
+      summary: Change Role Admin
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/role/seller/:
+    get:
+      tags:
+        - Account
+      summary: Change Role Seller
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/role/customer/:
+    get:
+      tags:
+        - Account
+      summary: Change Role Customer
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /accounts/delete:
+    get:
+      tags:
+        - Account
+      summary: Delete Account
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: integer
       responses:
         '200':
           description: Successful response
@@ -905,86 +965,6 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /orders/verifications/add:
-    post:
-      tags:
-        - Order > Verification
-      summary: Add Verification
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                imageReceipt:
-                  type: string
-                  format: binary
-                bankId:
-                  type: integer
-                orderId:
-                  type: integer
-      parameters:
-        - name: access_token
-          in: header
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /orders/verifications/reject/{orderId}:
-    put:
-      tags:
-        - Order > Verification
-      summary: Reject Verification
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                reason:
-                  type: string
-      parameters:
-        - name: orderId
-          in: path
-          schema:
-            type: integer
-          required: true
-        - name: access_token
-          in: header
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /orders/verifications/accept/{orderId}:
-    put:
-      tags:
-        - Order > Verification
-      summary: Accept Verification
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties: {}
-      parameters:
-        - name: orderId
-          in: path
-          schema:
-            type: integer
-          required: true
-        - name: access_token
-          in: header
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
   /orders/mobile:
     get:
       tags:
@@ -1075,21 +1055,146 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /orders/cancel/{orderId}:
-    put:
+  /orders/notification:
+    post:
       tags:
         - Order
-      summary: Cancel Order
+      summary: Notification Order for Midtrains
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /withdraws/:
+    get:
+      tags:
+        - Withdraw
+      summary: Widraws
+      parameters:
+        - name: access_token
+          in: header
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /withdraws/{id}:
+    get:
+      tags:
+        - Withdraw
+      summary: Widraws
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /withdraws/add:
+    post:
+      tags:
+        - Withdraw
+      summary: Add Withdraw
       requestBody:
         content:
           application/x-www-form-urlencoded:
             schema:
               properties:
-                reason:
-                  type: string
-                  example: pengen aja
+                amount:
+                  type: integer
+                bankId:
+                  type: integer
       parameters:
-        - name: orderId
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /withdraws/process/{id}:
+    get:
+      tags:
+        - Withdraw
+      summary: Process Withdraw
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /withdraws/accept/{id}:
+    get:
+      tags:
+        - Withdraw
+      summary: Accept Withdraw
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /withdraws/reject/{id}:
+    get:
+      tags:
+        - Withdraw
+      summary: Process Withdraw
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: access_token
+          in: header
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /withdraws/delete/{id}:
+    get:
+      tags:
+        - Withdraw
+      summary: Process Withdraw
+      parameters:
+        - name: id
           in: path
           schema:
             type: integer
