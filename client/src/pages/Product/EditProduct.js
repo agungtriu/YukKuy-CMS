@@ -21,6 +21,7 @@ const EditProduct = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [selectedGuide, setSelectedGuide] = useState({});
   const [load, setLoad] = useState(false);
+  const [submit, setSubmit] = useState(false);
   const [productId, setProductId] = useState(0);
   const [form, setForm] = useState({
     imageProducts: [],
@@ -137,24 +138,29 @@ const EditProduct = () => {
           }
         });
       } else {
-        const formData = new FormData();
-        formData.append("images", file);
-        formData.append("name", form.name);
-        formData.append("dateStart", form.dateStart);
-        formData.append("dateEnd", form.dateEnd);
-        formData.append("price", form.price);
-        formData.append("province", form.province);
-        formData.append("city", form.city);
-        formData.append("addressDetail", form.addressDetail);
-        formData.append("description", form.description);
-        formData.append("addressMeetingPoint", form.addressMeetingPoint);
-        formData.append("guideId", form.guideId);
+        if (!submit) {
+          setSubmit(true);
+          const formData = new FormData();
+          formData.append("images", file);
+          formData.append("name", form.name);
+          formData.append("dateStart", form.dateStart);
+          formData.append("dateEnd", form.dateEnd);
+          formData.append("price", form.price);
+          formData.append("province", form.province);
+          formData.append("city", form.city);
+          formData.append("addressDetail", form.addressDetail);
+          formData.append("description", form.description);
+          formData.append("addressMeetingPoint", form.addressMeetingPoint);
+          formData.append("guideId", form.guideId);
 
-        editProductWithImage(form.id, formData, (status) => {
-          if (status) {
-            navigation("/products");
-          }
-        });
+          editProductWithImage(form.id, formData, (status) => {
+            if (status) {
+              navigation("/products");
+            } else {
+              setSubmit(false);
+            }
+          });
+        }
       }
     }
   };

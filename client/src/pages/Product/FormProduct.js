@@ -12,6 +12,7 @@ import { getGuide } from "../../axios/guideAxios";
 const FormProduct = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [load, setLoad] = useState(false);
+  const [submit, setSubmit] = useState(false);
   const [form, setForm] = useState({
     imageProducts: [],
     name: "",
@@ -96,24 +97,29 @@ const FormProduct = () => {
     } else if (form.guideId === 0) {
       Swal.fire("Add Products", "Guide cannot be empty", "error");
     } else {
-      const formData = new FormData();
-      formData.append("images", file);
-      formData.append("name", form.name);
-      formData.append("dateStart", form.dateStart);
-      formData.append("dateEnd", form.dateEnd);
-      formData.append("price", form.price);
-      formData.append("province", form.province);
-      formData.append("city", form.city);
-      formData.append("addressDetail", form.addressDetail);
-      formData.append("description", form.description);
-      formData.append("addressMeetingPoint", form.addressMeetingPoint);
-      formData.append("guideId", form.guideId);
+      if (!submit) {
+        setSubmit(true);
+        const formData = new FormData();
+        formData.append("images", file);
+        formData.append("name", form.name);
+        formData.append("dateStart", form.dateStart);
+        formData.append("dateEnd", form.dateEnd);
+        formData.append("price", form.price);
+        formData.append("province", form.province);
+        formData.append("city", form.city);
+        formData.append("addressDetail", form.addressDetail);
+        formData.append("description", form.description);
+        formData.append("addressMeetingPoint", form.addressMeetingPoint);
+        formData.append("guideId", form.guideId);
 
-      addProduct(formData, (status) => {
-        if (status) {
-          navigation("/products");
-        }
-      });
+        addProduct(formData, (status) => {
+          if (status) {
+            navigation("/products");
+          } else {
+            setSubmit(false);
+          }
+        });
+      }
     }
   };
 
