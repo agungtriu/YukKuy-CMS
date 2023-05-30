@@ -149,7 +149,6 @@ const rejectWithdraw = async (withdrawId, reason, cb) => {
     cb(true);
     Swal.fire("Withdraw", result.data.message, "success");
   } catch (err) {
-    console.log(err);
     if (err.response.status === 500) {
       Swal.fire(
         "Error!",
