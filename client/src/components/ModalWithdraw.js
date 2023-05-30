@@ -11,6 +11,7 @@ const ModalWithdraw = (props) => {
     amount: 0,
     bankId: 0,
   });
+  const [label, setLabel] = useState("Choose Bank");
   const [banks, setBanks] = useState([]);
   useEffect(() => {
     if (!done) {
@@ -19,9 +20,13 @@ const ModalWithdraw = (props) => {
         setDone(true);
       });
     }
-  });
+  }, []);
 
   let listBankOptions = [];
+  listBankOptions.push({
+    value: 0,
+    label: "Choose Bank",
+  });
   banks?.forEach((bank) => {
     listBankOptions.push({
       value: bank.id,
@@ -38,6 +43,8 @@ const ModalWithdraw = (props) => {
   const withdrawHandler = (form) => {
     addWithdraw(form, (status) => {
       if (status) {
+        setForm({ amount: 0, bankId: 0 });
+        setLabel("Choose Bank");
         navigate("/withdraws");
         closeRef.current.click();
       }
@@ -85,6 +92,7 @@ const ModalWithdraw = (props) => {
                 <label htmlFor="formBank">Bank</label>
                 <Select
                   id="formBank"
+                  value={{ value: form.bankId, label: label }}
                   options={listBankOptions}
                   onChange={(e) => {
                     if (e.value === "add") {
@@ -92,6 +100,7 @@ const ModalWithdraw = (props) => {
                       closeRef.current.click();
                     } else {
                       setForm({ ...form, bankId: +e.value });
+                      setLabel(e.label);
                     }
                   }}
                 />

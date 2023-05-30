@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  asAdmin,
-  asCostumer,
-  asSeller,
   changeRole,
   deleteAccount,
   getAccounts,
