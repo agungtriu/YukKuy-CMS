@@ -21,8 +21,8 @@ const Accounts = (props) => {
       setFilterAccounts(
         data.filter(
           (account) =>
-            account.name.includes(key) ||
-            account.username.toString().includes(key)
+            account.name.toLowerCase().includes(key.toLowerCase()) ||
+            account.username.toString().includes(key.toLowerCase())
         )
       );
     } else {
