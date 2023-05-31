@@ -50,7 +50,8 @@ const Success = () => {
       setOrders(
         orders.filter(
           (order) =>
-            order.name.includes(key) || order.id.toString().includes(key)
+            order.name.toLowerCase().includes(key.toLowerCase()) ||
+            order.id.toString().includes(key)
         )
       );
     } else {
