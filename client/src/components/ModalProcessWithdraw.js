@@ -87,7 +87,7 @@ const ModalProcessWithdraw = (props) => {
 
       <ModalRejectWithdraw
         show={modalShow}
-        onHide={onHide}
+        onHide={() => setModalShow(false)}
         withdrawId={data.id}
       ></ModalRejectWithdraw>
     </>

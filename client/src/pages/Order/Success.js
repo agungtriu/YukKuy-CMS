@@ -191,7 +191,7 @@ const Success = () => {
               <table className="table table-hover">
                 <thead>
                   <tr className="table-active">
-                    <th scope="col">Order Id</th>
+                    <th scope="col">Transaction Number</th>
                     <th scope="col">Name</th>
                     <th scope="col">Phone</th>
                     <th scope="col">Email</th>
