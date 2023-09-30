@@ -36,3 +36,7 @@ YukKuy is a comprehensive travel agent app that aims to simplify and enhance the
 5. Sweetalert2
 
 6. Vercel
+
+### Documentation API
+https://app.swaggerhub.com/apis-docs/Team1-YukKuy/YukKuy/1.0.0
+![Screenshot 2023-05-30 093803](https://github.com/agungtriu/YukKuy-CMS/assets/28708755/afe2d9a1-b955-47bf-a3c7-9994ad44279e)
